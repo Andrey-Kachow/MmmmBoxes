@@ -10,5 +10,15 @@ pip install --upgrade pip && pip install -r requirements.txt
 export FLASK_APP=app/main.py
 export FLASK_ENV=development
 
-# Run on heroku's "PORT" variable, or 5000 if running locally.
-flask run -p ${PORT:-5000}
+# If "$PORT" is undefined, then `flask run` and run locally.
+# Otherwise, export some flask variables needed to run on Heroku and then run.
+if [ -z "$PORT" ]
+then
+    echo "Running flask locally!"
+    flask run
+else
+    echo "Running flask in Heroku!"
+    export FLASK_RUN_HOST=0.0.0.0
+    export FLASK_RUN_PORT=$PORT
+    flask run
+fi
