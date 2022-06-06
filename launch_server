@@ -10,4 +10,5 @@ pip install --upgrade pip && pip install -r requirements.txt
 export FLASK_APP=app/main.py
 export FLASK_ENV=development
 
-flask run
+# Run on heroku's "PORT" variable, or 5000 if running locally.
+flask run -p ${PORT:-5000}
