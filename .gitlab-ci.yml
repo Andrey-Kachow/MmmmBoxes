@@ -1,0 +1,4 @@
+deploy-heroku:
+  stage: deploy
+  script:
+    - dpl --provider=heroku --app=drp11 --api-key=$MS_API_KEY
