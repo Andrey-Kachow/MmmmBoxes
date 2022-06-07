@@ -6,14 +6,14 @@ CREATE TABLE resident (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   username TEXT UNIQUE NOT NULL,
   password TEXT NOT NULL,
-  name TEXT NOT NULL
+  fullname TEXT NOT NULL
 );
 
 CREATE TABLE officer (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   username TEXT UNIQUE NOT NULL,
   password TEXT NOT NULL,
-  name TEXT NOT NULL
+  fullname TEXT NOT NULL
 );
 
 CREATE TABLE parcel (
