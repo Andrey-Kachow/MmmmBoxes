@@ -15,13 +15,13 @@
 local-db-test:
   stage: test
   script:
-    - <<:*preamble
+    - *preamble
     - pytest test/basic/test_local_db_connection.py
 
 sanity-test:
   stage: test
   script:
-    - <<:*preamble
+    - *preamble
     - pytest test/basic/test_sanity.py
 
 # ##############################
@@ -33,10 +33,10 @@ sanity-test:
 # app-main-test:
 #   stage: test
 #   script:
-#     - <<:*preamble
+#     - *preamble
 #     - echo "Ran whenever changes are detected"
 #   rules:
-#     - <<:*on-master-or-merge
+#     - *on-master-or-merge
 #     - changes:
 #       - app/main.py
 
@@ -44,10 +44,10 @@ sanity-test:
 # run-on-branch-test:
 #   stage: test
 #   script:
-#     - <<:*preamble
+#     - *preamble
 #     - echo "Ran on specific branch"
 #   rules:
-#     - <<:*on-master-or-merge
+#     - *on-master-or-merge
 #     - if: $CI_COMMIT_BRANCH == "YOUR_BRANCH"
 
 # ############################
