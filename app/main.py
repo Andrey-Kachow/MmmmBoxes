@@ -9,31 +9,34 @@ conn = psycopg2.connect(DATABASE_URL, sslmode="require")
 
 @app.route("/")
 def index():
-    return f"""<h1>{conn} Hello world!</h1>{db_dump()}"""
+    return f"""<h1>{conn} Hello world!</h1>{db_test()}"""
 
-# Dump entire 'test' table
-def db_dump():
-    with conn.cursor() as curs:
-        curs.execute("""
-        SELECT * FROM test;
-        """)
-        return curs.fetchall()
+# DB test
+def db_test():
+    curs = conn.cursor()
+
+    curs.execute("""DROP TABLE IF EXISTS test;""")
+    print(curs.fetchall())
+
+    curs.execute("""
+    CREATE TABLE test (
+        TestField INTEGER,
+        TestField1 TEXT
+    );""")
+    print(curs.fetchall())
+
+    curs.execute("""
+    INSERT INTO test (TestField, TestField1)
+    VALUES (12, \'Hello!\');""")
+    print(curs.fetchall())
+
+    curs.execute("""
+    SELECT * FROM test;""")
+    result = cursor.fetchall()
+
+    return result
 
 
 if __name__ == "__main__":
-    with conn.cursor() as curs:
-        curs.execute("""
-        CREATE TABLE test (
-            TestField int,
-            TestField1 varchar(255)
-        );
-        """)
-
-        curs.execute("""
-        INSERT INTO test (TestField, TestField1)
-        VALUES(1, \'hello world\');
-        """)
-    conn.commit()
-
     app.debug = True
     app.run()
