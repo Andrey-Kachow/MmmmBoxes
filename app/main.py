@@ -16,19 +16,31 @@ def db_test():
     curs = conn.cursor()
 
     curs.execute("""DROP TABLE IF EXISTS test;""")
-    print(curs.fetchall())
+    try:
+        print(curs.fetchall())
+    except psycopg2.ProgrammingError:
+        print("Cursor no results")
+    conn.commit()
 
     curs.execute("""
     CREATE TABLE test (
         TestField INTEGER,
         TestField1 TEXT
     );""")
-    print(curs.fetchall())
+    try:
+        print(curs.fetchall())
+    except psycopg2.ProgrammingError:
+        print("Cursor no results")
+    conn.commit()
 
     curs.execute("""
     INSERT INTO test (TestField, TestField1)
     VALUES (12, \'Hello!\');""")
-    print(curs.fetchall())
+    try:
+        print(curs.fetchall())
+    except psycopg2.ProgrammingError:
+        print("Cursor no results")
+    conn.commit()
 
     curs.execute("""
     SELECT * FROM test;""")
