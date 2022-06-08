@@ -1,6 +1,6 @@
-# Run tests if a python script has been changed.
-test-simple:
-  stage: test
+# Always install pre requisite stuff, and run local database test and sanity check test
+install-reqs:
+  stage: build
   script:
     - python3 -m venv venv
     - source venv/bin/activate
@@ -8,12 +8,50 @@ test-simple:
     - pip install -r test/requirements.txt
     - pip install -r requirements.txt
     - export DATABASE_URL="postgres://gitlab-runner:memes@localhost:5432/postgres"
-    - pytest
-  only:
-    changes:
-      - "*.py"
+  artifacts:
+    untracked: true
 
-# Deploy to heroku if pushed to master branch, or if forced manually.
+# These 2 basic tests run all the time to make sure things haven't gone up in flames after a commit
+local-db-test:
+  stage: test
+  script:
+    - pytest test/basic/test_local_db_connection.py
+
+sanity-test:
+  stage: test
+  script:
+    - pytest test/basic/test_sanity.py
+
+# ##############################
+
+# # Below are examples of non-compulsory tests.
+# # Note: for safety, they must ALWAYS run on merge requests or master branch.
+
+# # RUN ON FILE CHANGE
+# app-main-test:
+#   stage: test
+#   script:
+#     - echo "Ran whenever changes are detected"
+#   rules:
+#     - if: $CI_COMMIT_BRANCH == "master" #don't change me
+#     - if: $CI_PIPELINE_SOURCE == "merge_request_event" #don't change me
+#     - changes:
+#       - app/main.py
+
+# # RUN ALWAYS ON BRANCH
+# run-on-branch-test:
+#   stage: test
+#   script:
+#     - echo "Ran on specific branch"
+#   rules:
+#     - if: $CI_COMMIT_BRANCH == "master" #don't change me
+#     - if: $CI_PIPELINE_SOURCE == "merge_request_event" #don't change me
+#     - if: $CI_COMMIT_BRANCH == "YOUR_BRANCH"
+
+# ############################
+
+
+# Deploy to heroku if pushed to master branch.
 deploy-heroku:
   stage: deploy
   script:
