@@ -1,25 +1,27 @@
 # Always install pre requisite stuff, and run local database test and sanity check test
-install-reqs:
-  stage: build
-  script:
-    - python3 -m venv venv
-    - source venv/bin/activate
-    - pip install --upgrade pip
-    - pip install -r test/requirements.txt
-    - pip install -r requirements.txt
-    - export DATABASE_URL="postgres://gitlab-runner:memes@localhost:5432/postgres"
-  artifacts:
-    untracked: true
+.preamble: &preamble
+  - python3 -m venv venv
+  - source venv/bin/activate
+  - pip install --upgrade pip
+  - pip install -r test/requirements.txt
+  - pip install -r requirements.txt
+  - export DATABASE_URL="postgres://gitlab-runner:memes@localhost:5432/postgres"
+
+.on-master-or-merge: &on-master-or-merge
+  - if: $CI_COMMIT_BRANCH == "master" #don't change me
+  - if: $CI_PIPELINE_SOURCE == "merge_request_event" #don't change me
 
 # These 2 basic tests run all the time to make sure things haven't gone up in flames after a commit
 local-db-test:
   stage: test
   script:
+    - <<:*preamble
     - pytest test/basic/test_local_db_connection.py
 
 sanity-test:
   stage: test
   script:
+    - <<:*preamble
     - pytest test/basic/test_sanity.py
 
 # ##############################
@@ -31,10 +33,10 @@ sanity-test:
 # app-main-test:
 #   stage: test
 #   script:
+#     - <<:*preamble
 #     - echo "Ran whenever changes are detected"
 #   rules:
-#     - if: $CI_COMMIT_BRANCH == "master" #don't change me
-#     - if: $CI_PIPELINE_SOURCE == "merge_request_event" #don't change me
+#     - <<:*on-master-or-merge
 #     - changes:
 #       - app/main.py
 
@@ -42,10 +44,10 @@ sanity-test:
 # run-on-branch-test:
 #   stage: test
 #   script:
+#     - <<:*preamble
 #     - echo "Ran on specific branch"
 #   rules:
-#     - if: $CI_COMMIT_BRANCH == "master" #don't change me
-#     - if: $CI_PIPELINE_SOURCE == "merge_request_event" #don't change me
+#     - <<:*on-master-or-merge
 #     - if: $CI_COMMIT_BRANCH == "YOUR_BRANCH"
 
 # ############################
