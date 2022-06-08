@@ -5,7 +5,7 @@ from flask import (
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from flaskr.db import get_db
+from flaskr.db import get_db_connection
 
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
@@ -17,10 +17,12 @@ def register():
 
         username = request.form['username']
         password = request.form['password']
+        email = request.form['email']
         fullname = request.form['fullname']
         role = request.form['user_role']
 
-        db = get_db()
+        conn = get_db_connection()
+        cur = conn.cursor()
         error = None
 
         if not username:
@@ -34,16 +36,21 @@ def register():
 
         if error is None:
             try:
-                db.execute(
-                    f"INSERT INTO {role} (username, password, fullname) VALUES (?, ?, ?)",
-                    (username, generate_password_hash(password), fullname),
+                cur.execute(
+                    f"INSERT INTO {role} (username, password, fullname, email)" +\
+                    " VALUES (%s, %s, %s, %s)",
+                    (username, generate_password_hash(password), fullname, email),
                 )
-                db.commit()
-            except db.IntegrityError:
-                error = f"User {username} is already registered."
+                conn.commit()
+            except Exception:
+                error = f"Something went wrong"
+                print("jopa")
+                conn.rollback()
             else:
+                cur.close()
                 return redirect(url_for("auth.login"))
 
+        cur.close()
         flash(error)
 
     return render_template('auth/register.html')
@@ -56,11 +63,14 @@ def login():
         password = request.form['password']
         role = request.form['user_role']
 
-        db = get_db()
+        conn = get_db_connection()
+        cur = conn.cursor()
+
         error = None
-        user = db.execute(
-            f'SELECT * FROM {role} WHERE username = ?', (username,)
-        ).fetchone()
+        user = cur.execute(
+            f'SELECT * FROM {role} WHERE username = %s', (username,)
+        ).fetchall()
+        cur.close()  # maybe need to move the line right at the end
 
         if user is None:
             error = 'Incorrect username.'
@@ -87,9 +97,14 @@ def load_logged_in_user():
     if user_id is None:
         g.user = None
     else:
-        g.user = get_db().execute(
-            f'SELECT * FROM {role} WHERE id = ?', (user_id,)
-        ).fetchone()
+        conn = get_db_connection()
+        cur = conn.cursor()
+
+        g.user = cur.execute(
+            f'SELECT * FROM {role} WHERE id = %s', (user_id,)
+        ).fetchall()
+
+        cur.close()
 
 
 @bp.route('/logout')

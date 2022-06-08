@@ -1,33 +1,53 @@
-import sqlite3
+import psycopg2, json, os
 
 import click
 from flask import current_app, g
 from flask.cli import with_appcontext
 
 
-def get_db():
-    if 'db' not in g:
-        g.db = sqlite3.connect(
-            current_app.config['DATABASE'],
-            detect_types=sqlite3.PARSE_DECLTYPES
-        )
-        g.db.row_factory = sqlite3.Row
-
-    return g.db
+def init_heroku_db_creds():
+    try:
+        with open(os.path.join('flaskr', 'creds.json')) as f:
+            return json.loads(f.read())
+    except Exception as e:
+        print("Credentials were not found!")
+        return None
 
 
-def close_db(e=None):
-    db = g.pop('db', None)
+HEROKU_CREDS = init_heroku_db_creds();
 
-    if db is not None:
-        db.close()
+
+def get_db_connection():
+    if 'conn' not in g:
+        if HEROKU_CREDS is None:
+            # Not the best code
+            g.conn = psycopg2.connect(
+                current_app.config['DATABASE_URL'],
+                sslmode="require")
+        else:
+            g.conn = psycopg2.connect(
+                host=HEROKU_CREDS['host'],
+                database=HEROKU_CREDS['database'],
+                user=HEROKU_CREDS['user'],
+                password=HEROKU_CREDS['password']
+            )
+    return g.conn
+
+
+def close_db_connection(e=None):
+    conn = g.pop('conn', None)
+
+    if conn is not None:
+        conn.close()
 
 
 def init_db():
-    db = get_db()
-
+    conn = get_db_connection()
+    cur = conn.cursor()
     with current_app.open_resource('schema.sql') as f:
-        db.executescript(f.read().decode('utf8'))
+        cur.execute(f.read().decode('utf8'))
+    conn.commit()
+    cur.close()
 
 
 @click.command('init-db')
@@ -39,5 +59,5 @@ def init_db_command():
 
 
 def init_app(app):
-    app.teardown_appcontext(close_db)
+    app.teardown_appcontext(close_db_connection)
     app.cli.add_command(init_db_command)
