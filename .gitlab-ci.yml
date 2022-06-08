@@ -1,4 +1,20 @@
+# Run tests if a python script has been changed.
+test-simple:
+  stage: test
+  script:
+    - python3 -m venv venv
+    - source venv/bin/activate
+    - pip install --upgrade pip && pip install -r test/requirements.txt
+    - export DATABASE_URL="postgres://gitlab-runner:memes@localhost:5432/postgres"
+    - pytest
+  only:
+    changes:
+      - "*.py"
+
+# Deploy to heroku if pushed to master branch, or if forced manually.
 deploy-heroku:
   stage: deploy
   script:
     - dpl --provider=heroku --app=drp11 --api-key=$MS_API_KEY
+  rules:
+    - if: $CI_COMMIT_BRANCH == "master"
