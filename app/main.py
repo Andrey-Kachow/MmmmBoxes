@@ -3,13 +3,9 @@ from flask import Flask
 
 app = Flask(__name__)
 
-# Connect to DB
-DATABASE_URL = os.environ["DATABASE_URL"]
-conn = psycopg2.connect(DATABASE_URL, sslmode="require")
-
 @app.route("/")
 def index():
-    return f"""<h1>{conn} Hello world!</h1>{db_test()}"""
+    return f"""<h1>Hello world!</h1>"""
 
 # DB test
 def db_test():
