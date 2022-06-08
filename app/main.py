@@ -44,7 +44,7 @@ def db_test():
 
     curs.execute("""
     SELECT * FROM test;""")
-    result = cursor.fetchall()
+    result = curs.fetchall()
 
     return result
 
