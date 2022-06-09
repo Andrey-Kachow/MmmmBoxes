@@ -1,4 +1,4 @@
-import psycopg2, json, os, string
+import psycopg2, json, os, string, psycopg2.extras
 from werkzeug.security import check_password_hash, generate_password_hash
 
 
@@ -28,14 +28,18 @@ def initialise_db_connection():
     if user_creds is None:
         return psycopg2.connect(
             os.environ["DATABASE_URL"],
-            sslmode="require")
+            sslmode="require",
+            cursor_factory=psycopg2.extras.DictCursor
+            )
     else:
         return psycopg2.connect(
                 host=user_creds["host"],
                 database=user_creds["database"],
                 user=user_creds["user"],
-                password=user_creds["password"]
-            )
+                password=user_creds["password"],
+                cursor_factory=psycopg2.extras.DictCursor
+                )
+
 
 def execute_sql_file(conn, filename):
     """Arguments: a database connection, sql file in same directory as db.
@@ -105,18 +109,11 @@ def verify_password(conn, username, password_plain):
         if result is None:
             return {}
 
-        expected_hash, id, username, email, fullname, is_officer = result
         # Check password
         if not check_password_hash(expected_hash, password_plain):
             return {}
 
-        return {
-            "id": id,
-            "username": username,
-            "email": email,
-            "fullname": fullname,
-            "is_officer": is_officer
-        }
+        return result
 
 def get_user_by_id(conn, id):
     """Arguments: a database connection, user id to get.
@@ -141,48 +138,42 @@ def get_user_by_id(conn, id):
         if result is None:
             return {}
 
-        id, username, email, fullname, is_officer = result
-
-        return {
-            "id": id,
-            "username": username,
-            "email": email,
-            "fullname": fullname,
-            "is_officer": is_officer
-        }
+        return result
 
 
 def get_all_packages(conn, id=None):
     """Arguments: a database connection, Optional: id of user whose packages to get
     Returns: a list of every package in the system. Packages are dicts:
         - id
-        - resident_id
+        - title
         - delivered
         - collected
-        - title
+        - fullname (of resident)
+        - resident_id
+        - email (of resident)
     """
     with conn.cursor() as curs:
         if id is None:
             curs.execute(
                 """
-                SELECT id, resident_id, delivered, collected, title
-                FROM packages;
+                SELECT packages.id, packages.title, packages.delivered, packages.collected, users.fullname, users.id, users.email
+                FROM packages
+                INNER join users
+                ON packages.resident_id = users.id;
                 """
             )
         else:
             curs.execute(
                 """
-                SELECT id, resident_id, delivered, collected, title
+                SELECT packages.id, packages.title, packages.delivered, packages.collected, users.fullname, users.id, users.email
                 FROM packages
-                WHERE resident_id=%s;
+                INNER join users
+                ON packages.resident_id = users.id AND users.id=%s;
                 """,
                 (id,)
             )
-        packages = curs.fetchall()
-        return [
-            {"id": id, "resident_id": rid, "delivered": deli, "collected": coll, "title": title}
-            for (id, rid, deli, coll, title) in packages
-        ]
+
+        return curs.fetchall()
 
 def add_new_package(conn, resident_name, title):
     """Arguments: a database connection, recipient's name, package title
