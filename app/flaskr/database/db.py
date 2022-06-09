@@ -29,7 +29,7 @@ def initialise_db_connection():
         return psycopg2.connect(
             os.environ["DATABASE_URL"],
             sslmode="require",
-            cursor_factory=psycopg2.extras.DictCursor
+            cursor_factory=psycopg2.extras.RealDictCursor
             )
     else:
         return psycopg2.connect(
@@ -37,7 +37,7 @@ def initialise_db_connection():
                 database=user_creds["database"],
                 user=user_creds["user"],
                 password=user_creds["password"],
-                cursor_factory=psycopg2.extras.DictCursor
+                cursor_factory=psycopg2.extras.RealDictCursor
                 )
 
 
@@ -108,9 +108,8 @@ def verify_password(conn, username, password_plain):
         result = curs.fetchone()
         if result is None:
             return {}
-
         # Check password
-        if not check_password_hash(expected_hash, password_plain):
+        if not check_password_hash(result.pop("password"), password_plain):
             return {}
 
         return result
