@@ -41,7 +41,8 @@ def create_app(test_config=None):
     db.execute_sql_file(app.db_conn, "schema.sql")
 
     # authentication blueprint
-    from . import auth
+    from . import auth, officer
     app.register_blueprint(auth.bp)
+    app.register_blueprint(officer.bp)
 
     return app

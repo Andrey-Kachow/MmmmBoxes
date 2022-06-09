@@ -14,4 +14,10 @@
   <div id="hello_content">
     <p>Hello, {{ session.get("user_fullname") }}! Officer status: {{ session.get("user_is_officer") }}</p>
   </div>
+
+  {% if session.get("user_is_officer") %}
+  <li><a href="{{ url_for('officer.overview') }}">View all packages</a>
+  {% else %}
+  {% endif %}
+
 {% endblock %}
