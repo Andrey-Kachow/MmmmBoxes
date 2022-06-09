@@ -6,9 +6,6 @@ from flask import (
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
-
-
-
 bp = Blueprint("auth", __name__, url_prefix="/auth")
 
 
@@ -20,27 +17,9 @@ def register():
         password = request.form["password"]
         email = request.form["email"]
         fullname = request.form["fullname"]
-        role = request.form["user_role"]
+        is_officer = request.form.get("is_officer") is not None
 
-        error = None
-        if not username:
-            error = "Username is required."
-        elif not password:
-            error = "Password is required."
-        elif not role:
-            error = "Please select the role"
-        elif not fullname:
-            error = "Full Name is required"
-
-        # Return on error
-        if error is not None:
-            flash(error)
-            return render_template("auth/register.html")
-
-        if role == "resident":
-            db.add_new_resident(current_app.db_conn, fullname, email, username, password)
-        else:
-            db.add_new_officer(current_app.db_conn, fullname, email, username, password)
+        db.register_new_user(current_app.db_conn, fullname, email, username, password, is_officer)
 
         return redirect(url_for("auth.login"))
 
