@@ -1,9 +1,0 @@
-{% block header %}
-  <h1>{% block title %}RESIDENT Package list{% endblock %}</h1>
-{% endblock %}
-
-{% block content %}
-    {% for package in get_package_list() %}
-        <p>{{ package }}</p>
-    {% endfor %}
-{% endblock %}

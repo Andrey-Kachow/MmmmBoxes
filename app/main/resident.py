@@ -1,6 +1,7 @@
 import functools
 from .database import db
 from flask import *
+from .. import socketio
 from werkzeug.security import check_password_hash, generate_password_hash
 
 bp = Blueprint("resident", __name__, url_prefix="/resident")

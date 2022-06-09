@@ -169,7 +169,7 @@ def get_all_packages(conn, id=None):
                 """
                 SELECT packages.id, packages.title, packages.delivered, packages.collected, users.fullname, users.id, users.email
                 FROM packages
-                INNER join users
+                INNER JOIN users
                 ON packages.resident_id = users.id;
                 """
             )
@@ -178,17 +178,24 @@ def get_all_packages(conn, id=None):
                 """
                 SELECT packages.id, packages.title, packages.delivered, packages.collected, users.fullname, users.id, users.email
                 FROM packages
-                INNER join users
+                INNER JOIN users
                 ON packages.resident_id = users.id AND users.id=%s;
                 """,
                 (id,)
             )
 
-        return curs.fetchall()
+        return [dict(p) for p in curs.fetchall()]
 
 def add_new_package(conn, resident_name, title):
     """Arguments: a database connection, recipient's name, package title
-    Returns: True if package successfully added to system, false otherwise."""
+    Returns: A dict of the package added (BROADCAST THIS), or None if failed for some reason.
+        - id
+        - title
+        - delivered
+        - collected
+        - fullname (of resident)
+        - resident_id
+        - email (of resident)"""
     with conn.cursor() as curs:
         # Try to find this resident's id
         curs.execute(
@@ -199,17 +206,30 @@ def add_new_package(conn, resident_name, title):
             """,
             (resident_name,)
         )
-        rid = curs.fetchone()
+        result = curs.fetchone()
         # Resident does not exist
-        if rid is None:
-            return False
+        if result is None:
+            return None
 
         curs.execute(
             """
             INSERT INTO packages (resident_id, title)
             VALUES (%s, %s)
+            RETURNING id;
             """,
-            (rid, title)
+            (result["id"], title)
         )
-    conn.commit()
-    return True
+        # Get the id, proceed to look up the rest of the details
+        package_id = curs.fetchone()["id"]
+        curs.execute(
+            """
+            SELECT packages.id, packages.title, packages.delivered, packages.collected, users.fullname, users.id, users.email
+            FROM packages
+            INNER JOIN users
+            ON packages.resident_id = users.id
+            WHERE packages.id = %s;
+            """,
+            (package_id,)
+        )
+        conn.commit()
+        return dict(curs.fetchone())

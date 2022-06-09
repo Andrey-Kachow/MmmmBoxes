@@ -15,10 +15,10 @@ export FLASK_ENV=development
 if [ -z "$PORT" ]
 then
     echo "Running flask locally!"
-    flask run
+    python3 runme.py
 else
     echo "Running flask in Heroku!"
     export FLASK_RUN_HOST=0.0.0.0
     export FLASK_RUN_PORT=$PORT
-    flask run
+    python3 runme.py
 fi
