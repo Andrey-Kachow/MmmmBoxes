@@ -58,20 +58,32 @@ def execute_sql_file(conn, filename):
 def register_new_user(conn, name, email, username, password_plain, is_officer):
     """Arguments: a database connection, user info (name, email, username, password_plain, is_officer)
     Adds a new user to the database.
-    Returns True if registration successful, False otherwise.
+    Returns None if registration successful, String describing failure reason otherwise.
     """
     with conn.cursor() as curs:
-        # Check if username/email is taken
+        # Check if username is taken
         curs.execute(
             """
             SELECT id
             FROM users
-            WHERE username=%s OR email=%s;
+            WHERE username=%s;
             """,
-            (username, email)
+            (username, )
         )
         if curs.fetchone() is not None:
-            return False
+            return "Username is taken!"
+
+        # Check if username is taken
+        curs.execute(
+            """
+            SELECT id
+            FROM users
+            WHERE email=%s;
+            """,
+            (email, )
+        )
+        if curs.fetchone() is not None:
+            return "Email is taken!"
 
         curs.execute(
             """
@@ -81,7 +93,7 @@ def register_new_user(conn, name, email, username, password_plain, is_officer):
             (username, generate_password_hash(password_plain), email, name, is_officer)
         )
     conn.commit()
-    return True
+    return None
 
 def verify_password(conn, username, password_plain):
     """Arguments: a database connection, details to check.
@@ -110,7 +122,7 @@ def verify_password(conn, username, password_plain):
         if not check_password_hash(result.pop("password"), password_plain):
             return {}
 
-        return result
+        return dict(result)
 
 def get_user_by_id(conn, id):
     """Arguments: a database connection, user id to get.
