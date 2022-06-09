@@ -17,7 +17,8 @@ def initialise_db_connection():
                     host=conn_details["host"],
                     dbname=conn_details["dbname"],
                     user=conn_details["user"],
-                    password=conn_details["password"]
+                    password=conn_details["password"],
+                    cursor_factory=psycopg2.extras.RealDictCursor
                 )
     except FileNotFoundError as e:
         print("Local postgress database is not going to be used. Looking for credentials...")
