@@ -152,8 +152,8 @@ def get_user_by_id(conn, id):
         }
 
 
-def get_all_packages(conn):
-    """Arguments: a database connection
+def get_all_packages(conn, id=None):
+    """Arguments: a database connection, Optional: id of user whose packages to get
     Returns: a list of every package in the system. Packages are dicts:
         - id
         - resident_id
@@ -162,12 +162,22 @@ def get_all_packages(conn):
         - title
     """
     with conn.cursor() as curs:
-        curs.execute(
-            """
-            SELECT id, resident_id, delivered, collected, title
-            FROM packages;
-            """
-        )
+        if id is None:
+            curs.execute(
+                """
+                SELECT id, resident_id, delivered, collected, title
+                FROM packages;
+                """
+            )
+        else:
+            curs.execute(
+                """
+                SELECT id, resident_id, delivered, collected, title
+                FROM packages
+                WHERE resident_id=%s;
+                """,
+                (id,)
+            )
         packages = curs.fetchall()
         return [
             {"id": id, "resident_id": rid, "delivered": deli, "collected": coll, "title": title}

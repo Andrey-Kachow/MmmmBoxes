@@ -15,9 +15,12 @@
     <p>Hello, {{ session.get("user_fullname") }}! Officer status: {{ session.get("user_is_officer") }}</p>
   </div>
 
-  {% if session.get("user_is_officer") %}
-  <li><a href="{{ url_for('officer.overview') }}">View all packages</a>
-  {% else %}
+  {% if session.get("user_is_officer") == True %}
+    <li><a href="{{ url_for('officer.overview') }}">View all packages</a>
+  {% endif %}
+
+  {% if session.get("user_is_officer") == False %}
+    <li><a href="{{ url_for('resident.overview') }}">View your packages</a>
   {% endif %}
 
 {% endblock %}
