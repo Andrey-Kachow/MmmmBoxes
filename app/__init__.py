@@ -21,11 +21,15 @@ def create_app():
         pass
 
     # a simple page that says hello
-    @app.route('/hello')
+    @app.route("/hello")
     def hello():
         return render_template(
-            'hello.html',
+            "hello.html",
         )
+
+    @app.route("/")
+    def mainpage():
+        return render_template("base.html")
 
     # database
     from .main.database import db
