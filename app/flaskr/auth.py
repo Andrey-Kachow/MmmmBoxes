@@ -5,7 +5,7 @@ from flask import (
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from flaskr.db import get_db_connection
+from flaskr.db import get_db_cursor, get_db_connection
 
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
@@ -22,7 +22,7 @@ def register():
         role = request.form['user_role']
 
         conn = get_db_connection()
-        cur = conn.cursor()
+        cur = get_db_cursor(conn)
         error = None
 
         if not username:
@@ -35,20 +35,20 @@ def register():
             error = 'Full Name is required'
 
         if error is None:
-            try:
-                cur.execute(
-                    f"INSERT INTO {role} (username, password, fullname, email)" +\
-                    " VALUES (%s, %s, %s, %s)",
-                    (username, generate_password_hash(password), fullname, email),
-                )
-                conn.commit()
-            except Exception:
-                error = f"Something went wrong"
-                print("jopa")
-                conn.rollback()
-            else:
-                cur.close()
-                return redirect(url_for("auth.login"))
+        # try:
+            cur.execute(
+                f"INSERT INTO {role} (username, password, fullname, email)" +\
+                " VALUES (%s, %s, %s, %s)",
+                (username, generate_password_hash(password), fullname, email),
+            )
+            conn.commit()
+        # except Exception:
+        #     error = f"Something went wrong"
+        #     print("jopa")
+        #     conn.rollback()
+        # else:
+            cur.close()
+            return redirect(url_for("auth.login"))
 
         cur.close()
         flash(error)
@@ -63,13 +63,13 @@ def login():
         password = request.form['password']
         role = request.form['user_role']
 
-        conn = get_db_connection()
-        cur = conn.cursor()
+        cur = get_db_cursor()
 
         error = None
-        user = cur.execute(
+        cur.execute(
             f'SELECT * FROM {role} WHERE username = %s', (username,)
-        ).fetchall()
+        )
+        user = cur.fetchone()
         cur.close()  # maybe need to move the line right at the end
 
         if user is None:
@@ -97,12 +97,12 @@ def load_logged_in_user():
     if user_id is None:
         g.user = None
     else:
-        conn = get_db_connection()
-        cur = conn.cursor()
+        cur = get_db_cursor()
 
-        g.user = cur.execute(
+        cur.execute(
             f'SELECT * FROM {role} WHERE id = %s', (user_id,)
-        ).fetchall()
+        )
+        g.user = cur.fetchone()
 
         cur.close()
 

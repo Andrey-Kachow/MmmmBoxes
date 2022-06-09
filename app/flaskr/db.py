@@ -1,4 +1,5 @@
 import psycopg2, json, os
+import psycopg2.extras
 
 import click
 from flask import current_app, g
@@ -32,6 +33,12 @@ def get_db_connection():
                 password=HEROKU_CREDS['password']
             )
     return g.conn
+
+
+def get_db_cursor(conn=None):
+    if conn is None:
+        conn = get_db_connection()
+    return conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
 
 def close_db_connection(e=None):
