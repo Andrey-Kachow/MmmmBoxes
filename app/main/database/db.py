@@ -211,6 +211,10 @@ def add_new_package(conn, resident_name, title):
         if result is None:
             return None
 
+        rid = rid_dict['id']
+
+        print(f"\n{rid}\n\n{title}\n")
+
         curs.execute(
             """
             INSERT INTO packages (resident_id, title)
