@@ -1,123 +1,107 @@
 import functools
+from .database import db
 
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, session, url_for
+    Blueprint, flash, g, redirect, render_template, request, session, url_for, current_app
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from flaskr.db import get_db_cursor, get_db_connection
 
 
-bp = Blueprint('auth', __name__, url_prefix='/auth')
+
+bp = Blueprint("auth", __name__, url_prefix="/auth")
 
 
-@bp.route('/register', methods=('GET', 'POST'))
+@bp.route("/register", methods=("GET", "POST"))
 def register():
-    if request.method == 'POST':
+    if request.method == "POST":
 
-        username = request.form['username']
-        password = request.form['password']
-        email = request.form['email']
-        fullname = request.form['fullname']
-        role = request.form['user_role']
+        username = request.form["username"]
+        password = request.form["password"]
+        email = request.form["email"]
+        fullname = request.form["fullname"]
+        role = request.form["user_role"]
 
-        conn = get_db_connection()
-        cur = get_db_cursor(conn)
         error = None
-
         if not username:
-            error = 'Username is required.'
+            error = "Username is required."
         elif not password:
-            error = 'Password is required.'
+            error = "Password is required."
         elif not role:
-            error = 'Please select the role'
+            error = "Please select the role"
         elif not fullname:
-            error = 'Full Name is required'
+            error = "Full Name is required"
 
-        if error is None:
-        # try:
-            cur.execute(
-                f"INSERT INTO {role} (username, password, fullname, email)" +\
-                " VALUES (%s, %s, %s, %s)",
-                (username, generate_password_hash(password), fullname, email),
-            )
-            conn.commit()
-        # except Exception:
-        #     error = f"Something went wrong"
-        #     print("jopa")
-        #     conn.rollback()
-        # else:
-            cur.close()
-            return redirect(url_for("auth.login"))
+        # Return on error
+        if error is not None:
+            flash(error)
+            return render_template("auth/register.html")
 
-        cur.close()
-        flash(error)
+        if role == "resident":
+            db.add_new_resident(current_app.db_conn, fullname, email, username, password)
+        else:
+            db.add_new_officer(current_app.db_conn, fullname, email, username, password)
 
-    return render_template('auth/register.html')
+        return redirect(url_for("auth.login"))
+
+    else:
+        return render_template("auth/register.html")
 
 
-@bp.route('/login', methods=('GET', 'POST'))
+@bp.route("/login", methods=("GET", "POST"))
 def login():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        role = request.form['user_role']
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+        role = request.form["user_role"]
 
-        cur = get_db_cursor()
+        details = db.verify_password_resident(current_app.db_conn, username, password) if role == "resident" \
+                     else db.verify_password_officer(current_app.db_conn, username, password)
+        # If details is empty, something went wrong during login.
+        if not details:
+            flash("Incorrect login details!")
+            return render_template("auth/register.html")
 
-        error = None
-        cur.execute(
-            f'SELECT * FROM {role} WHERE username = %s', (username,)
-        )
-        user = cur.fetchone()
-        cur.close()  # maybe need to move the line right at the end
+        session.clear()
+        session["user_id"] = details["user_id"]
+        session["user_fullname"] = details["user_fullname"]
+        session["user_role"] = role
+        return redirect(url_for("hello"))
 
-        if user is None:
-            error = 'Incorrect username.'
-        elif not check_password_hash(user['password'], password):
-            error = 'Incorrect password.'
-
-        if error is None:
-            session.clear()
-            session['user_id'] = user['id']
-            session['user_fullname'] = user['fullname']
-            session['user_role'] = role
-            return redirect(url_for('hello'))
-
-        flash(error)
-
-    return render_template('auth/login.html')
+    else:
+        return render_template("auth/login.html")
 
 
 @bp.before_app_request
 def load_logged_in_user():
-    user_id = session.get('user_id')
-    role = session.get('user_role')
+    user_id = session.get("user_id")
+    role = session.get("user_role")
 
+    # No user_id
     if user_id is None:
         g.user = None
-    else:
-        cur = get_db_cursor()
+        return
 
-        cur.execute(
-            f'SELECT * FROM {role} WHERE id = %s', (user_id,)
-        )
-        g.user = cur.fetchone()
+    details = db.get_resident_by_id(current_app.db_conn, user_id) if role=="resident" \
+            else db.get_officer_by_id(current_app.db_conn, user_id)
+    # User_id not found
+    if not details:
+        g.user = None
+        return
 
-        cur.close()
+    g.user = details
 
-
-@bp.route('/logout')
+@bp.route("/logout")
 def logout():
     session.clear()
-    return redirect(url_for('hello'))
+    return redirect(url_for("hello"))
 
 
 def login_required(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):
         if g.user is None:
-            return redirect(url_for('auth.login'))
+            return redirect(url_for("auth.login"))
 
         return view(**kwargs)
 

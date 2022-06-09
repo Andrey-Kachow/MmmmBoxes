@@ -1,19 +1,15 @@
 import os
 
-from flask import Flask, session, render_template
-
-
-DATABASE_URL = os.environ["DATABASE_URL"]
-
+from flask import Flask, session, render_template, g
 
 def create_app(test_config=None):
-    ''' Application factory '''
+    """ Application factory"""
 
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         SECRET_KEY='dev',
-        DATABASE_URL=DATABASE_URL,
+        DATABASE_URL=os.environ["DATABASE_URL"],
         # DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
     )
 
@@ -40,8 +36,11 @@ def create_app(test_config=None):
         )
 
     # database
-    from . import db
-    db.init_app(app)
+    from .database import db
+    app.db_conn = db.initialise_db_connection()
+
+    # Check that tables are set up
+    db.execute_sql_file(app.db_conn, "schema.sql")
 
     # authentication blueprint
     from . import auth
