@@ -173,3 +173,31 @@ def get_all_packages(conn):
             {"id": id, "resident_id": rid, "delivered": deli, "collected": coll, "title": title}
             for (id, rid, deli, coll, title) in packages
         ]
+
+def add_new_package(conn, resident_name, title):
+    """Arguments: a database connection, recipient's name, package title
+    Returns: True if package successfully added to system, false otherwise."""
+    with conn.cursor() as curs:
+        # Try to find this resident's id
+        curs.execute(
+            """
+            SELECT id
+            FROM users
+            WHERE fullname=%s AND is_officer=FALSE;
+            """,
+            (resident_name,)
+        )
+        rid = curs.fetchone()
+        # Resident does not exist
+        if rid is None:
+            return False
+
+        curs.execute(
+            """
+            INSERT INTO packages (resident_id, title)
+            VALUES (%s, %s)
+            """,
+            (rid, title)
+        )
+    conn.commit()
+    return True
