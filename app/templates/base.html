@@ -5,9 +5,8 @@
     <title>{% block title %}{% endblock %} - DRP11</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
-    <style media="screen">
-      {% block local_style %} {% endblock %}
-    </style>
+    {% block local_style %} {% endblock %}
+
   </head>
   <body>
     <section class="content">

@@ -4,16 +4,11 @@
   <h1>{% block title %}OFFICER Package list{% endblock %}</h1>
 {% endblock %}
 
+
 {% block local_style %}
-
-  .packages_col {
-    padding: 5px
-  }
-  .packages_row {
-    margin: 5px
-  }
-
+  <link rel="stylesheet" href="{{ url_for('static', filename='officer.css') }}">
 {% endblock %}
+
 
 {% block content %}
 
