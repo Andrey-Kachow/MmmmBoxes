@@ -199,10 +199,14 @@ def add_new_package(conn, resident_name, title):
             """,
             (resident_name,)
         )
-        rid = curs.fetchone()
+        rid_dict = curs.fetchone()
         # Resident does not exist
-        if rid is None:
+        if rid_dict is None:
             return False
+
+        rid = rid_dict['id']
+
+        print(f"\n{rid}\n\n{title}\n")
 
         curs.execute(
             """
