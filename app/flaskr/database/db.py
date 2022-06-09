@@ -53,29 +53,17 @@ def execute_sql_file(conn, filename):
     conn.commit()
 
 
-def sanitise_input(unsafe_str,
-                allowed=string.ascii_letters + string.digits + string.whitespace + ".@"):
-    """Arguments: string to be sanitised. Optional: allowed characters
-    Returns: sanitised string
-    Removes all characters except ascii letters, numbers, whitespace, dots and @."""
-    return "".join(c for c in unsafe_str if c in allowed)
-
 def register_new_user(conn, name, email, username, password_plain, is_officer):
     """Arguments: a database connection, user info (name, email, username, password_plain, is_officer)
     Adds a new user to the database.
     Returns True if registration successful, False otherwise.
     """
-    q_username = f"'{sanitise_input(username)}'"
-    q_hashed = f"'{generate_password_hash(password_plain)}'"
-    q_email = f"'{sanitise_input(email)}'"
-    q_name = f"'{sanitise_input(name)}'"
-    q_is_officer = str(is_officer).capitalize()
-
     with conn.cursor() as curs:
         # Check if username/email is taken
         curs.execute(
             """
-            SELECT id FROM users
+            SELECT id
+            FROM users
             WHERE username=%s OR email=%s;
             """,
             (username, email)
@@ -84,8 +72,11 @@ def register_new_user(conn, name, email, username, password_plain, is_officer):
             return False
 
         curs.execute(
-            "INSERT INTO users (username, password, email, fullname, is_officer) "
-            f"VALUES ({q_username}, {q_hashed}, {q_email}, {q_name}, {q_is_officer});"
+            """
+            INSERT INTO users (username, password, email, fullname, is_officer)
+            VALUES (%s, %s, %s, %s, %s);
+            """,
+            (username, generate_password_hash(password_plain), email, name, is_officer)
         )
     conn.commit()
     return True
@@ -102,10 +93,13 @@ def verify_password(conn, username, password_plain):
     """
     with conn.cursor() as curs:
         # Fetch details, check password. Do not give reason for failed login - this is a security issue.
-        q_username = f"'{sanitise_input(username)}'"
         curs.execute(
-            "SELECT password, id, username, email, fullname, is_officer "
-            f"FROM users WHERE username={q_username};"
+            """
+            SELECT password, id, username, email, fullname, is_officer
+            FROM users
+            WHERE username=%s;
+            """,
+            (username,)
         )
         result = curs.fetchone()
         if result is None:
@@ -136,8 +130,12 @@ def get_user_by_id(conn, id):
     """
     with conn.cursor() as curs:
         curs.execute(
-            "SELECT id, username, email, fullname, is_officer "
-            f"FROM users WHERE id={id};"
+            """
+            SELECT id, username, email, fullname, is_officer
+            FROM users
+            WHERE id=%s;
+            """,
+            (id,)
         )
         result = curs.fetchone()
         if result is None:
