@@ -32,7 +32,7 @@ def initialise_db_connection():
             )
     return psycopg2.connect(
             host=user_creds["host"],
-            database=user_creds["database"],
+            database=user_creds["dbname"],
             user=user_creds["user"],
             password=user_creds["password"],
             cursor_factory=psycopg2.extras.RealDictCursor

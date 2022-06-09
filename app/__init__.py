@@ -29,7 +29,7 @@ def create_app():
 
     @app.route("/")
     def mainpage():
-        return render_template("base.html")
+        return redirect(url_for("auth.login"))
 
     # database
     from .main.database import db
