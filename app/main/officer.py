@@ -2,6 +2,7 @@ import functools
 from .database import db
 
 from flask import *
+from .. import socketio
 from werkzeug.security import check_password_hash, generate_password_hash
 
 bp = Blueprint("officer", __name__, url_prefix="/officer")
@@ -27,5 +28,8 @@ def overview():
     if request.method == "GET":
         return render_template("officer/overview.html")
     else:
-        db.add_new_package(current_app.db_conn, request.form["resident_name"], request.form["package_title"])
+        just_added = db.add_new_package(current_app.db_conn, request.form["resident_name"], request.form["package_title"])
+        # Convert the just_added package timestamp to RFC3339 so it can be jsonified.
+        just_added["delivered"] = just_added["delivered"].strftime(r"%Y-%m-%dT%H:%M:%SZ")
+        socketio.emit("new_package", just_added, broadcast=True)
         return render_template("officer/overview.html")

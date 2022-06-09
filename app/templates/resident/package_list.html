@@ -1,0 +1,24 @@
+{% block header %}
+  <h1>{% block title %}RESIDENT Package list{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+    <!--Load known packages, then listen for updates on new packages. -->
+    <div id="package_list">
+      {% for package in get_package_list() %}
+        <p>{{ package }}</p>
+      {% endfor %}
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        var socket = io();
+        socket.on("new_package", function(data) {
+            console.log(data);
+            var package_list_div = document.getElementById("package_list");
+            package_list_div.appendChild(document.createTextNode(JSON.stringify(data)));
+        });
+    </script>
+
+{% endblock %}
