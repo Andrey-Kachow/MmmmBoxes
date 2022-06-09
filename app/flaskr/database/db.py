@@ -53,147 +53,100 @@ def execute_sql_file(conn, filename):
     conn.commit()
 
 
-def sanitise_input(unsafe_str,
-                allowed=string.ascii_letters + string.digits + string.whitespace + ".@"):
-    """Arguments: string to be sanitised. Optional: allowed characters
-    Returns: sanitised string
-    Removes all characters except ascii letters, numbers, whitespace, dots and @."""
-    return "".join(c for c in unsafe_str if c in allowed)
-
-def add_new_resident(conn, name, email, username, password_plain):
-    """Arguments: a database connection, resident info (name, email, username, password_plain)
-    Adds a new resident to the database.
+def register_new_user(conn, name, email, username, password_plain, is_officer):
+    """Arguments: a database connection, user info (name, email, username, password_plain, is_officer)
+    Adds a new user to the database.
+    Returns True if registration successful, False otherwise.
     """
-    q_username = f"'{sanitise_input(username)}'"
-    q_hashed = f"'{generate_password_hash(password_plain)}'"
-    q_email = f"'{sanitise_input(email)}'"
-    q_name = f"'{sanitise_input(name)}'"
     with conn.cursor() as curs:
+        # Check if username/email is taken
         curs.execute(
-            "INSERT INTO resident (username, password, email, fullname) "
-            f"VALUES ({q_username}, {q_hashed}, {q_email}, {q_name});"
+            """
+            SELECT id
+            FROM users
+            WHERE username=%s OR email=%s;
+            """,
+            (username, email)
+        )
+        if curs.fetchone() is not None:
+            return False
+
+        curs.execute(
+            """
+            INSERT INTO users (username, password, email, fullname, is_officer)
+            VALUES (%s, %s, %s, %s, %s);
+            """,
+            (username, generate_password_hash(password_plain), email, name, is_officer)
         )
     conn.commit()
+    return True
 
-def add_new_officer(conn, name, email, username, password_plain):
-    """Arguments: a database connection, officer info (name, email, username, password_plain)
-    Adds a new officer to the database.
-    """
-    q_username = f"'{sanitise_input(username)}'"
-    q_hashed = f"'{generate_password_hash(password_plain)}'"
-    q_email = f"'{sanitise_input(email)}'"
-    q_name = f"'{sanitise_input(name)}'"
-    with conn.cursor() as curs:
-        curs.execute(
-            "INSERT INTO officer (username, password, email, fullname) "
-            f"VALUES ({q_username}, {q_hashed}, {q_email}, {q_name});"
-        )
-    conn.commit()
-
-def verify_password_resident(conn, username, password_plain):
+def verify_password(conn, username, password_plain):
     """Arguments: a database connection, details to check.
     Returns: a dict containing:
-        - user_id
-        - user_fullname
-        - username
-        - user_role
-        If the login information is correct. If not, the dict is empty.
+        - id,
+        - username,
+        - email,
+        - fullname,
+        - is_officer
+        if the login information is correct. If not, the dict is empty.
     """
     with conn.cursor() as curs:
         # Fetch details, check password. Do not give reason for failed login - this is a security issue.
-        q_username = f"'{sanitise_input(username)}'"
-        curs.execute(f"SELECT password, id, fullname, username FROM resident WHERE username={q_username};")
+        curs.execute(
+            """
+            SELECT password, id, username, email, fullname, is_officer
+            FROM users
+            WHERE username=%s;
+            """,
+            (username,)
+        )
         result = curs.fetchone()
         if result is None:
             return {}
 
-        expected_hash, user_id, user_fullname, username = result
+        expected_hash, id, username, email, fullname, is_officer = result
         # Check password
         if not check_password_hash(expected_hash, password_plain):
             return {}
 
         return {
-            "user_id": user_id,
-            "user_fullname": user_fullname,
+            "id": id,
             "username": username,
-            "user_role": "resident"
+            "email": email,
+            "fullname": fullname,
+            "is_officer": is_officer
         }
 
-
-def verify_password_officer(conn, username, password_plain):
-    """Arguments: a database connection, details to check.
+def get_user_by_id(conn, id):
+    """Arguments: a database connection, user id to get.
     Returns: a dict containing:
-        - user_id
-        - user_fullname
-        - username
-        - user_role
-        If the login information is correct. If not, the dict is empty.
-    """
-    with conn.cursor() as curs:
-        # Fetch details, check password. Do not give reason for failed login - this is a security issue.
-        q_username = f"'{sanitise_input(username)}'"
-        curs.execute(f"SELECT password, id, fullname, username FROM officer WHERE username={q_username};")
-        result = curs.fetchone()
-        if result is None:
-            return {}
-
-        expected_hash, user_id, user_fullname, username = result
-        # Check password
-        if not check_password_hash(expected_hash, password_plain):
-            return {}
-
-        return {
-            "user_id": user_id,
-            "user_fullname": user_fullname,
-            "username": username,
-            "user_role": "officer"
-        }
-
-
-def get_resident_by_id(conn, id):
-    """Arguments: a database connection, resident id to get.
-    Returns: a dict containing:
-        - user_id
-        - user_fullname
-        - username
-        - user_role
+        - id,
+        - username,
+        - email,
+        - fullname,
+        - is_officer
         If id does not exist, returns empty dict.
     """
     with conn.cursor() as curs:
-        curs.execute(f"SELECT id, fullname, username FROM resident WHERE id={id};")
+        curs.execute(
+            """
+            SELECT id, username, email, fullname, is_officer
+            FROM users
+            WHERE id=%s;
+            """,
+            (id,)
+        )
         result = curs.fetchone()
         if result is None:
             return {}
 
-        user_id, user_fullname, username = result
+        id, username, email, fullname, is_officer = result
 
         return {
-            "user_id": user_id,
-            "user_fullname": user_fullname,
+            "id": id,
             "username": username,
-            "user_role": "resident"
-        }
-
-def get_officer_by_id(conn, id):
-    """Arguments: a database connection, officer id to get.
-    Returns: a dict containing:
-        - user_id
-        - user_fullname
-        - username
-        - user_role
-        If id does not exist, returns empty dict.
-    """
-    with conn.cursor() as curs:
-        curs.execute(f"SELECT id, fullname, username FROM officer WHERE id={id};")
-        result = curs.fetchone()
-        if result is None:
-            return {}
-
-        user_id, user_fullname, username = result
-
-        return {
-            "user_id": user_id,
-            "user_fullname": user_fullname,
-            "username": username,
-            "user_role": "officer"
+            "email": email,
+            "fullname": fullname,
+            "is_officer": is_officer
         }

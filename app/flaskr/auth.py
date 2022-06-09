@@ -6,9 +6,6 @@ from flask import (
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
-
-
-
 bp = Blueprint("auth", __name__, url_prefix="/auth")
 
 
@@ -20,27 +17,9 @@ def register():
         password = request.form["password"]
         email = request.form["email"]
         fullname = request.form["fullname"]
-        role = request.form["user_role"]
+        is_officer = request.form.get("is_officer") is not None
 
-        error = None
-        if not username:
-            error = "Username is required."
-        elif not password:
-            error = "Password is required."
-        elif not role:
-            error = "Please select the role"
-        elif not fullname:
-            error = "Full Name is required"
-
-        # Return on error
-        if error is not None:
-            flash(error)
-            return render_template("auth/register.html")
-
-        if role == "resident":
-            db.add_new_resident(current_app.db_conn, fullname, email, username, password)
-        else:
-            db.add_new_officer(current_app.db_conn, fullname, email, username, password)
+        db.register_new_user(current_app.db_conn, fullname, email, username, password, is_officer)
 
         return redirect(url_for("auth.login"))
 
@@ -53,19 +32,18 @@ def login():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
-        role = request.form["user_role"]
 
-        details = db.verify_password_resident(current_app.db_conn, username, password) if role == "resident" \
-                     else db.verify_password_officer(current_app.db_conn, username, password)
+        details = db.verify_password(current_app.db_conn, username, password)
+
         # If details is empty, something went wrong during login.
         if not details:
             flash("Incorrect login details!")
             return render_template("auth/register.html")
 
         session.clear()
-        session["user_id"] = details["user_id"]
-        session["user_fullname"] = details["user_fullname"]
-        session["user_role"] = role
+        session["user_id"] = details["id"]
+        session["user_fullname"] = details["fullname"]
+        session["user_is_officer"] = details["is_officer"]
         return redirect(url_for("hello"))
 
     else:
@@ -75,15 +53,14 @@ def login():
 @bp.before_app_request
 def load_logged_in_user():
     user_id = session.get("user_id")
-    role = session.get("user_role")
+    is_officer = session.get("user_is_officer")
 
     # No user_id
     if user_id is None:
         g.user = None
         return
 
-    details = db.get_resident_by_id(current_app.db_conn, user_id) if role=="resident" \
-            else db.get_officer_by_id(current_app.db_conn, user_id)
+    details = db.get_user_by_id(current_app.db_conn, user_id)
     # User_id not found
     if not details:
         g.user = None

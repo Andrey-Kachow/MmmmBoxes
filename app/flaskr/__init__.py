@@ -31,8 +31,6 @@ def create_app(test_config=None):
     def hello():
         return render_template(
             'hello.html',
-            hello_user_name=session.get("user_fullname"),
-            hello_user_role=session.get("user_role")
         )
 
     # database
