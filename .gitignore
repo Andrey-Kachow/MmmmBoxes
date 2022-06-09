@@ -19,3 +19,4 @@ build/
 
 dontreadme.txt
 creds.json
+local_db.json
