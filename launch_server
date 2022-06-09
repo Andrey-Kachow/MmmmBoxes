@@ -7,18 +7,13 @@ source venv/bin/activate
 # Install reqs
 pip install --upgrade pip && pip install -r requirements.txt
 
-export FLASK_APP=app/flaskr
-export FLASK_ENV=development
-
-# If "$PORT" is undefined, then `flask run` and run locally.
-# Otherwise, export some flask variables needed to run on Heroku and then run.
+# If "$PORT" is undefined, then call runme with no args, running locally.
+# Otherwise, run it with the appropriate args.
 if [ -z "$PORT" ]
 then
     echo "Running flask locally!"
     python3 runme.py
 else
     echo "Running flask in Heroku!"
-    export FLASK_RUN_HOST=0.0.0.0
-    export FLASK_RUN_PORT=$PORT
-    python3 runme.py
+    python3 runme.py 0.0.0.0 $PORT
 fi
