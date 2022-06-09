@@ -12,6 +12,6 @@
 
 {% block content %}
   <div id="hello_content">
-    <p>Hello, {{ hello_user_name }}! Officer status: {{ hello_user_is_officer }}</p>
+    <p>Hello, {{ session.get("user_fullname") }}! Officer status: {{ session.get("user_is_officer") }}</p>
   </div>
 {% endblock %}
