@@ -16,6 +16,11 @@ from drp11.app.main.database.db import (
 
 DB_SCHEMA_PATH = os.path.join(os.path.dirname(__file__), '..', 'app', 'main', 'database', 'schema.sql')
 
+name = "Alex Jobson"
+email = "aljobex@gmail.com"
+username = "aljobex"
+password_plain = "_huligancheg324_"
+is_officer = False
 
 def with_temp_psql_conn(test_func):
 
@@ -42,13 +47,6 @@ def with_temp_psql_conn(test_func):
 
 @with_temp_psql_conn
 def test_register_new_user_returns_none_if_successfull(conn):
-
-    name = "Alex Jobson"
-    email = "aljobex@gmail.com"
-    username = "aljobex"
-    password_plain = "_huligancheg324_"
-    is_officer = False
-
     res = register_new_user(conn, name, email, username, password_plain, is_officer)
     assert res is None
 
@@ -56,14 +54,7 @@ def test_register_new_user_returns_none_if_successfull(conn):
 @with_temp_psql_conn
 def test_register_new_user_same_username_register(conn):
 
-    name = "Alex Jobson"
-    email = "aljobex@gmail.com"
-    username = "aljobex"
-    password_plain = "_huligancheg324_"
-    is_officer = False
-
     register_new_user(conn, name, email, username, password_plain, is_officer)
-
     email = "somedifferentemail@gmail.com"
 
     res = register_new_user(conn, name, email, username, password_plain, is_officer)
@@ -73,15 +64,37 @@ def test_register_new_user_same_username_register(conn):
 @with_temp_psql_conn
 def test_register_new_user_same_email_register(conn):
 
-    name = "Alex Jobson"
-    email = "aljobex@gmail.com"
-    username = "aljobex"
-    password_plain = "_huligancheg324_"
-    is_officer = False
-
     register_new_user(conn, name, email, username, password_plain, is_officer)
-
     username = "somedifferentusername"
 
     res = register_new_user(conn, name, email, username, password_plain, is_officer)
     assert res == "Email is taken!"
+
+
+@with_temp_psql_conn
+def test_verify_password_returns_proper_dict_when_success(conn):
+
+    register_new_user(conn, name, email, username, password_plain, is_officer)
+
+    res = verify_password(conn, username, password_plain)
+    assert bool(res)
+    for key in ['id', 'username', 'email', 'fullname', 'is_officer']:
+        assert key in res.keys()
+
+
+@with_temp_psql_conn
+def test_verify_password_returns_empty_dict_when_no_such_user(conn):
+
+    register_new_user(conn, name, email, username, password_plain, is_officer)
+
+    res = verify_password(conn, "never_existed_user", password_plain)
+    assert not bool(res)
+
+
+@with_temp_psql_conn
+def test_verify_password_returns_empty_dict_when_incorrect_password(conn):
+
+    register_new_user(conn, name, email, username, password_plain, is_officer)
+
+    res = verify_password(conn, username, "incorrect_password")
+    assert not bool(res)
