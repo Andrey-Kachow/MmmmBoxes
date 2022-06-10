@@ -172,9 +172,9 @@ def test_get_all_packages_items_are_added(conn):
     count = 0
     for package in ["HP printer", "AAAA bateries", "Paint Bruches", "Cool Shirt"]:
         add_new_package(conn, name, package)
+        count += 1
         res = get_all_packages(conn)
         assert len(res) == count
-        count += 1
 
     # Checking that all dictionaries have appropriate format and the dictionaries are not empty
     for package_dict in res:
