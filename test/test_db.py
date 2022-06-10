@@ -38,7 +38,7 @@ def with_temp_psql_conn(test_func):
             cursor_factory=psycopg2.extras.RealDictCursor
         )
         # initialise temp db
-        execute_sql_file(conn, DROP_DB_PATH)
+        # execute_sql_file(conn, DROP_DB_PATH)
         execute_sql_file(conn, DB_SCHEMA_PATH)
 
         test_func(conn)
@@ -172,7 +172,8 @@ def test_get_all_packages_items_are_added(conn):
     res = []
     count = 0
     for package in ["HP printer", "AAAA bateries", "Paint Bruches", "Cool Shirt"]:
-        res = add_new_package(conn, name, package)
+        add_new_package(conn, name, package)
+        res = get_all_packages(conn)
         assert len(res) == count
         count += 1
 
