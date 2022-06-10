@@ -39,14 +39,10 @@ def with_temp_psql_conn(test_func):
         # initialise temp db
         execute_sql_file(conn, DB_SCHEMA_PATH)
 
-        try:
-            # Run the test function
-            test_func(conn)
-        except AssertionError as e:
-            pass
-        finally:
-            conn.close()
-            psql.stop()
+        test_func(conn)
+        
+        conn.close()
+        psql.stop()
 
     return wrapper
 
