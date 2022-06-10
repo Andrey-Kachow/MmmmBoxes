@@ -20,7 +20,7 @@ def create_app(version="Local"):
         return render_template(
             "hello.html",
             context={
-                "short_hash_commit": version
+                "short_hash_commit": None
             }
         )
 
