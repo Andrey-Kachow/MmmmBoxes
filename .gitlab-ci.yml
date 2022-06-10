@@ -67,6 +67,6 @@ test-db:
 deploy-heroku:
   stage: deploy
   script:
-    - dpl --provider=heroku --app=drp11 --api-key=$MS_API_KEY ${CI_COMMIT_SHA:0:8}
+    - dpl --provider=heroku --app=drp11 --api-key=$MS_API_KEY
   rules:
     - if: $CI_COMMIT_BRANCH == "master"

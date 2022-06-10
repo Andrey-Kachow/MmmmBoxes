@@ -4,10 +4,15 @@
   <h1>{% block title %}Hello{% endblock %}</h1>
 {% endblock %}
 
+{% block local_style %}
+  #hello_content {
+    padding: 30px;
+  }
+{% endblock %}
+
 {% block content %}
   <div id="hello_content">
     <p>Hello, {{ session.get("user_fullname") }}! Officer status: {{ session.get("user_is_officer") }}</p>
-    <p>This website is up to date with commit {{ context.short_hash_commit }}</p>
   </div>
 
   {% if session.get("user_is_officer") == True %}
