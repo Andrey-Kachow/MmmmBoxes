@@ -12,17 +12,17 @@
   - if: $CI_PIPELINE_SOURCE == "merge_request_event" #don't change me
 
 # These 2 basic tests run all the time to make sure things haven't gone up in flames after a commit
-# local-db-test:
-#   stage: test
-#   script:
-#     - *preamble
-#     - pytest test/basic/test_local_db_connection.py
-#
-# sanity-test:
-#   stage: test
-#   script:
-#     - *preamble
-#     - pytest test/basic/test_sanity.py
+local-db-test:
+  stage: test
+  script:
+    - *preamble
+    - pytest test/basic/test_local_db_connection.py
+
+sanity-test:
+  stage: test
+  script:
+    - *preamble
+    - pytest test/basic/test_sanity.py
 
 test-db:
   stage: test
