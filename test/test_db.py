@@ -22,6 +22,12 @@ username = "aljobex"
 password_plain = "_huligancheg324_"
 is_officer = False
 
+of_name = "Patrick Bateman"
+of_email = "patbat@gmail.com"
+of_username = "patbat"
+of_password_plain = "solo322$"
+of_is_officer = True
+
 def with_temp_psql_conn(test_func):
 
     def wrapper():
@@ -120,3 +126,60 @@ def test_get_user_by_id_returns_user_dict_when_correct_id(conn):
     assert bool(res)
     for key in ['id', 'username', 'email', 'fullname', 'is_officer']:
         assert key in res.keys()
+
+
+@with_temp_psql_conn
+def test_add_new_package_returns_user_dict_when_correct_id(conn):
+
+    register_new_user(conn, name, email, username, password_plain, is_officer)
+
+    res = add_new_package(conn, name, "HP printer")
+    assert bool(res)
+    for key in ['id', 'title', 'email', 'fullname', 'delivered', 'collected', 'resident_id']:
+        assert key in res.keys()
+
+@with_temp_psql_conn
+def test_add_new_package_cannot_add_officer_package(conn):
+
+    register_new_user(conn, of_name, of_email, of_username, of_password_plain, of_is_officer)
+
+    res = add_new_package(conn, of_name, "HP printer")
+    assert res is None
+
+
+@with_temp_psql_conn
+def test_add_new_package_cannot_package_if_no_such_user_in_db(conn):
+
+    register_new_user(conn, name, email, username, password_plain, is_officer)
+
+    res = add_new_package(conn, "No Such Name", "HP printer")
+    assert res is None
+
+
+@with_temp_psql_conn
+def test_get_all_packages_returns_empty_if_nothing_added(conn):
+
+    register_new_user(conn, name, email, username, password_plain, is_officer)
+
+    res = get_all_packages(conn)
+    assert not bool(res)
+
+
+@with_temp_psql_conn
+def test_get_all_packages_items_are_added(conn):
+
+    register_new_user(conn, name, email, username, password_plain, is_officer)
+
+    # Observing the item count in the packages table
+    res = []
+    count = 0
+    for package in ["HP printer", "AAAA bateries", "Paint Bruches", "Cool Shirt"]:
+        res = add_new_package(conn, name, package)
+        assert len(res) == count
+        count += 1
+
+    # Checking that all dictionaries have appropriate format and the dictionaries are not empty
+    for package_dict in res:
+        assert bool(package_dict)
+        for key in ['id', 'title', 'email', 'fullname', 'delivered', 'collected', 'resident_id']:
+            assert key in res.keys()
