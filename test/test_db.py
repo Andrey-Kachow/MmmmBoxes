@@ -28,11 +28,14 @@ def with_temp_psql_conn(test_func):
         # initialise temp db
         execute_sql_file(conn, DB_SCHEMA_PATH)
 
-        # Run the test function
-        test_func(conn)
-
-        conn.close()
-        psql.stop()
+        try:
+            # Run the test function
+            test_func(conn)
+        except AssertionError as e:
+            pass
+        finally:
+            conn.close()
+            psql.stop()
 
     return wrapper
 
@@ -78,7 +81,7 @@ def test_register_new_user_same_email_register(conn):
 
     register_new_user(conn, name, email, username, password_plain, is_officer)
 
-    usename = "somedifferentusername"
+    username = "somedifferentusername"
 
     res = register_new_user(conn, name, email, username, password_plain, is_officer)
     assert res == "Email is taken!"
