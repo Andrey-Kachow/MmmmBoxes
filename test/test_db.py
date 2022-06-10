@@ -15,6 +15,7 @@ from drp11.app.main.database.db import (
 
 
 DB_SCHEMA_PATH = os.path.join(os.path.dirname(__file__), '..', 'app', 'main', 'database', 'schema.sql')
+DROP_DB_PATH = os.path.join(os.path.dirname(__file__), '..', 'app', 'main', 'database', 'drop_all.sql')
 
 name = "Alex Jobson"
 email = "aljobex@gmail.com"
@@ -37,10 +38,11 @@ def with_temp_psql_conn(test_func):
             cursor_factory=psycopg2.extras.RealDictCursor
         )
         # initialise temp db
+        execute_sql_file(conn, DROP_DB_PATH)
         execute_sql_file(conn, DB_SCHEMA_PATH)
 
         test_func(conn)
-        
+
         conn.close()
         psql.stop()
 
