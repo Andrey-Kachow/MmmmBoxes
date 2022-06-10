@@ -24,6 +24,12 @@ sanity-test:
     - *preamble
     - pytest test/basic/test_sanity.py
 
+test-db:
+  stage: test
+  script:
+    - *preamble
+    - pytest test/test_db.py
+
 # ##############################
 
 # # Below are examples of non-compulsory tests.
