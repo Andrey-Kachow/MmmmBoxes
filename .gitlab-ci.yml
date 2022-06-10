@@ -29,6 +29,10 @@ test-db:
   script:
     - *preamble
     - pytest test/test_db.py
+  rules:
+    - *on-master-or-merge
+    - changes:
+      - app/main/database/**/*
 
 # ##############################
 
