@@ -53,6 +53,7 @@ def test_register_new_user_returns_none_if_successfull(conn):
 
 @with_temp_psql_conn
 def test_register_new_user_same_username_register(conn):
+    global email
 
     register_new_user(conn, name, email, username, password_plain, is_officer)
     email = "somedifferentemail@gmail.com"
@@ -63,6 +64,7 @@ def test_register_new_user_same_username_register(conn):
 
 @with_temp_psql_conn
 def test_register_new_user_same_email_register(conn):
+    global username
 
     register_new_user(conn, name, email, username, password_plain, is_officer)
     username = "somedifferentusername"
@@ -98,3 +100,23 @@ def test_verify_password_returns_empty_dict_when_incorrect_password(conn):
 
     res = verify_password(conn, username, "incorrect_password")
     assert not bool(res)
+
+
+@with_temp_psql_conn
+def test_get_user_by_id_returns_empty_dict_when_incorrect_id(conn):
+
+    register_new_user(conn, name, email, username, password_plain, is_officer)
+
+    res = get_user_by_id(conn, 42069)
+    assert not bool(res)
+
+
+@with_temp_psql_conn
+def test_get_user_by_id_returns_user_dict_when_correct_id(conn):
+
+    register_new_user(conn, name, email, username, password_plain, is_officer)
+
+    res = get_user_by_id(conn, 1)
+    assert bool(res)
+    for key in ['id', 'username', 'email', 'fullname', 'is_officer']:
+        assert key in res.keys()
