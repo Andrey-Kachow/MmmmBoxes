@@ -180,4 +180,4 @@ def test_get_all_packages_items_are_added(conn):
     for package_dict in res:
         assert bool(package_dict)
         for key in ['id', 'title', 'email', 'fullname', 'delivered', 'collected', 'resident_id']:
-            assert key in res.keys()
+            assert key in package_dict.keys()
