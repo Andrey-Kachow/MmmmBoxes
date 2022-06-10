@@ -18,5 +18,5 @@ then
     python3 runme.py
 else
     echo "Running flask in Heroku!"
-    python3 runme.py 0.0.0.0 $PORT
+    python3 runme.py 0.0.0.0 $PORT $1
 fi

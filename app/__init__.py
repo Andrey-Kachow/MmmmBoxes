@@ -5,7 +5,7 @@ from flask_socketio import SocketIO
 
 socketio = SocketIO()
 
-def create_app():
+def create_app(version="Local"):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
@@ -19,6 +19,9 @@ def create_app():
     def hello():
         return render_template(
             "hello.html",
+            context={
+                "short_hash_commit": None
+            }
         )
 
     @app.route("/")
@@ -39,5 +42,6 @@ def create_app():
     app.register_blueprint(resident.bp)
 
     socketio.init_app(app)
+
 
     return app
