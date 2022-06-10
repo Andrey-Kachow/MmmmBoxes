@@ -14,7 +14,7 @@ from drp11.app.main.database.db import (
 )
 
 
-DB_SCHEMA_PATH = os.path.join(os.path.dirname(__file__), '..', 'main', 'database', 'schema.sql')
+DB_SCHEMA_PATH = os.path.join(os.path.dirname(__file__), '..', 'app', 'main', 'database', 'schema.sql')
 
 
 def with_temp_psql_conn(test_func):
