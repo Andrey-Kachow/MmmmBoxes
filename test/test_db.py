@@ -38,7 +38,7 @@ def with_temp_psql_conn(test_func):
             cursor_factory=psycopg2.extras.RealDictCursor
         )
         # initialise temp db
-        # execute_sql_file(conn, DROP_DB_PATH)
+        execute_sql_file(conn, DROP_DB_PATH)
         execute_sql_file(conn, DB_SCHEMA_PATH)
 
         test_func(conn)
@@ -57,12 +57,11 @@ def test_register_new_user_returns_none_if_successfull(conn):
 
 @with_temp_psql_conn
 def test_register_new_user_same_username_register(conn):
-    global email
 
     register_new_user(conn, name, email, username, password_plain, is_officer)
-    email = "somedifferentemail@gmail.com"
+    _email = "somedifferentemail@gmail.com"
 
-    res = register_new_user(conn, name, email, username, password_plain, is_officer)
+    res = register_new_user(conn, name, _email, username, password_plain, is_officer)
     assert res == "Username is taken!"
 
 
@@ -71,9 +70,9 @@ def test_register_new_user_same_email_register(conn):
     global username
 
     register_new_user(conn, name, email, username, password_plain, is_officer)
-    username = "somedifferentusername"
+    _username = "somedifferentusername"
 
-    res = register_new_user(conn, name, email, username, password_plain, is_officer)
+    res = register_new_user(conn, name, email, _username, password_plain, is_officer)
     assert res == "Email is taken!"
 
 
