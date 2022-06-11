@@ -14,7 +14,7 @@ def before_request():
     if "user_id" not in session:
         abort(403, "You are not logged in")
     if not session["user_is_officer"]:
-        abort(403, "You are not a resident")
+        abort(403, "You are not an officer")
 
 
 @bp.context_processor
