@@ -5,6 +5,8 @@ from flask import *
 from .. import socketio
 from werkzeug.security import check_password_hash, generate_password_hash
 
+from .auth import login_required
+
 bp = Blueprint("officer", __name__, url_prefix="/officer")
 
 
@@ -27,6 +29,7 @@ def utility_processor():
 
 
 @bp.route("/overview", methods=["GET", "POST"])
+@login_required
 def overview():
     if request.method == "POST":
         just_added = db.add_new_package(

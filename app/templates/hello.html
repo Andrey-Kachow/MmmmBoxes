@@ -16,11 +16,11 @@
   </div>
 
   {% if session.get("user_is_officer") == True %}
-    <li><a href="{{ url_for('officer.overview') }}">View all packages</a>
+    <a href="{{ url_for('officer.overview') }}">View all packages</a>
   {% endif %}
 
   {% if session.get("user_is_officer") == False %}
-    <li><a href="{{ url_for('resident.overview') }}">View your packages</a>
+    <a href="{{ url_for('resident.overview') }}">View your packages</a>
   {% endif %}
 
 {% endblock %}

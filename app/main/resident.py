@@ -3,6 +3,8 @@ from .database import db
 from flask import *
 from .. import socketio
 from werkzeug.security import check_password_hash, generate_password_hash
+from .auth import login_required
+
 
 bp = Blueprint("resident", __name__, url_prefix="/resident")
 
@@ -14,6 +16,7 @@ def before_request():
     if session["user_is_officer"]:
         abort(403, "You are not a resident")
 
+
 @bp.context_processor
 def utility_processor():
 
@@ -22,6 +25,8 @@ def utility_processor():
 
     return dict(get_package_list=get_package_list)
 
+
 @bp.route("/overview", methods=["GET"])
+@login_required
 def overview():
     return render_template("resident/overview.html")
