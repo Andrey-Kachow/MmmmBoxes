@@ -182,7 +182,7 @@ def get_all_packages(conn, id=None):
                 (id,)
             )
 
-        return [dict(p) for p in curs.fetchall()]
+        return [clean_package_dict(dict(p)) for p in curs.fetchall()]
 
 def add_new_package(conn, resident_name, title):
     """Arguments: a database connection, recipient's name, package title
@@ -234,4 +234,19 @@ def add_new_package(conn, resident_name, title):
             (package_id,)
         )
         conn.commit()
-        return dict(curs.fetchone())
+        return clean_package_dict(dict(curs.fetchone()))
+
+
+def clean_package_dict(pack_dict):
+    """Arguments: package in dictionary form
+    Returns: cleaned dictionary
+    Converts timestamps to RFC3339 and assigns default values to Nones."""
+
+    pack_dict["delivered"] = pack_dict["delivered"].isoformat()
+
+    if pack_dict["collected"] is not None:
+        pack_dict["collected"] = pack_dict["collected"].isoformat()
+    else:
+        pack_dict["collected"] = "Collection pending"
+
+    return pack_dict
