@@ -37,6 +37,5 @@ def overview():
         if not just_added:
             flash("Oops! Didn't add")
         # Convert the just_added package timestamp to RFC3339 so it can be jsonified.
-        just_added["delivered"] = just_added["delivered"].strftime(r"%Y-%m-%dT%H:%M:%SZ")
         socketio.emit("new_package", just_added, broadcast=True)
     return render_template("officer/overview.html")
