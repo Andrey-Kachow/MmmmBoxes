@@ -1,3 +1,53 @@
 {% extends 'base.html' %}
 
-{% include 'resident/package_list.html' %}
+{% block header %}
+  <h1>{% block title %}RESIDENT Package list{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+
+<form method="post">
+  <label for="resident_name">Resident name</label>
+  <input name="resident_name" id="resident_name" required>
+  <label for="package_title">Title</label>
+  <input name="package_title" id="package_title" required>
+  <input type="submit" value="Add new package">
+</form>
+
+<table id="packages_table">
+  <tr class="packages_row">
+      <th class="packages_col">Package Owner</th>
+      <th class="packages_col">Owner's Email</th>
+      <th class="packages_col">Package Title</th>
+      <th class="packages_col">Delivered</th>
+      <th class="packages_col">Collected</th>
+  </tr>
+  {% for package in get_package_list() %}
+    <tr class="packages_row">
+      <td class="packages_col">{{ package.fullname }}</td>
+      <td class="packages_col">{{ package.email }}</td>
+      <td class="packages_col">{{ package.title }}</td>
+      <td class="packages_col">{{ package.delivered }}</td>
+      <td class="packages_col">{{ package.collected }}</td>
+    </tr>
+  {% endfor %}
+</table>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.1/socket.io.js" integrity="sha512-9mpsATI0KClwt+xVZfbcf2lJ8IFBAwsubJ6mI3rtULwyM3fBmQFzj0It4tGqxLOGQwGfJdk/G+fANnxfq9/cew==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js" integrity="sha512-n/4gHW3atM3QqRcbCn6ewmpxcLAHGaDjpEBu4xZd47N0W2oQ+6q7oc3PXstrJYXcbNU1OHdQ1T7pAP+gi5Yu8g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>    <script type="text/javascript" charset="utf-8">
+    let socket = io()
+    socket.on("new_package", (data) => {
+        console.log(data);
+        let package_table = document.getElementById("packages_table");
+        let package_row = package_table.insertRow();
+
+        package_row.insertCell().appendChild(document.createTextNode(data.fullname));
+        package_row.insertCell().appendChild(document.createTextNode(data.email));
+        package_row.insertCell().appendChild(document.createTextNode(data.title));
+        package_row.insertCell().appendChild(document.createTextNode(data.delivered));
+        package_row.insertCell().appendChild(document.createTextNode(data.collected));
+
+    });
+</script>
+
+{% endblock %}
