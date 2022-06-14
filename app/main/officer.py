@@ -43,4 +43,6 @@ def overview():
 
 @bp.route("/template")
 def template():
-    return render_template("officer/template.html")
+    with open('app/main/database/email-template.txt') as f:
+        email=f.read()
+    return render_template("officer/template.html", email=email)
