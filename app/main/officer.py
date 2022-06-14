@@ -39,3 +39,9 @@ def overview():
         # Convert the just_added package timestamp to RFC3339 so it can be jsonified.
         socketio.emit("new_package", just_added, broadcast=True)
     return render_template("officer/overview.html")
+
+@bp.route("/template")
+def template():
+    with open('app/main/database/email-template.txt') as f:
+        email=f.read()
+    return render_template("officer/template.html", email=email)
