@@ -246,10 +246,10 @@ def get_all_resident_names(conn):
             WHERE is_officer = false
             """
         )
-        return map(
+        return list(map(
             lambda real_dict: real_dict['fullname'],
             curs.fetchall()
-        )
+        ))
     return []
 
 
