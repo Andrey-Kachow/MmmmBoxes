@@ -9,17 +9,9 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='overview.css') }}">
   <style>
 
-#resident_name_inp {
-  box-sizing: border-box;
-  font-size: 16px;
-  padding: 14px 20px 12px 45px;
-  border: none;
-  border-bottom: 1px solid #ddd;
-}
-
 #resident_name_inp:focus {outline: 3px solid #ddd;}
 
-.dropdown {
+.dropdown_input_div {
   position: relative;
   display: inline-block;
 }
@@ -28,20 +20,26 @@
   display: none;
   position: absolute;
   background-color: #f6f6f6;
-  min-width: 230px;
   overflow: auto;
+  width: 100%;
   border: 1px solid #ddd;
   z-index: 1;
 }
 
 .dropdown-content button {
+  background-color: #ffffff;
+  width: 100%;
   color: black;
-  padding: 12px 16px;
   text-decoration: none;
+  text-align: left;
+  padding-left: 4px;
+  border: none;
   display: block;
 }
 
-.dropdown button:hover {background-color: #ddd;}
+.dropdown-content button:hover {
+  background-color: #ddd;
+}
 
   </style>
 {% endblock %}
@@ -49,15 +47,15 @@
 
 {% block content %}
 
-<form method="post">
+<form method="post" autocomplete="off">
   <label for="resident_name">Resident name</label>
 
   <div class="dropdown_input_div">
     <input
+      id="resident_name_inp"
       name="resident_name"
       type="text"
       placeholder="Search Residents..."
-      id="resident_name_inp"
       onfocus="showResidents()"
       onfocusout="hideResidents()"
       onkeyup="filterResidents()"
