@@ -57,13 +57,14 @@
       type="text"
       placeholder="Search Residents..."
       onfocus="showResidents()"
-      onfocusout="hideResidents()"
+      onblur="nonButtonFocusHide()"
       onkeyup="filterResidents()"
       required>
     <div id="dropdown_residents" class="dropdown-content">
       <button type="button" onclick="selectResidentName('alex')">alex</button>
       <button type="button" onclick="selectResidentName('jake')">jake</button>
       <button type="button" onclick="selectResidentName('evgen')">evgen</button>
+      <!-- onfocusout="hideResidents()" -->
       <!-- {% for name in get_all_resident_names() %}
         <button type="button" onclick="selectResidentName('{{ name }}')">{{ name }}</button>
       {% endfor %} -->

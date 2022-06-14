@@ -6,8 +6,18 @@ function hideResidents() {
   document.getElementById("dropdown_residents").style.display = 'none'
 }
 
+function nonButtonFocusHide() {
+  if (event.relatedTarget != null){
+    if (event.relatedTarget.tagName == 'BUTTON'){
+      return
+    }
+  }
+  hideResidents()
+}
+
 function selectResidentName(name) {
   document.getElementById("resident_name_inp").value = name
+  hideResidents();
 }
 
 function filterResidents() {
