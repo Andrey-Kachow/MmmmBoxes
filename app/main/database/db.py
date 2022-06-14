@@ -237,6 +237,22 @@ def add_new_package(conn, resident_name, title):
         return clean_package_dict(dict(curs.fetchone()))
 
 
+def get_all_resident_names(conn):
+    with conn.cursor() as curs:
+        curs.execute(
+            """
+            SELECT fullname
+            FROM users
+            WHERE is_officer = false
+            """
+        )
+        return map(
+            lambda real_dict: real_dict['fullname'],
+            curs.fetchall()
+        )
+    return []
+
+
 def clean_package_dict(pack_dict):
     """Arguments: package in dictionary form
     Returns: cleaned dictionary

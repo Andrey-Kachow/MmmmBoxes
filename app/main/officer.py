@@ -24,7 +24,7 @@ def utility_processor():
         return db.get_all_packages(current_app.db_conn)
 
     def get_all_resident_names():
-        return []
+        return db.get_all_resident_names(current_app.db_conn)
 
     return dict(
         get_package_list=get_package_list,
