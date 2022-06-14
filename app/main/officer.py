@@ -23,7 +23,13 @@ def utility_processor():
     def get_package_list():
         return db.get_all_packages(current_app.db_conn)
 
-    return dict(get_package_list=get_package_list)
+    def get_all_resident_names():
+        return []
+
+    return dict(
+        get_package_list=get_package_list,
+        get_all_resident_names=get_all_resident_names
+    )
 
 
 @bp.route("/overview", methods=["GET", "POST"])

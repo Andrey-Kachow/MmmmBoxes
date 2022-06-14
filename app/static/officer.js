@@ -1,23 +1,25 @@
-/* When the user clicks on the button,
-toggle between hiding and showing the dropdown content */
-function myFunction() {
-  document.getElementById("myDropdown").classList.toggle("show");
+function showResidents() {
+  document.getElementById("dropdown_residents").style.display = 'block'
 }
 
-function filterFunction() {
-  var input, filter, ul, li, a, i;
-  input = document.getElementById("myInput");
-  filter = input.value.toUpperCase();
-  div = document.getElementById("myDropdown");
-  a = div.getElementsByTagName("a");
-  for (i = 0; i < a.length; i++) {
-    txtValue = a[i].textContent || a[i].innerText;
-    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-      a[i].style.display = "";
+function hideResidents() {
+  document.getElementById("dropdown_residents").style.display = 'none'
+}
+
+function selectResidentName(name) {
+  document.getElementById("resident_name_inp").value = name
+}
+
+function filterResidents() {
+  const input = document.getElementById("resident_name_inp")
+  const filter = input.value.toLowerCase()
+  const buttons = document.getElementById("dropdown_residents").getElementsByTagName("button")
+  Object.values(buttons).forEach((button, i) => {
+    const text = button.textContent
+    if (text.toLowerCase().indexOf(filter) > -1) {
+      button.style.display = ""
     } else {
-      a[i].style.display = "none";
+      button.style.display = "none"
     }
-  }
+  });
 }
-
-alert("test")
