@@ -41,10 +41,6 @@ def overview():
         socketio.emit("new_package", just_added, broadcast=True)
     return render_template("officer/overview.html")
 
-@bp.route("/template", methods=["GET", "POST"])
+@bp.route("/template")
 def template():
-    if request.method == "POST":
-        new_template = null
-        if not new_template:
-            flash("New template couldn't be saved")
     return render_template("officer/template.html")
