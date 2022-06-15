@@ -33,3 +33,17 @@ function filterResidents() {
     }
   });
 }
+
+function filterListOfresidents() {
+  const input = document.getElementById("resident_list_name_inp")
+  const filter = input.value.toLowerCase()
+  const listElems = document.getElementById("list_of_residents").getElementsByTagName("li")
+  Object.values(listElems).forEach((li, i) => {
+    const text = li.textContent
+    if (filterSatisfied(filter, text)) {
+      li.style.display = ""
+    } else {
+      li.style.display = "none"
+    }
+  });
+}

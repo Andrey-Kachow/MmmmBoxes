@@ -9,16 +9,24 @@
 
 {% block content %}
 
-<ul>
+<input
+  id="resident_list_name_inp"
+  type="text"
+  placeholder="Search Residents..."
+  onkeyup="filterListOfresidents()">
+
+<ul id="list_of_residents">
   {% for resident in get_residents() %}
-    <a href="{{ url_for('officer.resident_profile', id=resident.id) }}">
-      <li>{{ resident.fullname }}</li>
-    </a>
+    <li class="resident_list_elem">
+      <a href="{{ url_for('officer.resident_profile', id=resident.id) }}">
+        {{ resident.fullname }}
+      </a>
+    </li>
   {% endfor %}
 </ul>
 
 {% endblock %}
 
 {% block scripts %}
-  <!-- <script src="{{ url_for('static', filename='officer.js') }}" charset="utf-8"></script> -->
+  <script src="{{ url_for('static', filename='officer.js') }}" charset="utf-8"></script>
 {% endblock %}
