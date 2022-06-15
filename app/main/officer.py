@@ -54,4 +54,5 @@ def submit():
     email = request.form['email']
     with open(email_location, 'w') as f:
         f.write(email)
-    return render_template("officer/template.html", email=email)    
+        flash("Changes Saved!")
+    return render_template("officer/template.html", email=email)
