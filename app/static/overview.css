@@ -1,11 +1,16 @@
-.packages_col {
-  padding: 5px
+.packages_col_heading {
+  text-align: left;
+  padding-right: 2rem;
 }
 
-.packages_row {
-margin: 5px
+.packages_col_heading_date {
+  text-align: left;
+  padding-right: 10rem;
 }
 
+.packages_spacer {
+  padding: 0.5rem;
+}
 
 #resident_name_inp {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;

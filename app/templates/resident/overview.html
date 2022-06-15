@@ -11,6 +11,8 @@
 
 {% block content %}
 
+<p><a href="{{ url_for('hello') }}" >Back to homepage</a></p>
+
 <form method="post">
   <label for="resident_name">Resident name</label>
   <input name="resident_name" id="resident_name" required>
@@ -21,13 +23,20 @@
 
 <table id="packages_table">
   <tr class="packages_row">
-      <th class="packages_col">Package Owner</th>
-      <th class="packages_col">Owner's Email</th>
-      <th class="packages_col">Package Title</th>
-      <th class="packages_col">Delivered</th>
-      <th class="packages_col">Collected</th>
+      <th class="packages_col_heading">Package Owner</th>
+      <th class="packages_col_heading">Owner's Email</th>
+      <th class="packages_col_heading">Package Title</th>
+      <th class="packages_col_heading_date">Delivered</th>
+      <th class="packages_col_heading_date">Collected</th>
   </tr>
+
+  {% set ns = namespace(last_delivered="")%}
   {% for package in get_package_list()|sort(reverse=True, attribute="delivered") %}
+     <!-- Forgive me for this. RFC3339 timestamp is 2022-06-09T17:41:27.409845, so taking first 10 chars gives date-->
+    {% if ns.last_delivered != package.delivered[:10] and ns.last_delivered != "" %}
+      <tr><td class="packages_spacer"></td></tr>
+    {% endif %}
+
     <tr class="packages_row">
       <td class="packages_col">{{ package.fullname }}</td>
       <td class="packages_col">{{ package.email }}</td>
@@ -35,6 +44,8 @@
       <td class="packages_col">{{ package.deliverednice }}</td>
       <td class="packages_col">{{ package.collectednice }}</td>
     </tr>
+
+    {% set ns.last_delivered = package.delivered[:10] %}
   {% endfor %}
 </table>
 
