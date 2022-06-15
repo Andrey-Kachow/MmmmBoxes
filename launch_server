@@ -19,5 +19,11 @@ then
     python3 runme.py
 else
     echo "Running flask in Heroku!"
-    python3 runme.py 0.0.0.0 $PORT
+    if [ "$#" -ne 1 ]
+    then
+        echo "Argument has been passed in. Assuming we are running dev build."
+        python3 runme.py 0.0.0.0 $PORT f37d7d #overwrite background hex colour
+    else    
+        python3 runme.py 0.0.0.0 $PORT
+    fi
 fi

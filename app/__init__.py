@@ -2,10 +2,11 @@ import os
 
 from flask import Flask, session, render_template, g, redirect, url_for
 from flask_socketio import SocketIO
+from re import sub, DOTALL
 
 socketio = SocketIO()
 
-def create_app():
+def create_app(bg_col_overwrite=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
@@ -13,6 +14,16 @@ def create_app():
         # DATABASE_URL=os.environ["DATABASE_URL"],
         # DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
     )
+
+    # Replace app/static/style.css background colour
+    if bg_col_overwrite is not None:
+        with open(os.path.join(os.path.dirname(__file__), "static/style.css"), "w") as f:
+            contents = f.read()
+            f.write(re.sub(r"(html.*background:)[^;]*(;.*)",
+                           f"\\1#{bg_col_overwrite}\\2",
+                           contents,
+                           flags=DOTALL
+                           ))
 
     # a simple page that says hello
     @app.route("/hello")
