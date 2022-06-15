@@ -5,6 +5,8 @@ from flask import *
 from .. import socketio
 from werkzeug.security import check_password_hash, generate_password_hash
 
+from .auth import login_required
+
 bp = Blueprint("officer", __name__, url_prefix="/officer")
 
 
@@ -14,7 +16,7 @@ def before_request():
     if "user_id" not in session:
         abort(403, "You are not logged in")
     if not session["user_is_officer"]:
-        abort(403, "You are not a resident")
+        abort(403, "You are not an officer")
 
 
 @bp.context_processor
@@ -37,6 +39,7 @@ def utility_processor():
 
 
 @bp.route("/overview", methods=["GET", "POST"])
+@login_required
 def overview():
     if request.method == "POST":
         just_added = db.add_new_package(

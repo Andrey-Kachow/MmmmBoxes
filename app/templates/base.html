@@ -20,6 +20,12 @@
         <div class="flash">{{ message }}</div>
       {% endfor %}
 
+      {% if g.user %}
+        <a href="{{ url_for('auth.logout') }}">Log out</a>
+      {% else %}
+        <a href="{{ url_for('auth.login') }}">Sign in</a>
+      {% endif %}
+
     </section>
   </body>
   <script src="{{ url_for('static', filename='utils.js') }}" charset="utf-8"></script>
