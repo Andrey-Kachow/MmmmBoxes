@@ -20,6 +20,19 @@ function selectResidentName(name) {
   hideResidents();
 }
 
+function filteredSearchDisplayAlter(inputId, containerId, listItemTagName, obtainTextFromItem) {
+  const filter = document.getElementById(inputId).value
+  const items = document.getElementById(containerId).getElementsByTagName(listItemTagName)
+  Object.values(items).forEach((item, i) => {
+    const text = obtainTextFromItem(item)
+    if (filterSatisfied(filter, text)) {
+      item.style.display = ""
+    } else {
+      item.style.display = "none"
+    }
+  });
+}
+
 function filterResidents() {
   const input = document.getElementById("resident_name_inp")
   const filter = input.value.toLowerCase()
