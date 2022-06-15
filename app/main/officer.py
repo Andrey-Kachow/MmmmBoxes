@@ -67,6 +67,7 @@ def residents():
 def resident_profile(id):
     return render_template(
         "officer/resident_profile.html",
-        resident=db.get_user_by_id(current_app.db_conn, id)
-        # packages=db.get_all_packages(current_app.db_conn, id)
+        resident=db.get_user_by_id(current_app.db_conn, id),
+        get_package_list=lambda: db.get_all_packages(current_app.db_conn, id),
+        hide_owner_details_in_table=True
      )
