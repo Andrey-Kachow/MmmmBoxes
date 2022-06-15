@@ -16,14 +16,14 @@ export FLASK_DEBUG=1
 if [ -z "$PORT" ]
 then
     echo "Running flask locally!"
-    python3 runme.py
+    python3 runme.py local
 else
     echo "Running flask in Heroku!"
     if [ "$#" -ne 1 ]
     then
         echo "Argument has been passed in. Assuming we are running dev build."
-        python3 runme.py 0.0.0.0 $PORT f37d7d #overwrite background hex colour
-    else    
-        python3 runme.py 0.0.0.0 $PORT
+        python3 runme.py dev 0.0.0.0 $PORT
+    else
+        python3 runme.py live 0.0.0.0 $PORT
     fi
 fi
