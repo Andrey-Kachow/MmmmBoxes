@@ -11,6 +11,7 @@ from drp11.app.main.database.db import (
     get_user_by_id,
     get_all_packages,
     add_new_package,
+    get_all_resident_names
 )
 
 
@@ -181,3 +182,12 @@ def test_get_all_packages_items_are_added(conn):
         assert bool(package_dict)
         for key in ['id', 'title', 'email', 'fullname', 'delivered', 'collected', 'resident_id']:
             assert key in package_dict.keys()
+
+
+@with_temp_psql_conn
+def test_get_all_resident_names_returns_only_names_of_residents(conn):
+
+    register_new_user(conn, name, email, username, password_plain, is_officer)
+    register_new_user(conn, of_name, of_email, of_username, of_password_plain, of_is_officer)
+
+    assert get_all_resident_names(conn) == [name]

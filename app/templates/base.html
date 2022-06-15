@@ -5,12 +5,11 @@
     <title>{% block title %}{% endblock %} - DRP11</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
-    {% block local_style %} {% endblock %}
+    {% block local_style %}{% endblock %}
 
   </head>
   <body>
     <section class="content">
-
       <header>
         {% block header %}{% endblock %}
       </header>
@@ -23,4 +22,5 @@
 
     </section>
   </body>
+  {% block scripts %}{% endblock %}
 </html>

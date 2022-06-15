@@ -10,6 +10,7 @@
 .on-master-or-merge: &on-master-or-merge
   - if: $CI_COMMIT_BRANCH == "master" #don't change me
   - if: $CI_PIPELINE_SOURCE == "merge_request_event" #don't change me
+  - if: $CI_COMMIT_BRANCH == "dev"
 
 # These 2 basic tests run all the time to make sure things haven't gone up in flames after a commit
 local-db-test:
@@ -64,9 +65,16 @@ test-db:
 
 
 # Deploy to heroku if pushed to master branch.
-deploy-heroku:
+deploy-master:
   stage: deploy
   script:
     - dpl --provider=heroku --app=drp11 --api-key=$MS_API_KEY
   rules:
     - if: $CI_COMMIT_BRANCH == "master"
+
+deploy_dev:
+  stage: deploy
+  script:
+    - dpl --provider=heroku --app=drp11-dev --api-key=$MS_API_KEY
+  rules:
+    - if: $CI_COMMIT_BRANCH == "dev"

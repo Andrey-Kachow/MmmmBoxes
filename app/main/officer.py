@@ -23,7 +23,13 @@ def utility_processor():
     def get_package_list():
         return db.get_all_packages(current_app.db_conn)
 
-    return dict(get_package_list=get_package_list)
+    def get_all_resident_names():
+        return db.get_all_resident_names(current_app.db_conn)
+
+    return dict(
+        get_package_list=get_package_list,
+        get_all_resident_names=get_all_resident_names
+    )
 
 
 @bp.route("/overview", methods=["GET", "POST"])
@@ -37,6 +43,11 @@ def overview():
         if not just_added:
             flash("Oops! Didn't add")
         # Convert the just_added package timestamp to RFC3339 so it can be jsonified.
-        just_added["delivered"] = just_added["delivered"].strftime(r"%Y-%m-%dT%H:%M:%SZ")
         socketio.emit("new_package", just_added, broadcast=True)
     return render_template("officer/overview.html")
+
+@bp.route("/template")
+def template():
+    with open('app/main/database/email-template.txt') as f:
+        email=f.read()
+    return render_template("officer/template.html", email=email)

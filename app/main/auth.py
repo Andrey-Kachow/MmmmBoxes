@@ -41,7 +41,7 @@ def login():
         # If details is empty, something went wrong during login.
         if not details:
             flash("Incorrect login details!")
-            return render_template("auth/register.html")
+            return redirect(url_for('auth.register'))
 
         session.clear()
         session["user_id"] = details["id"]
@@ -70,6 +70,7 @@ def load_logged_in_user():
         return
 
     g.user = details
+
 
 @bp.route("/logout")
 def logout():
