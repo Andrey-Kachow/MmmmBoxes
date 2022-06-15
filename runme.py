@@ -36,8 +36,6 @@ if __name__ == "__main__":
         replace_bg_colour("#ff8484")
         socketio.run(app, host=argv[2], port=argv[3])
     elif env == "local":
-        replace_bg_colour("#ff8484")
-
         print("Running locally.")
         socketio.run(app)
 
