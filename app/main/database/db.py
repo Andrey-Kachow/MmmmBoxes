@@ -1,4 +1,4 @@
-import psycopg2, json, os, string, psycopg2.extras
+import psycopg2, json, os, string, psycopg2.extras, datetime
 from werkzeug.security import check_password_hash, generate_password_hash
 
 
@@ -235,6 +235,34 @@ def add_new_package(conn, resident_name, title):
         )
         conn.commit()
         return clean_package_dict(dict(curs.fetchone()))
+
+
+def delete_package(conn,package_id):
+    with conn.cursor() as curs:
+        curs.execute(
+            """
+            DELETE
+            FROM packages
+            WHERE packages.id = %s;
+            """,
+            (package_id,)
+        )
+        conn.commit() 
+    return True
+
+def collect_package(conn,package_id):
+    collection_time = datetime.datetime.now().isoformat()
+    with conn.cursor() as curs:
+        curs.execute(
+            """
+            UPDATE packages
+            SET collected = %s
+            WHERE packages.id = %s;
+            """,
+            (collection_time, package_id,)
+        )
+        conn.commit() 
+    return True
 
 
 def get_all_resident_names(conn):

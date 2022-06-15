@@ -51,3 +51,26 @@ def template():
     with open('app/main/database/email-template.txt') as f:
         email=f.read()
     return render_template("officer/template.html", email=email)
+
+
+@bp.route('/delete_package/<package_id>', methods=["GET", "POST"])
+def delete_package(package_id):
+    success = db.delete_package(
+            current_app.db_conn,
+            package_id)
+    if success:
+        flash('Package deleted.')
+    else: 
+        flash("Oops! Couldn't delete")
+    return redirect(url_for('officer.overview'))
+
+@bp.route('/collect_package/<package_id>', methods=["GET", "POST"])
+def collect_package(package_id):
+    success = db.collect_package(
+            current_app.db_conn,
+            package_id)
+    if success:
+        flash('Package Collected.')
+    else: 
+        flash("Oops! Couldn't collect")
+    return redirect(url_for('officer.overview'))

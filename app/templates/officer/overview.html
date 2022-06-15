@@ -78,7 +78,7 @@
   <tr class="packages_row">
       <th class="packages_col">Package Owner</th>
       <th class="packages_col">Owner's Email</th>
-      <th class="packages_col">Package Title</th>
+      <th class="packages_col">Package Tag</th>
       <th class="packages_col">Delivered</th>
       <th class="packages_col">Collected</th>
   </tr>
@@ -88,7 +88,17 @@
       <td class="packages_col">{{ package.email }}</td>
       <td class="packages_col">{{ package.title }}</td>
       <td class="packages_col">{{ package.delivered }}</td>
-      <td class="packages_col">{{ package.collected }}</td>
+      {% if package.collected == "Collection pending" %}
+        <td class="packages_col"> Collection Pending
+        <form action="{{ url_for('officer.delete_package', package_id=package.id) }}" method=post>
+          <input type=submit value=Delete>
+        </form>
+        <form action="{{ url_for('officer.collect_package', package_id=package.id) }}" method=post>
+          <input type=submit value=Collect>
+        </form></td>
+      {% else %}
+        <td class="packages_col">{{ package.collected }}</td>
+      {% endif %}
     </tr>
   {% endfor %}
 </table>
