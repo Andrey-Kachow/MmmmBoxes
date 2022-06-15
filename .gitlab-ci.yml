@@ -75,6 +75,8 @@ deploy-master:
 deploy_dev:
   stage: deploy
   script:
+    # This horrific regex replaces the html-background colour in style.css with #f37d7d.
+    - cat app/static/style.css | sed -Ez "s/(html.*background:)[^;]*(;.*)/\1#f37d7d\2/g" > app/static/style.css
     - dpl --provider=heroku --app=drp11-dev --api-key=$MS_API_KEY
   rules:
     - if: $CI_COMMIT_BRANCH == "dev"
