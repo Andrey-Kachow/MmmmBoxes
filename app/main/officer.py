@@ -41,8 +41,17 @@ def overview():
         socketio.emit("new_package", just_added, broadcast=True)
     return render_template("officer/overview.html")
 
+email_location = 'app/main/database/email-template.txt'
+
 @bp.route("/template")
 def template():
-    with open('app/main/database/email-template.txt') as f:
+    with open(email_location, 'r') as f:
         email=f.read()
     return render_template("officer/template.html", email=email)
+
+@bp.route("/template", methods=['POST'])
+def submit():
+    email = request.form['email']
+    with open(email_location, 'w') as f:
+        f.write(email)
+    return render_template("officer/template.html", email=email)    
