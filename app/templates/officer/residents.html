@@ -4,16 +4,14 @@
 {% endblock %}
 
 {% block header %}
-<h1>{% block title %}Residents profiles overview{% endblock %}</h1>
+<h1>{% block title %}All residents{% endblock %}</h1>
 {% endblock %}
 
 {% block content %}
 
 <ul>
   {% for resident in get_residents() %}
-    <a href="{{ url_for('officer.resident_profile', id=resident.id) }}">
-      <li>{{ resident.fullname }}</li>
-    </a>
+    <li><a href="{{ url_for('officer.resident_profile', id=resident.id) }}">{{ resident.fullname }}</a></li>
   {% endfor %}
 </ul>
 
