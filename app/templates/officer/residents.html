@@ -15,13 +15,6 @@
   placeholder="Search Residents..."
   onkeyup="filterListOfresidents()">
 
-<ul id="list_of_residents">
-  {% for resident in get_residents() %}
-    <li class="resident_list_elem">
-      <a href="{{ url_for('officer.resident_profile', id=resident.id) }}">
-        {{ resident.fullname }}
-      </a>
-    </li>
 <ul>
   {% for resident in get_residents()|sort(attribute="fullname") %}
     <li><a href="{{ url_for('officer.resident_profile', id=resident.id) }}">{{ resident.fullname }}</a></li>
