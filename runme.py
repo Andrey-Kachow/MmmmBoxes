@@ -32,4 +32,4 @@ if __name__ == "__main__":
     else:
         if environ["DRP_PHASE"] == "dev":
             replace_bg_colour("#ff8484")
-        socketio.run(app, host=argv[2], port=argv[3])
+        socketio.run(app, host=argv[1], port=argv[2])
