@@ -17,6 +17,7 @@
 
   {% if session.get("user_is_officer") %}
     <a href="{{ url_for('officer.overview') }}">View all packages</a>
+    <a href="{{ url_for('officer.residents') }}">Browse residents</a>
   {% else %}
     <a href="{{ url_for('resident.overview') }}">View your packages</a>
   {% endif %}

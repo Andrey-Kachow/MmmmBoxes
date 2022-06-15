@@ -52,3 +52,8 @@ def template():
     with open('app/main/database/email-template.txt') as f:
         email=f.read()
     return render_template("officer/template.html", email=email)
+
+
+@bp.route("/residents")
+def residents():
+    return render_template("officer/residents.html")
