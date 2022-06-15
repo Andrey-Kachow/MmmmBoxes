@@ -7,7 +7,13 @@ margin: 5px
 }
 
 
-#resident_name_inp:focus {outline: 3px solid #ddd;}
+#resident_name_inp {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#resident_name_inp:focus {
+  outline: none;
+}
 
 .dropdown_input_div {
   position: relative;
@@ -20,17 +26,17 @@ margin: 5px
   background-color: #f6f6f6;
   overflow: auto;
   width: 100%;
-  border: 1px solid #ddd;
   z-index: 1;
 }
 
 .dropdown-content button {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: #ffffff;
   width: 100%;
   color: black;
   text-decoration: none;
   text-align: left;
-  padding-left: 4px;
+  padding-left: 0.2rem;
   border: none;
   display: block;
 }
