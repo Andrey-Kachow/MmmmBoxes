@@ -26,7 +26,7 @@ function filterResidents() {
   const buttons = document.getElementById("dropdown_residents").getElementsByTagName("button")
   Object.values(buttons).forEach((button, i) => {
     const text = button.textContent
-    if (text.toLowerCase().indexOf(filter) > -1) {
+    if (filterSatisfied(filter, text)) {
       button.style.display = ""
     } else {
       button.style.display = "none"
