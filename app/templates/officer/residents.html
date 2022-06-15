@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block local_style %}
+{% endblock %}
+
+{% block header %}
+<h1>{% block title %}Residents profiles overview{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+
+<ul>
+  {% for resident in get_residents() %}
+    <a href="{{ url_for('officer.resident_profile', id=resident.id) }}">
+      <li>{{ resident.fullname }}</li>
+    </a>
+  {% endfor %}
+</ul>
+
+{% endblock %}
+
+{% block scripts %}
+  <!-- <script src="{{ url_for('static', filename='officer.js') }}" charset="utf-8"></script> -->
+{% endblock %}
