@@ -25,20 +25,11 @@ if __name__ == "__main__":
         print("FLASK_APP is not set! Terminating.")
         exit()
 
-    # Check first argument to decide if running locally
-    env = argv[1]
-
-    if env == "live":
-        print("Running live.")
-        socketio.run(app, host=argv[2], port=argv[3])
-    elif env == "dev":
-        print("Running dev.")
-        replace_bg_colour("#ff8484")
-        socketio.run(app, host=argv[2], port=argv[3])
-    elif env == "local":
+    # Check if DRP_PHASE variable is defined. If not, assume running on local
+    if not "DRP_PHASE" in environ or environ["DRP_PHASE"] == "local":
         print("Running locally.")
         socketio.run(app)
-
     else:
-        print("Incorrect live/dev/local flag")
-        exit()
+        if environ["DRP_PHASE"] == "dev":
+            replace_bg_colour("#ff8484")
+        socketio.run(app, host=argv[2], port=argv[3])
