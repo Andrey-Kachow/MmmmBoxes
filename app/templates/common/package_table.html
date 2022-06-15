@@ -1,0 +1,62 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='package-table.css') }}">
+
+<table id="packages_table">
+  <tr class="packages_row">
+      <th class="packages_col_heading">Package Owner</th>
+      <th class="packages_col_heading">Owner's Email</th>
+      <th class="packages_col_heading">Package Title</th>
+      <th class="packages_col_heading_date">Delivered</th>
+      <th class="packages_col_heading_date">Collected</th>
+  </tr>
+
+  {% set ns = namespace(last_delivered="")%}
+  {% for package in get_package_list()|sort(reverse=True, attribute="delivered") %}
+     <!-- Forgive me for this. RFC3339 timestamp is 2022-06-09T17:41:27.409845, so taking first 10 chars gives date-->
+    {% if ns.last_delivered != package.delivered[:10] and ns.last_delivered != "" %}
+      <tr><td class="packages_spacer"></td></tr>
+    {% endif %}
+
+    <tr class="packages_row">
+      <td class="packages_col">{{ package.fullname }}</td>
+      <td class="packages_col">{{ package.email }}</td>
+      <td class="packages_col">{{ package.title }}</td>
+      <td class="packages_col">{{ package.deliverednice }}</td>
+      <td class="packages_col">{{ package.collectednice }}</td>
+    </tr>
+
+    {% set ns.last_delivered = package.delivered[:10] %}
+  {% endfor %}
+</table>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.1/socket.io.js" integrity="sha512-9mpsATI0KClwt+xVZfbcf2lJ8IFBAwsubJ6mI3rtULwyM3fBmQFzj0It4tGqxLOGQwGfJdk/G+fANnxfq9/cew==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js" integrity="sha512-n/4gHW3atM3QqRcbCn6ewmpxcLAHGaDjpEBu4xZd47N0W2oQ+6q7oc3PXstrJYXcbNU1OHdQ1T7pAP+gi5Yu8g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>    <script type="text/javascript" charset="utf-8">
+    let socket = io()
+    socket.on("new_package", (data) => {
+        console.log(data);
+        let package_table = document.getElementById("packages_table");
+        let package_row = package_table.insertRow(1);
+        package_row.classList.add("packages_row")
+
+        let fullname_cell = package_row.insertCell()
+        fullname_cell.classList.add("packages_col")
+        fullname_cell.appendChild(document.createTextNode(data.fullname));
+
+        let email_cell = package_row.insertCell()
+        email_cell.classList.add("packages_col")
+        email_cell.appendChild(document.createTextNode(data.email));
+
+        let title_cell = package_row.insertCell()
+        title_cell.classList.add("packages_col")
+        title_cell.appendChild(document.createTextNode(data.title));
+
+        let delivered_cell = package_row.insertCell()
+        delivered_cell.classList.add("packages_col")
+        delivered_cell.appendChild(document.createTextNode(data.deliverednice));
+
+        let collected_cell = package_row.insertCell()
+        collected_cell.classList.add("packages_col")
+        collected_cell.appendChild(document.createTextNode(data.collectednice));
+
+    });
+</script>

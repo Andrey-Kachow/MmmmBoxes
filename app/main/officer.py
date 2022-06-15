@@ -26,9 +26,13 @@ def utility_processor():
     def get_all_resident_names():
         return db.get_all_resident_names(current_app.db_conn)
 
+    def get_residents():
+        return db.get_residents(current_app.db_conn)
+
     return dict(
         get_package_list=get_package_list,
-        get_all_resident_names=get_all_resident_names
+        get_all_resident_names=get_all_resident_names,
+        get_residents=get_residents
     )
 
 
@@ -46,8 +50,24 @@ def overview():
         socketio.emit("new_package", just_added, broadcast=True)
     return render_template("officer/overview.html")
 
+
 @bp.route("/template")
 def template():
     with open('app/main/database/email-template.txt') as f:
         email=f.read()
     return render_template("officer/template.html", email=email)
+
+
+@bp.route("/residents")
+def residents():
+    return render_template("officer/residents.html")
+
+
+@bp.route("/residents/<int:id>/profile")
+def resident_profile(id):
+    return render_template(
+        "officer/resident_profile.html",
+        resident=db.get_user_by_id(current_app.db_conn, id),
+        get_package_list=lambda: db.get_all_packages(current_app.db_conn, id),
+        hide_owner_details_in_table=True
+     )

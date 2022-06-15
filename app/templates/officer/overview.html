@@ -1,47 +1,12 @@
 {% extends 'base.html' %}
 
 {% block header %}
-  <h1>{% block title %}OFFICER Package list{% endblock %}</h1>
+  <h1>{% block title %}All packages{% endblock %}</h1>
 {% endblock %}
 
 
 {% block local_style %}
   <link rel="stylesheet" href="{{ url_for('static', filename='overview.css') }}">
-  <style>
-
-#resident_name_inp:focus {outline: 3px solid #ddd;}
-
-.dropdown_input_div {
-  position: relative;
-  display: inline-block;
-}
-
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f6f6f6;
-  overflow: auto;
-  width: 100%;
-  border: 1px solid #ddd;
-  z-index: 1;
-}
-
-.dropdown-content button {
-  background-color: #ffffff;
-  width: 100%;
-  color: black;
-  text-decoration: none;
-  text-align: left;
-  padding-left: 4px;
-  border: none;
-  display: block;
-}
-
-.dropdown-content button:hover {
-  background-color: #ddd;
-}
-
-  </style>
 {% endblock %}
 
 
@@ -72,26 +37,10 @@
   <input type="submit" value="Add new package">
 </form>
 
-<a href="{{ url_for('officer.template') }}" >Edit reminder email</a>
+<p><a href="{{ url_for('officer.template') }}" >Edit reminder email</a></p>
+<p><a href="{{ url_for('hello') }}" >Back to homepage</a></p>
 
-<table id="packages_table">
-  <tr class="packages_row">
-      <th class="packages_col">Package Owner</th>
-      <th class="packages_col">Owner's Email</th>
-      <th class="packages_col">Package Title</th>
-      <th class="packages_col">Delivered</th>
-      <th class="packages_col">Collected</th>
-  </tr>
-  {% for package in get_package_list() %}
-    <tr class="packages_row">
-      <td class="packages_col">{{ package.fullname }}</td>
-      <td class="packages_col">{{ package.email }}</td>
-      <td class="packages_col">{{ package.title }}</td>
-      <td class="packages_col">{{ package.delivered }}</td>
-      <td class="packages_col">{{ package.collected }}</td>
-    </tr>
-  {% endfor %}
-</table>
+{% include 'common/package_table.html' %}
 
 {% endblock %}
 

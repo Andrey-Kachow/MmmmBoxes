@@ -1,6 +1,7 @@
 import psycopg2, json, os, string, psycopg2.extras
 from werkzeug.security import check_password_hash, generate_password_hash
 
+DATE_FORMAT_STRING = "%H:%M on %a %e %B, %Y"
 
 def initialise_db_connection():
     """
@@ -156,7 +157,9 @@ def get_all_packages(conn, id=None):
         - id
         - title
         - delivered
+        - deliverednice (human readable format)
         - collected
+        - collectednice (human readable format)
         - fullname (of resident)
         - resident_id
         - email (of resident)
@@ -190,7 +193,9 @@ def add_new_package(conn, resident_name, title):
         - id
         - title
         - delivered
+        - deliverednice (human readable format)
         - collected
+        - collectednice (human readable format)
         - fullname (of resident)
         - resident_id
         - email (of resident)"""
@@ -256,13 +261,30 @@ def get_all_resident_names(conn):
 def clean_package_dict(pack_dict):
     """Arguments: package in dictionary form
     Returns: cleaned dictionary
-    Converts timestamps to RFC3339 and assigns default values to Nones."""
+    Converts timestamps to RFC3339 and assigns default values to Nones.
+    Creates new fields deliverednice and collectednice which can be read by non-programmers"""
 
+    pack_dict["deliverednice"] = pack_dict["delivered"].strftime(DATE_FORMAT_STRING)
     pack_dict["delivered"] = pack_dict["delivered"].isoformat()
 
     if pack_dict["collected"] is not None:
+        pack_dict["collectednice"] = pack_dict["collected"].strftime(DATE_FORMAT_STRING)
         pack_dict["collected"] = pack_dict["collected"].isoformat()
     else:
+        pack_dict["collectednice"] = "Collection pending"
         pack_dict["collected"] = "Collection pending"
 
     return pack_dict
+
+
+def get_residents(conn):
+    with conn.cursor() as curs:
+        curs.execute(
+            """
+            SELECT id, fullname
+            FROM users
+            WHERE is_officer = false
+            """
+        )
+        return curs.fetchall()
+    return []

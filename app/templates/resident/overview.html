@@ -2,7 +2,7 @@
 
 
 {% block header %}
-  <h1>{% block title %}RESIDENT Package list{% endblock %}</h1>
+  <h1>{% block title %}Your packages{% endblock %}</h1>
 {% endblock %}
 
 {% block local_style %}
@@ -10,6 +10,8 @@
 {% endblock %}
 
 {% block content %}
+
+<p><a href="{{ url_for('hello') }}" >Back to homepage</a></p>
 
 <form method="post">
   <label for="resident_name">Resident name</label>
@@ -19,55 +21,6 @@
   <input type="submit" value="Add new package">
 </form>
 
-<table id="packages_table">
-  <tr class="packages_row">
-      <th class="packages_col">Package Owner</th>
-      <th class="packages_col">Owner's Email</th>
-      <th class="packages_col">Package Title</th>
-      <th class="packages_col">Delivered</th>
-      <th class="packages_col">Collected</th>
-  </tr>
-  {% for package in get_package_list() %}
-    <tr class="packages_row">
-      <td class="packages_col">{{ package.fullname }}</td>
-      <td class="packages_col">{{ package.email }}</td>
-      <td class="packages_col">{{ package.title }}</td>
-      <td class="packages_col">{{ package.delivered }}</td>
-      <td class="packages_col">{{ package.collected }}</td>
-    </tr>
-  {% endfor %}
-</table>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.1/socket.io.js" integrity="sha512-9mpsATI0KClwt+xVZfbcf2lJ8IFBAwsubJ6mI3rtULwyM3fBmQFzj0It4tGqxLOGQwGfJdk/G+fANnxfq9/cew==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js" integrity="sha512-n/4gHW3atM3QqRcbCn6ewmpxcLAHGaDjpEBu4xZd47N0W2oQ+6q7oc3PXstrJYXcbNU1OHdQ1T7pAP+gi5Yu8g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>    <script type="text/javascript" charset="utf-8">
-    let socket = io()
-    socket.on("new_package", (data) => {
-        console.log(data);
-        let package_table = document.getElementById("packages_table");
-        let package_row = package_table.insertRow();
-        package_row.classList.add("packages_row")
-
-        let fullname_cell = package_row.insertCell()
-        fullname_cell.classList.add("packages_col")
-        fullname_cell.appendChild(document.createTextNode(data.fullname));
-
-        let email_cell = package_row.insertCell()
-        email_cell.classList.add("packages_col")
-        email_cell.appendChild(document.createTextNode(data.email));
-
-        let title_cell = package_row.insertCell()
-        title_cell.classList.add("packages_col")
-        title_cell.appendChild(document.createTextNode(data.title));
-
-        let delivered_cell = package_row.insertCell()
-        delivered_cell.classList.add("packages_col")
-        delivered_cell.appendChild(document.createTextNode(data.delivered));
-
-        let collected_cell = package_row.insertCell()
-        collected_cell.classList.add("packages_col")
-        collected_cell.appendChild(document.createTextNode(data.collected));
-
-    });
-</script>
+{% include 'common/package_table.html' %}
 
 {% endblock %}
