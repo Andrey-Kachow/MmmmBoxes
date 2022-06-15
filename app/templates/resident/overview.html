@@ -32,8 +32,8 @@
       <td class="packages_col">{{ package.fullname }}</td>
       <td class="packages_col">{{ package.email }}</td>
       <td class="packages_col">{{ package.title }}</td>
-      <td class="packages_col">{{ package.delivered }}</td>
-      <td class="packages_col">{{ package.collected }}</td>
+      <td class="packages_col">{{ package.deliverednice }}</td>
+      <td class="packages_col">{{ package.collectednice }}</td>
     </tr>
   {% endfor %}
 </table>
@@ -61,11 +61,11 @@
 
         let delivered_cell = package_row.insertCell()
         delivered_cell.classList.add("packages_col")
-        delivered_cell.appendChild(document.createTextNode(data.delivered));
+        delivered_cell.appendChild(document.createTextNode(data.deliverednice));
 
         let collected_cell = package_row.insertCell()
         collected_cell.classList.add("packages_col")
-        collected_cell.appendChild(document.createTextNode(data.collected));
+        collected_cell.appendChild(document.createTextNode(data.collectednice));
 
     });
 </script>
