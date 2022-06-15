@@ -9,27 +9,16 @@
 
 {% block content %}
 
-<!-- <table id="packages_table">
-  <tr class="packages_row">
-      <th class="packages_col">Package Owner</th>
-      <th class="packages_col">Owner's Email</th>
-      <th class="packages_col">Package Title</th>
-      <th class="packages_col">Delivered</th>
-      <th class="packages_col">Collected</th>
-  </tr>
-  {% for package in get_package_list() %}
-    <tr class="packages_row">
-      <td class="packages_col">{{ package.fullname }}</td>
-      <td class="packages_col">{{ package.email }}</td>
-      <td class="packages_col">{{ package.title }}</td>
-      <td class="packages_col">{{ package.delivered }}</td>
-      <td class="packages_col">{{ package.collected }}</td>
-    </tr>
+<ul>
+  {% for resident in get_residents() %}
+    <a href="{{ url_for('officer.resident_profile', id=resident.id) }}">
+      <li>{{ resident.fullname }}</li>
+    </a>
   {% endfor %}
-</table> -->
+</ul>
 
 {% endblock %}
 
 {% block scripts %}
-  <script src="{{ url_for('static', filename='officer.js') }}" charset="utf-8"></script>
+  <!-- <script src="{{ url_for('static', filename='officer.js') }}" charset="utf-8"></script> -->
 {% endblock %}

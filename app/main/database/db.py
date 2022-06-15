@@ -266,3 +266,16 @@ def clean_package_dict(pack_dict):
         pack_dict["collected"] = "Collection pending"
 
     return pack_dict
+
+
+def get_residents(conn):
+    with conn.cursor() as curs:
+        curs.execute(
+            """
+            SELECT id, fullname
+            FROM users
+            WHERE is_officer = false
+            """
+        )
+        return curs.fetchall()
+    return []
