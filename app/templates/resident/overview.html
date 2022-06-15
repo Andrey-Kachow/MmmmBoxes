@@ -2,7 +2,7 @@
 
 
 {% block header %}
-  <h1>{% block title %}RESIDENT Package list{% endblock %}</h1>
+  <h1>{% block title %}Your packages{% endblock %}</h1>
 {% endblock %}
 
 {% block local_style %}
@@ -10,6 +10,8 @@
 {% endblock %}
 
 {% block content %}
+
+<p><a href="{{ url_for('hello') }}" >Back to homepage</a></p>
 
 <form method="post">
   <label for="resident_name">Resident name</label>
@@ -21,20 +23,29 @@
 
 <table id="packages_table">
   <tr class="packages_row">
-      <th class="packages_col">Package Owner</th>
-      <th class="packages_col">Owner's Email</th>
-      <th class="packages_col">Package Title</th>
-      <th class="packages_col">Delivered</th>
-      <th class="packages_col">Collected</th>
+      <th class="packages_col_heading">Package Owner</th>
+      <th class="packages_col_heading">Owner's Email</th>
+      <th class="packages_col_heading">Package Title</th>
+      <th class="packages_col_heading_date">Delivered</th>
+      <th class="packages_col_heading_date">Collected</th>
   </tr>
-  {% for package in get_package_list() %}
+
+  {% set ns = namespace(last_delivered="")%}
+  {% for package in get_package_list()|sort(reverse=True, attribute="delivered") %}
+     <!-- Forgive me for this. RFC3339 timestamp is 2022-06-09T17:41:27.409845, so taking first 10 chars gives date-->
+    {% if ns.last_delivered != package.delivered[:10] and ns.last_delivered != "" %}
+      <tr><td class="packages_spacer"></td></tr>
+    {% endif %}
+
     <tr class="packages_row">
       <td class="packages_col">{{ package.fullname }}</td>
       <td class="packages_col">{{ package.email }}</td>
       <td class="packages_col">{{ package.title }}</td>
-      <td class="packages_col">{{ package.delivered }}</td>
-      <td class="packages_col">{{ package.collected }}</td>
+      <td class="packages_col">{{ package.deliverednice }}</td>
+      <td class="packages_col">{{ package.collectednice }}</td>
     </tr>
+
+    {% set ns.last_delivered = package.delivered[:10] %}
   {% endfor %}
 </table>
 
@@ -44,7 +55,7 @@
     socket.on("new_package", (data) => {
         console.log(data);
         let package_table = document.getElementById("packages_table");
-        let package_row = package_table.insertRow();
+        let package_row = package_table.insertRow(-1);
         package_row.classList.add("packages_row")
 
         let fullname_cell = package_row.insertCell()
@@ -61,11 +72,11 @@
 
         let delivered_cell = package_row.insertCell()
         delivered_cell.classList.add("packages_col")
-        delivered_cell.appendChild(document.createTextNode(data.delivered));
+        delivered_cell.appendChild(document.createTextNode(data.deliverednice));
 
         let collected_cell = package_row.insertCell()
         collected_cell.classList.add("packages_col")
-        collected_cell.appendChild(document.createTextNode(data.collected));
+        collected_cell.appendChild(document.createTextNode(data.collectednice));
 
     });
 </script>
