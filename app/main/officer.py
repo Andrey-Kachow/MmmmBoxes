@@ -46,6 +46,7 @@ def overview():
         socketio.emit("new_package", just_added, broadcast=True)
     return render_template("officer/overview.html")
 
+
 @bp.route("/template")
 def template():
     with open('app/main/database/email-template.txt') as f:
