@@ -35,6 +35,12 @@ test-db:
     - changes:
       - app/main/database/**/*
 
+test-template:
+  stage: test
+  script:
+    - *preamble
+    - pytest test/test_replacement.py
+
 # ##############################
 
 # # Below are examples of non-compulsory tests.
