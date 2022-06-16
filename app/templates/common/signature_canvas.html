@@ -37,3 +37,6 @@
   src="{{ url_for('static', filename='signature_canvas.js')}}"
   charset="utf-8">
 </script>
+<script type="text/javascript">
+  initializeSignatureProcessingUrl("{{ url_for('officer.sign') }}")
+</script>

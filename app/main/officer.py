@@ -1,5 +1,6 @@
-import functools
+import functools, json
 from .database import db
+import base64
 
 from flask import *
 from .. import socketio
@@ -8,6 +9,8 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from .auth import login_required
 
 bp = Blueprint("officer", __name__, url_prefix="/officer")
+
+SUCCESS_200 = (json.dumps({'success':True}), 200, {'ContentType':'application/json'})
 
 
 # Check user is logged in and is resident
@@ -77,6 +80,7 @@ def resident_profile(id):
         hide_owner_details_in_table=True
      )
 
+
 @bp.route("/template", methods=['POST'])
 def submit():
     email = request.form['email']
@@ -84,3 +88,12 @@ def submit():
         f.write(email)
         flash("Changes Saved!")
     return render_template("officer/template.html", email=email)
+
+
+@bp.route("/sign", methods=['post'])
+def sign():
+    # fullname = request.json['fullname']
+    # package_title = request.json['title']
+    # pakcage_id = request.json['']
+    # if not db.signature_is_valid()
+    return SUCCESS_200
