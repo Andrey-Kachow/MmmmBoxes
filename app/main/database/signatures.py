@@ -32,6 +32,25 @@ def is_valid(conn, given_fullname, given_package_title, given_package_id):
     )
 
 
+def img_name(package_id):
+    return os.path.join(SIGNATURES_ROOT, f'sig{packageId}.png')
+
+
+def package_is_signed(pakcage_id):
+    return os.path.exist(img_name(package_id))
+
+
+def mark_package_signed(package_id):
+    # TODO: come back here after db migrations including signature representation
+    pass
+
+
 def add_signature(conn, package_id, data_url):
-    # TODO: implement
-    return False
+    try:
+        captured_img_data = data_url.split(';')[1].split(',')[1]
+        with open(img_name(package_id), "wb") as f:
+            f.write(base64.decodebytes(captured_img_data))
+        mark_package_signed(package_id)
+    except:
+        return False
+    return True
