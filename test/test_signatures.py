@@ -1,4 +1,4 @@
-import tempfile, os
+import tempfile, os, sys
 
 sys.path.append('..')
 
@@ -11,7 +11,8 @@ from drp11.app.main.database.signatures import (
     add_signature,
 )
 
-AMONGUS_DATA_URL = b'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCA'
+AMONGUS_DATA_URL = 'data:image/png;base64,'
+'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCA'
 'YAAABzenr0AAAAAXNSR0IArs4c6QAAAnhJREFUWIXFlzGL1EAUx38v'
 '5LKFpY2dXOEnsBDvG3igjd/A3CILuoKl2toKeoWsa0DxG6zgCfYLJy'
 'xnf8XCdTaWKjGXZ5FJTLKZZJI98EEyyezMvP/7z3/e20g4V+U/mr/N'
