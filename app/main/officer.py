@@ -1,5 +1,5 @@
 import functools, json
-from .database import db
+from .database import db, signatures
 import base64
 
 from flask import *
@@ -92,8 +92,15 @@ def submit():
 
 @bp.route("/sign", methods=['post'])
 def sign():
-    # fullname = request.json['fullname']
-    # package_title = request.json['title']
-    # pakcage_id = request.json['']
-    # if not db.signature_is_valid()
+    fullname = request.json['fullname']
+    package_title = request.json['title']
+    package_id = request.json['pid']
+    data_url = request.json['dataUrl']
+
+    if not signatures.is_valid(current_app.db_conn, fullname, package_title, package_id):
+        return 404
+
+    if not signatures.add_signature(current_app.db_conn, package_id, data_url):
+        return 404
+
     return SUCCESS_200

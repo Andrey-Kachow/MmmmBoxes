@@ -32,8 +32,10 @@
             <button type="button">View</button>
           {% else %}
             <span>Not signed</span>
-            <button type="button" onclick="openSignatureCanvas('{{ package.fullname }}', '{{ package.title }}', {{ package.id }})">
-              Sign
+            <button
+              type="button"
+              onclick="openSignatureCanvas('{{ package.fullname }}', '{{ package.title }}', {{ package.id }})">
+                Sign
             </button>
           {% endif%}
         </td>
