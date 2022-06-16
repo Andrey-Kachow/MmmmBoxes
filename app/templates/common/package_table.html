@@ -58,7 +58,7 @@
           </td>
     
           {% else %}
-            <td class="packages_col">Collected at {{ package.collectednice }}</td>
+            <td class="packages_col"> {{ package.collectednice }}</td>
           {% endif %}
         </tr>
     {% set ns.last_delivered = package.delivered[:10] %}
