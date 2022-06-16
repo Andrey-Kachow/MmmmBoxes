@@ -25,7 +25,7 @@ AMONGUS_DATA_URL = 'data:image/png;base64,' +\
 'V9mMvss5WET4FHhumVBO8eropM02GAjnyueOSW1676sB6zG83uJAHc' +\
 'atOn5vBVDPWuXS3HXa6/+aAMI359bxziI8Mm0TxeFcC9CNWyB2N04A' +\
 'xPN4Zp67GCinBRdzAnBvZqewC0iX9aoFXYJyHVM2Gfp1rGmCeFt92w' +\
-'Jb1IKLcA7wF33s38CnTVLNAAAAAElFTkSuQmCC' +\
+'Jb1IKLcA7wF33s38CnTVLNAAAAAElFTkSuQmCC'
 
 name = "Alex Jobson"
 email = "aljobex@gmail.com"
