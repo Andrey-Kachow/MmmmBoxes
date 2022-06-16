@@ -2,7 +2,8 @@ import tempfile, os, sys
 
 sys.path.append('..')
 
-import drp11.app.main.database.db as tdb
+import drp11.app.main.database.db as db
+import drp11.test.test_db as tdb
 
 from drp11.app.main.database.signatures import (
     is_valid,
@@ -54,8 +55,8 @@ def with_temp_directory(test_func):
 @tdb.with_temp_psql_conn
 def test_package_is_valid_if_exists(conn):
 
-    tdb.register_new_user(conn, name, email, username, password_plain, is_officer)
-    tdb.add_new_package(conn, name, package_title)
+    db.register_new_user(conn, name, email, username, password_plain, is_officer)
+    db.add_new_package(conn, name, package_title)
 
     assert is_valid(conn, name, package_title, 1)
     assert not is_valid(conn, name, package_title, 2)
