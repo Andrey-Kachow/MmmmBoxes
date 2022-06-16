@@ -4,7 +4,16 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.tiny_blue_border {
   border: 1px solid #6a8ad4;
+}
+
+.hidden_signature {
+  height: 0;
+  overflow: hidden;
+  border: 0px solid #000000;
 }
 
 #canvas_wrapper {
