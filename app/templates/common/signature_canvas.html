@@ -1,6 +1,13 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='signature_canvas.css') }}">
 
 <div id="signature_canvas_wrapper" class="tiny_blue_border hidden_signature">
+  <div id="signature_labels">
+    <span id="signature_label_text">
+      Signature for
+      <span id="package_owner_placeholder"></span>'s
+      <span id="package_title_placeholder"></span>
+    </span>
+  </div>
   <div id="canvas_wrapper">
     <canvas id="signature-pad" width="400" height="200"></canvas>
   </div>

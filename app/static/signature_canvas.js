@@ -1,17 +1,23 @@
 function resizeCanvas(canvas) {
-   const ratio = Math.max(window.devicePixelRatio || 1, 1);
-   canvas.width = canvas.offsetWidth * ratio
-   canvas.height = canvas.offsetHeight * ratio
-   canvas.getContext("2d").scale(ratio, ratio)
+  const ratio = Math.max(window.devicePixelRatio || 1, 1);
+  canvas.width = canvas.offsetWidth * ratio
+  canvas.height = canvas.offsetHeight * ratio
+  canvas.getContext("2d").scale(ratio, ratio)
 }
 
-function openSignatureCanvas() {
+function initializeSignatureLabels(ownerFullName, packageTitle) {
+  document.getElementById("package_owner_placeholder").textContent = ownerFullName
+  document.getElementById("package_title_placeholder").textContent = packageTitle
+}
+
+function openSignatureCanvas(ownerFullName, packageTitle) {
+  signaturePad.clear()
+  initializeSignatureLabels(ownerFullName, packageTitle)
   document.getElementById("signature_canvas_wrapper").classList.remove("hidden_signature")
 }
 
 function closeSignatureCanvas() {
   document.getElementById("signature_canvas_wrapper").classList.add("hidden_signature")
-  signaturePad.clear()
 }
 
 

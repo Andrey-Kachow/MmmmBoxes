@@ -7,13 +7,20 @@
 }
 
 .tiny_blue_border {
-  border: 1px solid #6a8ad4;
+  border: 2px solid #6a8ad4;
 }
 
 .hidden_signature {
   height: 0;
   overflow: hidden;
   border: 0px solid #000000;
+}
+
+#signature_labels {
+  background-color: #5d85e3;
+  color: #ffffff;
+  padding: 5px;
+  font-size: 10pt;
 }
 
 #canvas_wrapper {
