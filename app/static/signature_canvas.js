@@ -11,6 +11,7 @@ function openSignatureCanvas() {
 
 function closeSignatureCanvas() {
   document.getElementById("signature_canvas_wrapper").classList.add("hidden_signature")
+  signaturePad.clear()
 }
 
 
