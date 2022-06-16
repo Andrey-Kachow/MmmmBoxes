@@ -22,8 +22,6 @@
 
       {% if g.user %}
         <a href="{{ url_for('auth.logout') }}">Log out</a>
-      {% else %}
-        <a href="{{ url_for('auth.login') }}">Sign in</a>
       {% endif %}
 
     </section>
