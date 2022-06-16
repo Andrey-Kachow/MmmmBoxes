@@ -7,6 +7,7 @@ try:
 except Exception as e:
     pass
 
+
 def is_valid(conn, given_fullname, given_package_title, given_package_id):
     ''' Returns if the given full name, package title and package id
         are consisitent with the database '''

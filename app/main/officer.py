@@ -25,8 +25,15 @@ def before_request():
 @bp.context_processor
 def utility_processor():
 
+    def add_signed_flag(real_dict):
+        real_dict['is_signed'] = signatures.package_is_signed(real_dict['id'])
+        return real_dict
+
     def get_package_list():
-        return db.get_all_packages(current_app.db_conn)
+        return list(map(
+            add_signed_flag,
+            db.get_all_packages(current_app.db_conn)
+        ))
 
     def get_all_resident_names():
         return db.get_all_resident_names(current_app.db_conn)

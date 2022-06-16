@@ -27,7 +27,7 @@
       <td class="packages_col">{{ package.collectednice }}</td>
       {% if show_signature_button %}
         <td class="packages_col">
-          {% if package.signature_path %}
+          {% if package.is_signed %}
             <span>Signed</span>
             <button type="button">View</button>
           {% else %}
