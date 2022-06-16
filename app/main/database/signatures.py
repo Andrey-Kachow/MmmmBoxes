@@ -1,8 +1,11 @@
 import os, base64
 from flask import current_app
 
-
-SIGNATURES_ROOT = os.path.join(current_app.instance_path, 'media', 'signatures')
+SIGNATURES_ROOT = None
+try:
+    SIGNATURES_ROOT = os.path.join(current_app.instance_path, 'media', 'signatures')
+except Exception as e:
+    pass
 
 def is_valid(conn, given_fullname, given_package_title, given_package_id):
     ''' Returns if the given full name, package title and package id
