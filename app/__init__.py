@@ -20,9 +20,7 @@ def create_app():
     @app.route("/hello")
     @login_required
     def hello():
-        return render_template(
-            "hello.html",
-        )
+        return render_template("hello.html", hide_return=True)
 
     @app.route("/")
     def mainpage():
