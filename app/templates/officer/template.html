@@ -13,7 +13,7 @@
 {% block content %}
 <p><a href="{{ url_for('officer.overview') }}" >Back to package list</a></p>
 
-<form action="/action_page.php">
+<form action="{{ url_for('officer.submit') }}" method="post">
     <p><label for="email">Edit Email</label></p>
     <textarea id="email" name="email" rows="20" cols="100">{{email}}</textarea>
     <br>

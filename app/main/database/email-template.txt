@@ -1,6 +1,7 @@
 Dear <first-name> <last-name>
 
-Your package, delivered on <date-d> is ready to collect
+Your package, delivered on <date-d> is ready to collect.
+Please come and collect it at your earliest convenience.
 
 Best Regards
 

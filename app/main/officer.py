@@ -53,10 +53,11 @@ def overview():
         socketio.emit("new_package", just_added, broadcast=True)
     return render_template("officer/overview.html")
 
+email_location = 'app/main/database/email-template.txt'
 
 @bp.route("/template")
 def template():
-    with open('app/main/database/email-template.txt') as f:
+    with open(email_location, 'r') as f:
         email=f.read()
     return render_template("officer/template.html", email=email)
 
@@ -74,3 +75,11 @@ def resident_profile(id):
         get_package_list=lambda: db.get_all_packages(current_app.db_conn, id),
         hide_owner_details_in_table=True
      )
+
+@bp.route("/template", methods=['POST'])
+def submit():
+    email = request.form['email']
+    with open(email_location, 'w') as f:
+        f.write(email)
+        flash("Changes Saved!")
+    return render_template("officer/template.html", email=email)
