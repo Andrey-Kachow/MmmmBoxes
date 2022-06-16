@@ -1,46 +1,48 @@
 {% extends 'base.html' %}
 
 {% block header %}
-  <h1>{% block title %}All packages{% endblock %}</h1>
+<h1>{% block title %}All packages{% endblock %}</h1>
 {% endblock %}
 
 
 {% block local_style %}
-  <link rel="stylesheet" href="{{ url_for('static', filename='overview.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='overview.css') }}">
 {% endblock %}
 
 
 {% block content %}
 
 <form method="post" autocomplete="off">
-  <label for="resident_name">Resident name</label>
+    <label for="resident_name">Resident name</label>
 
-  <div class="dropdown_input_div">
-    <input
-      id="resident_name_inp"
-      name="resident_name"
-      type="text"
-      placeholder="Search Residents..."
-      onfocus="showResidents()"
-      onblur="nonButtonFocusHide()"
-      onkeyup="filterResidents()"
-      required>
-    <div id="dropdown_residents" class="dropdown-content">
-      {% for name in get_all_resident_names() %}
-        <button type="button" onclick="selectResidentName('{{ name }}')">{{ name }}</button>
-      {% endfor %}
+    <div class="dropdown_input_div">
+        <input
+                id="resident_name_inp"
+                name="resident_name"
+                type="text"
+                placeholder="Search Residents..."
+                onfocus="showResidents()"
+                onblur="nonButtonFocusHide()"
+                onkeyup="filterResidents()"
+                required>
+        <div id="dropdown_residents" class="dropdown-content">
+            {% for name in get_all_resident_names() %}
+            <button type="button" onclick="selectResidentName('{{ name }}')">{{ name }}</button>
+            {% endfor %}
+        </div>
     </div>
-  </div>
 
-  <label for="package_title">Title</label>
-  <input name="package_title" id="package_title" required>
-  <input type="submit" value="Add new package">
+    <label for="package_title">Title</label>
+    <input name="package_title" id="package_title" required>
+    <input type="submit" value="Add new package">
 </form>
+
+<a href="{{ url_for('officer.email_all') }}" >Push reminder to all</a>
 
 {% include 'common/package_table.html' %}
 
 {% endblock %}
 
 {% block scripts %}
-  <script src="{{ url_for('static', filename='officer.js') }}" charset="utf-8"></script>
+<script src="{{ url_for('static', filename='officer.js') }}" charset="utf-8"></script>
 {% endblock %}
