@@ -20,6 +20,7 @@ function closeSignatureCanvas() {
   document.getElementById("signature_canvas_wrapper").classList.add("hidden_signature")
 }
 
+// Initializing Canvas and SignaturePad
 
 const signatureCanvas = document.getElementById("signature-pad")
 
@@ -32,6 +33,8 @@ let signaturePad = new SignaturePad(signatureCanvas, {
   backgroundColor: 'rgb(250,250,250)',
   penColor: "rgb(69, 144, 259)"
 });
+
+// Adding events to the signature pad buttons
 
 document.getElementById("signature-clear-btn").addEventListener('click', () => signaturePad.clear())
 document.getElementById("signature-cancel-btn").addEventListener('click', () => closeSignatureCanvas())
