@@ -7,6 +7,9 @@
       <th class="packages_col_heading">Package Title</th>
       <th class="packages_col_heading_date">Delivered</th>
       <th class="packages_col_heading_date">Collected</th>
+      {% if show_signature_button %}
+        <th class="packages_col_heading">Signature</th>
+      {% endif %}
   </tr>
 
   {% set ns = namespace(last_delivered="")%}
@@ -22,11 +25,24 @@
       <td class="packages_col">{{ package.title }}</td>
       <td class="packages_col">{{ package.deliverednice }}</td>
       <td class="packages_col">{{ package.collectednice }}</td>
+      {% if show_signature_button %}
+        <td class="packages_col">
+          {% if package.signature_path %}
+            <span>Signed</span>
+            <button type="button">View</button>
+          {% else %}
+            <span>Not signed</span>
+            <button type="button">Sign</button>
+          {% endif%}
+        </td>
+      {% endif %}
     </tr>
 
     {% set ns.last_delivered = package.delivered[:10] %}
   {% endfor %}
 </table>
+
+{% include 'common/signature_canvas.html' %}
 
 {% include 'common/js_libs.html' %}
 <script type="text/javascript" charset="utf-8">

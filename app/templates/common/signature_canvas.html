@@ -1,0 +1,24 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='signature_canvas.css') }}">
+
+<div id="signature_canvas_wrapper">
+  <div id="canvas_wrapper">
+    <canvas id="signature-pad" width="400" height="200"></canvas>
+  </div>
+  <div class="signature-clear-btn">
+    <button id="clear">Clear</button>
+  </div>
+  <div class="signature-submit-btn">
+    <button id="clear">Clear</button>
+  </div>
+</div>
+
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/signature_pad/1.3.5/signature_pad.min.js"
+  integrity="sha512-kw/nRM/BMR2XGArXnOoxKOO5VBHLdITAW00aG8qK4zBzcLVZ4nzg7/oYCaoiwc8U9zrnsO9UHqpyljJ8+iqYiQ=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer">
+</script>
+<script
+  src="{{ url_for('static', filename='signature_canvas.js')}}"
+  charset="utf-8">
+</script>

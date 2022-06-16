@@ -34,7 +34,8 @@ def utility_processor():
     return dict(
         get_package_list=get_package_list,
         get_all_resident_names=get_all_resident_names,
-        get_residents=get_residents
+        get_residents=get_residents,
+        show_signature_button=True
     )
 
 
