@@ -5,12 +5,7 @@ sys.path.append('..')
 import drp11.app.main.database.db as db
 import drp11.test.test_db as tdb
 
-from drp11.app.main.database.signatures import (
-    is_valid,
-    img_name,
-    package_is_signed,
-    add_signature,
-)
+import drp11.app.main.database.signatures as sig
 
 AMONGUS_DATA_URL = 'data:image/png;base64,'
 'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCA'
@@ -44,10 +39,10 @@ def with_temp_directory(test_func):
 
     def wrapper():
         with tempfile.TemporaryDirectory() as dirname:
-            _temp = tdb.SIGNATURES_ROOT
-            tdb.SIGNATURES_ROOT = dirname
+            _temp = sig.SIGNATURES_ROOT
+            sig.SIGNATURES_ROOT = dirname
             test_func(dirname)
-            tdb.SIGNATURES_ROOT = _temp
+            sig.SIGNATURES_ROOT = _temp
 
     return wrapper
 
@@ -58,23 +53,23 @@ def test_package_is_valid_if_exists(conn):
     db.register_new_user(conn, name, email, username, password_plain, is_officer)
     db.add_new_package(conn, name, package_title)
 
-    assert is_valid(conn, name, package_title, 1)
-    assert not is_valid(conn, name, package_title, 2)
+    assert sig.is_valid(conn, name, package_title, 1)
+    assert not sig.is_valid(conn, name, package_title, 2)
 
 
 @with_temp_directory
 def test_img_name_for_sanity(dirname):
     for package_id in range(100):
-        assert os.path.join(dirname, f'sig{package_id}.png') == img_name(package_id)
+        assert os.path.join(dirname, f'sig{package_id}.png') == sig.img_name(package_id)
 
 
 @with_temp_directory
 def test_add_signature_can_add_signatures(dirname):
-    assert add_signature(1, AMONGUS_DATA_URL)
+    assert sig.add_signature(1, AMONGUS_DATA_URL)
 
 
 @with_temp_directory
 def test_package_is_signed_if_exists(dirname):
-    add_signature(1, AMONGUS_DATA_URL)
-    assert package_is_signed(1)
-    assert not package_is_signed(2)
+    sig.add_signature(1, AMONGUS_DATA_URL)
+    assert sig.package_is_signed(1)
+    assert not sig.package_is_signed(2)
