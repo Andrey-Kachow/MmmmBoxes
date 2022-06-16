@@ -40,10 +40,10 @@ test-signatures:
   script:
     - *preamble
     - pytest test/test_signatures.py
-  rules:
-    - *on-master-or-merge
-    - changes:
-      - app/main/database/**/*
+  # rules:
+  #   - *on-master-or-merge
+  #   - changes:
+  #     - app/main/database/**/*
 
 # ##############################
 

@@ -41,15 +41,14 @@ def package_is_signed(pakcage_id):
 
 def mark_package_signed(package_id):
     # TODO: come back here after db migrations including signature representation
-    pass
+    return True
 
 
-def add_signature(conn, package_id, data_url):
+def add_signature(package_id, data_url):
     try:
         captured_img_data = data_url.split(';')[1].split(',')[1]
         with open(img_name(package_id), "wb") as f:
             f.write(base64.decodebytes(captured_img_data))
-        mark_package_signed(package_id)
     except:
         return False
     return True

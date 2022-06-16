@@ -100,7 +100,10 @@ def sign():
     if not signatures.is_valid(current_app.db_conn, fullname, package_title, package_id):
         return 404
 
-    if not signatures.add_signature(current_app.db_conn, package_id, data_url):
+    if not signatures.add_signature(package_id, data_url):
+        return 404
+
+    if not signatures.mark_package_signed(current_app.db_conn, package_id):
         return 404
 
     return SUCCESS_200

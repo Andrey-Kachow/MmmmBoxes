@@ -38,15 +38,14 @@ password_plain = "_huligancheg324_"
 is_officer = False
 package_title = "HP printer"
 
+
 def with_temp_directory(test_func):
 
     def wrapper():
         with tempfile.TemporaryDirectory() as dirname:
             _temp = tdb.SIGNATURES_ROOT
             tdb.SIGNATURES_ROOT = dirname
-
             test_func(dirname)
-
             tdb.SIGNATURES_ROOT = _temp
 
     return wrapper
@@ -66,3 +65,15 @@ def test_package_is_valid_if_exists(conn):
 def test_img_name_for_sanity(dirname):
     for package_id in range(100):
         assert os.path.join(dirname, f'sig{package_id}.png') == img_name(package_id)
+
+
+@with_temp_directory
+def test_add_signature_can_add_signatures(dirname):
+    assert add_signature(1, AMONGUS_DATA_URL)
+
+
+@with_temp_directory
+def test_package_is_signed_if_exists(dirname):
+    add_signature(1, AMONGUS_DATA_URL)
+    assert package_is_signed(1)
+    assert not package_is_signed(2)
