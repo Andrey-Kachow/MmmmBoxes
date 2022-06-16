@@ -20,16 +20,23 @@ function selectResidentName(name) {
   hideResidents();
 }
 
-function filterResidents() {
-  const input = document.getElementById("resident_name_inp")
-  const filter = input.value.toLowerCase()
-  const buttons = document.getElementById("dropdown_residents").getElementsByTagName("button")
-  Object.values(buttons).forEach((button, i) => {
-    const text = button.textContent
-    if (text.toLowerCase().indexOf(filter) > -1) {
-      button.style.display = ""
+function filteredSearchDisplayAlter(inputId, containerId, listItemTagName, textGetter) {
+  const filter = document.getElementById(inputId).value
+  const items = document.getElementById(containerId).getElementsByTagName(listItemTagName)
+  Object.values(items).forEach((item, i) => {
+    const text = textGetter(item)
+    if (filterSatisfied(filter, text)) {
+      item.style.display = ""
     } else {
-      button.style.display = "none"
+      item.style.display = "none"
     }
   });
+}
+
+function filterResidents() {
+  filteredSearchDisplayAlter("resident_name_inp", "dropdown_residents", "button", (elem) => elem.textContent)
+}
+
+function filterListOfresidents() {
+  filteredSearchDisplayAlter("resident_list_name_inp", "list_of_residents", "li", (elem) => elem.textContent)
 }

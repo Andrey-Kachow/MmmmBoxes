@@ -50,7 +50,7 @@ def login():
         return redirect(url_for("hello"))
 
     else:
-        return render_template("auth/login.html")
+        return render_template("auth/login.html", hide_return=True)
 
 
 @bp.before_app_request
@@ -75,7 +75,7 @@ def load_logged_in_user():
 @bp.route("/logout")
 def logout():
     session.clear()
-    return redirect(url_for("hello"))
+    return redirect(url_for("auth.login"))
 
 
 def login_required(view):
