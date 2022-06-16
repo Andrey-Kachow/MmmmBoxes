@@ -35,6 +35,16 @@ test-db:
     - changes:
       - app/main/database/**/*
 
+test-signatures:
+  stage: test
+  script:
+    - *preamble
+    - pytest test/test_signatures.py
+  rules:
+    - *on-master-or-merge
+    - changes:
+      - app/main/database/**/*
+
 # ##############################
 
 # # Below are examples of non-compulsory tests.

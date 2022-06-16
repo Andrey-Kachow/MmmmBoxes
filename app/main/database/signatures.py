@@ -4,7 +4,6 @@ from flask import current_app
 
 SIGNATURES_ROOT = os.path.join(current_app.instance_path, 'media', 'signatures')
 
-
 def is_valid(conn, given_fullname, given_package_title, given_package_id):
     ''' Returns if the given full name, package title and package id
         are consisitent with the database '''
@@ -33,7 +32,7 @@ def is_valid(conn, given_fullname, given_package_title, given_package_id):
 
 
 def img_name(package_id):
-    return os.path.join(SIGNATURES_ROOT, f'sig{packageId}.png')
+    return os.path.join(SIGNATURES_ROOT, f'sig{package_id}.png')
 
 
 def package_is_signed(pakcage_id):
