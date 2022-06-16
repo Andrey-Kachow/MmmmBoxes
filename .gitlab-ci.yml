@@ -35,11 +35,11 @@ test-db:
     - changes:
       - app/main/database/**/*
 
-test-template:
-  stage: test
-  script:
-    - *preamble
-    - pytest test/test_replacement.py
+# test-template:
+#   stage: test
+#   script:
+#     - *preamble
+#     - pytest test/test_replacement.py
 
 # ##############################
 
