@@ -21,3 +21,6 @@ def personalise_email(email: str, full_name="", date_d="", date_t="", urgency=""
     p_email = replace(p_email, reg_description, description)
     return p_email
 
+
+def email_resident(email: str, content: str):
+    print("{Emailing resident at " + email + " '" + content + "'}")

@@ -5,7 +5,7 @@ from flask import *
 from .. import socketio
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from app.main.populate_template import personalise_email
+from app.main.populate_template import personalise_email, email_resident
 
 from .auth import login_required
 
@@ -83,13 +83,13 @@ def resident_profile(id):
 @bp.route("/sent-email")
 def email_all():
     packages = db.get_all_packages(current_app.db_conn)
-    print(packages)
     with open(email_location, 'r') as f:
         email = f.read()
     for package in packages:
         if package['collected'] == 'Collection pending':
-                new_email = personalise_email(email, full_name=package['fullname'], date_d=package['delivered'], description=package['title'])
-                print("{Emailing resident at " + package['email'] + " '" + new_email + "'}")
+            new_email = personalise_email(email, full_name=package['fullname'], date_d=package['delivered'],
+                                          description=package['title'])
+            email_resident(package['email'], new_email)
     return render_template("officer/sent-email.html")
 
 
