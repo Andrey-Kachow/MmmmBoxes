@@ -21,3 +21,8 @@ def personalise_email(email: str, full_name="", date_d="", date_t="", urgency=""
     p_email = replace(p_email, reg_description, description)
     return p_email
 
+
+def email_resident(email: str, content: str):
+    # TODO: to prevent spam, have a timer which asks if you want to confirm re-sending of email
+    # TODO: setup SMTP server to send emails
+    print("{Emailing resident at " + email + " '" + content + "'}")
