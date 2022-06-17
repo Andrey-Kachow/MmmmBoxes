@@ -11,9 +11,8 @@
 
 
 {% block content %}
-<p><a href="{{ url_for('officer.overview') }}" >Back to package list</a></p>
 
-<form action="/action_page.php">
+<form action="{{ url_for('officer.submit') }}" method="post">
     <p><label for="email">Edit Email</label></p>
     <textarea id="email" name="email" rows="20" cols="100">{{email}}</textarea>
     <br>
@@ -24,12 +23,10 @@
 <p>To insert student specific information, insert the &#60;tag&#62; in the text where you would like it to appear in your text</p>
 <p>Your options are:</p>
 <ul>
-    <li>&#60;first-name&#62; - first name of student</li>
-    <li>&#60;last-name&#62; - surname name of student</li>
+    <li>&#60;full-name&#62; - full-name of student</li>
     <li>&#60;date-d&#62; - date delivered</li>
     <li>&#60;date-t&#62; - today's date</li>
     <li>&#60;urgency&#62; - urgency level on package</li>
     <li>&#60;description&#62; - description</li>
-    <li>&#60;type&#62; - type of package</li>
 </ul>
 {% endblock content %}

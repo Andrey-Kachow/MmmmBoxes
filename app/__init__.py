@@ -3,6 +3,8 @@ import os
 from flask import Flask, session, render_template, g, redirect, url_for
 from flask_socketio import SocketIO
 
+from .main.auth import login_required
+
 socketio = SocketIO()
 
 def create_app():
@@ -16,10 +18,9 @@ def create_app():
 
     # a simple page that says hello
     @app.route("/hello")
+    @login_required
     def hello():
-        return render_template(
-            "hello.html",
-        )
+        return render_template("hello.html", hide_return=True)
 
     @app.route("/")
     def mainpage():

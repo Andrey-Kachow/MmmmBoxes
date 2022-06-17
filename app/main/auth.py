@@ -50,7 +50,7 @@ def login():
         return redirect(url_for("hello"))
 
     else:
-        return render_template("auth/login.html")
+        return render_template("auth/login.html", hide_return=True)
 
 
 @bp.before_app_request
