@@ -3,7 +3,6 @@
 <table id="packages_table">
   <tr class="packages_row">
       <th class="packages_col_heading">Package Owner</th>
-      <th class="packages_col_heading">Owner's Email</th>
       <th class="packages_col_heading">Package Title</th>
       <th class="packages_col_heading_date">Delivered</th>
       <th class="packages_col_heading_date">Collected</th>
@@ -16,8 +15,19 @@
       <tr><td class="packages_spacer" style="border-width : 0"></td></tr>
     {% endif %}
           <tr class="packages_row">
-          <td class="packages_col">{{ package.fullname }}</td>
-          <td class="packages_col">{{ package.email }}</td>
+          <td class="packages_col">
+            <div class="card-block">
+              <p class="text-center">
+                <span class="mytooltip tooltip-effect-1">
+                  <span class="tooltip-item">{{ package.fullname }}</span>
+                  <span class="tooltip-content clearfix">
+                    <img src="https://thiscatdoesnotexist.com/" width="128" height="128">
+                    <span class="tooltip-text">{{ package.fullname }} <br> {{package.email}} </span>
+                    <a href="/officer/residents/{{ package.resident_id }}/profile">View resident profile</a>
+                  </span>
+                </span></p>
+              </div>
+          </td>
           <td class="packages_col">{{ package.title }}</td>
           <td class="packages_col">{{ package.deliverednice }}</td>
           {% if package.collectednice == "Collection pending" %}

@@ -180,3 +180,16 @@ background-color: #ddd;
   border: 2px solid #aaa;
   padding:10px;
 }
+
+#packages_table th p{
+  align-items: center;
+}
+
+#packages_table td p{
+  align-items: center;
+}
+
+.overview-content{
+  left: 200px;
+  position: relative;
+}
