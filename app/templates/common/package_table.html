@@ -25,23 +25,7 @@
       <td class="packages_col">{{ package.title }}</td>
       <td class="packages_col">{{ package.deliverednice }}</td>
       <td class="packages_col">{{ package.collectednice }}</td>
-      {% if show_signature_button %}
-        <td class="packages_col">
-          {% if package.is_signed %}
-            <span>Signed</span>
-            <button type="button" onclick="requestSignaruteFromServer({{ package.id }})">
-              View
-            </button>
-          {% else %}
-            <span>Not signed</span>
-            <button
-              type="button"
-              onclick="openSignatureCanvas('{{ package.fullname }}', '{{ package.title }}', {{ package.id }})">
-                Sign
-            </button>
-          {% endif%}
-        </td>
-      {% endif %}
+      {% include 'common/signature_btns_col.html' %}
     </tr>
 
     {% set ns.last_delivered = package.delivered[:10] %}
