@@ -9,7 +9,7 @@
     </span>
   </div>
   <div id="canvas_wrapper">
-    <canvas id="signature-pad" width="400" height="200"></canvas>
+    <canvas id="signature-pad"></canvas>
   </div>
   <div id="signature_buttons_containter">
     <div id="signature-cancel" class="signature-btn-wrapper">
@@ -28,6 +28,15 @@
       </button>
     </div>
   </div>
+</div>
+<div id="requested_signature_display_wrapper" class="tiny_blue_border hidden_signature">
+  <div id="signature_loading_info_wrapper">
+    <span id="signature_loading_info"></span>
+  </div>
+  <div class="requested_canvas_wrapper">
+    <img id="signature-display" src="https://media3.giphy.com/media/3oEjI6SIIHBdRxXI40/200.gif"></img>
+  </div>
+  <button type="button" onclick="closeRequestedSignatureDisplay()">Close</button>
 </div>
 
 <script

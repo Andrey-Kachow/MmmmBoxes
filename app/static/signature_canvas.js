@@ -64,6 +64,7 @@ function sendSignatureToServer() {
 }
 
 function requestSignaruteFromServer(packageId) {
+  openRequestedSignatureDisplay()
   $.ajax({
     type: "POST",
     url: signatureRequestUrl,
@@ -80,6 +81,17 @@ function requestSignaruteFromServer(packageId) {
 function showRequestedSignature(response) {
   alert("logged")
   console.log(response);
+  document.getElementById("signature-display").src = response.dataUrl
+  document.getElementById("signature_loading_info").textContent = "received OK!"
+}
+
+function openRequestedSignatureDisplay() {
+  document.getElementById("signature_loading_info").textContent = "loading..."
+  document.getElementById("requested_signature_display_wrapper").classList.remove("hidden_signature")
+}
+
+function closeRequestedSignatureDisplay() {
+  document.getElementById("requested_signature_display_wrapper").classList.add("hidden_signature")
 }
 
 function notifySuccessfulSignature() {

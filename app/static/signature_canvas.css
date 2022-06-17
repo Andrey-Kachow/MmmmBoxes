@@ -94,3 +94,27 @@ canvas#signature-pad {
 #signature-clear-btn:active {
   background: #269CE9;
 }
+
+#requested_signature_display_wrapper {
+  min-width: 256px;
+  max-width: 256px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#signature_loading_info_wrapper {
+  background-color: #fff;
+}
+
+#requested_canvas_wrapper {
+  width: 100%;
+  min-height: 128px;
+  max-height: 128px;
+}
+
+img#signature-display {
+  width: 256px;
+  height: 128px;
+}
