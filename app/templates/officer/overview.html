@@ -16,57 +16,50 @@
 
 <div class="overview-content">
 
-<form method="post" autocomplete="off">
+  <form method="post" autocomplete="off">
     <label for="resident_name">Resident name</label>
 
     <div class="dropdown_input_div">
-        <input
-                id="resident_name_inp"
-                name="resident_name"
-                type="text"
-                placeholder="Search Residents..."
-                onfocus="showResidents()"
-                onblur="nonButtonFocusHide()"
-                onkeyup="filterResidents()"
-                required>
-        <div id="dropdown_residents" class="dropdown-content">
-            {% for name in get_all_resident_names() %}
-            <button type="button" onclick="selectResidentName('{{ name }}')">{{ name }}</button>
-            {% endfor %}
-        </div>
+      <input id="resident_name_inp" name="resident_name" type="text" placeholder="Search Residents..."
+        onfocus="showResidents()" onblur="nonButtonFocusHide()" onkeyup="filterResidents()" required>
+      <div id="dropdown_residents" class="dropdown-content">
+        {% for name in get_all_resident_names() %}
+        <button type="button" onclick="selectResidentName('{{ name }}')">{{ name }}</button>
+        {% endfor %}
+      </div>
     </div>
 
     <label for="package_title">Title</label>
     <input name="package_title" id="package_title" required>
     <input type="submit" value="Add new package">
-</form>
+  </form>
 
-<a href="{{ url_for('officer.email_all') }}" >Push reminder to all</a>
+  <a href="{{ url_for('officer.email_all') }}">Push reminder to all</a>
 
-{% include 'common/package_table.html' %}
+  {% include 'common/package_table.html' %}
 
 </div>
 {% endblock %}
 
 {% block scripts %}
-  <script src="{{ url_for('static', filename='officer.js') }}" charset="utf-8"></script>
+<script src="{{ url_for('static', filename='officer.js') }}" charset="utf-8"></script>
 
-  {% for package in get_package_list() %}
-    {% if package.collected == "Collection pending" %}
-      <script>
-      // Get the modal
-      var modal = document.getElementById('{{package.id}}');
-      
-      // When the user clicks anywhere outside of the modal, close it
-      window.onclick = function(event) {
-        if (event.target == modal) {
-          modal.style.display = "none";
-        }
-      }
-      </script>
-    {% endif %}
-  {% endfor %}
+{% for package in get_package_list() %}
+{% if package.collected == "Collection pending" %}
+<script>
+  // Get the modal
+  var modal = document.getElementById('{{package.id}}');
+
+  // When the user clicks anywhere outside of the modal, close it
+  window.onclick = function (event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
+</script>
+{% endif %}
+{% endfor %}
 
 
-  
+
 {% endblock %}

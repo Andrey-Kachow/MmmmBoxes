@@ -29,10 +29,10 @@
 }
 
 canvas#signature-pad {
-    background: #fff;
-    width: 100%;
-    height: 100%;
-    cursor: crosshair;
+  background: #fff;
+  width: 100%;
+  height: 100%;
+  cursor: crosshair;
 }
 
 #signature_buttons_containter {
@@ -46,7 +46,7 @@ canvas#signature-pad {
 }
 
 .signature-btn-wrapper {
-  width:calc(100% / 3);
+  width: calc(100% / 3);
 }
 
 .signature-btn {
@@ -60,9 +60,11 @@ canvas#signature-pad {
   background-color: #57a957;
   border-color: #57a957;
 }
+
 #signature-submit-btn:hover {
   background-color: #62c462;
 }
+
 #signature-submit-btn:active {
   background: #57a957;
 }
@@ -72,9 +74,11 @@ canvas#signature-pad {
   background-color: #ca3535;
   border-color: #c43c35;
 }
+
 #signature-cancel-btn:hover {
   background-color: #ee5f5b;
 }
+
 #signature-cancel-btn:active {
   background: #c43c35;
 }
@@ -84,9 +88,11 @@ canvas#signature-pad {
   background-color: #269CE9;
   border-color: #269CE9;
 }
+
 #signature-clear-btn:hover {
   background-color: #70B9E8;
 }
+
 #signature-clear-btn:active {
   background: #269CE9;
 }

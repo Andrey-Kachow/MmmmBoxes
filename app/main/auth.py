@@ -19,7 +19,8 @@ def register():
         fullname = request.form["fullname"]
         is_officer = request.form.get("is_officer") is not None
 
-        error = db.register_new_user(current_app.db_conn, fullname, email, username, password, is_officer)
+        error = db.register_new_user(
+            current_app.db_conn, fullname, email, username, password, is_officer)
         if error is not None:
             flash(error)
             return redirect(url_for("auth.register"))

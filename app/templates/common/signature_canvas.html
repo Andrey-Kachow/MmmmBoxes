@@ -39,12 +39,9 @@
   <button type="button" id="signature_display_close" onclick="closeRequestedSignatureDisplay()">Close</button>
 </div>
 
-<script
-  src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js">
+<script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js">
 </script>
-<script
-  src="{{ url_for('static', filename='signature_canvas.js')}}"
-  charset="utf-8">
+<script src="{{ url_for('static', filename='signature_canvas.js')}}" charset="utf-8">
 </script>
 <script type="text/javascript">
   initializeSignatureProcessingUrl("{{ url_for('officer.sign') }}")
@@ -52,7 +49,7 @@
   initializeForcedRefreshUrl("{{ url_for('officer.droppostdata') }}")
 </script>
 {% if clear_post_data %}
-  <script type="text/javascript">
-    window.open(forcedRefreshUrl, "_self")
-  </script>
+<script type="text/javascript">
+  window.open(forcedRefreshUrl, "_self")
+</script>
 {% endif %}

@@ -1,4 +1,5 @@
-import os, base64
+import os
+import base64
 from flask import current_app
 
 # !!!TODO: Replace txt saved representation of imageData as actual image

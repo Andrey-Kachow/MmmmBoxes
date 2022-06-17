@@ -7,6 +7,7 @@ from .main.auth import login_required
 
 socketio = SocketIO()
 
+
 def create_app():
     # Create and configure the app
     app = Flask(__name__, instance_relative_config=True)

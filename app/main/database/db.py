@@ -1,7 +1,13 @@
-import psycopg2, json, os, string, psycopg2.extras, datetime
+import psycopg2
+import json
+import os
+import string
+import psycopg2.extras
+import datetime
 from werkzeug.security import check_password_hash, generate_password_hash
 
 DATE_FORMAT_STRING = "%H:%M on %a %e %B, %Y"
+
 
 def initialise_db_connection():
     """
@@ -13,10 +19,10 @@ def initialise_db_connection():
     # Attempt to get creds
     user_creds = None
     try:
-        with open(os.path.join(os.path.dirname(__file__),"local_db.json")) as f:
+        with open(os.path.join(os.path.dirname(__file__), "local_db.json")) as f:
             user_creds = json.loads(f.read())
             # Check that the relevant keys are in creds.json.
-            if not all(cred_key in user_creds for cred_key in ["host", "dbname", "user" ,"password"]):
+            if not all(cred_key in user_creds for cred_key in ["host", "dbname", "user", "password"]):
                 print("Credentials are incomplete. Using DATABASE_URL variable.")
                 user_creds = None
 
@@ -27,17 +33,17 @@ def initialise_db_connection():
     # Return a connection with user creds or DATABASE_URL, depending on existence of user_creds
     if user_creds is None:
         return psycopg2.connect(
-                os.environ["DATABASE_URL"],
-                sslmode="require",
-                cursor_factory=psycopg2.extras.RealDictCursor
-            )
-    return psycopg2.connect(
-            host=user_creds["host"],
-            database=user_creds["dbname"],
-            user=user_creds["user"],
-            password=user_creds["password"],
+            os.environ["DATABASE_URL"],
+            sslmode="require",
             cursor_factory=psycopg2.extras.RealDictCursor
         )
+    return psycopg2.connect(
+        host=user_creds["host"],
+        database=user_creds["dbname"],
+        user=user_creds["user"],
+        password=user_creds["password"],
+        cursor_factory=psycopg2.extras.RealDictCursor
+    )
 
 
 def execute_sql_file(conn, filename):
@@ -91,7 +97,8 @@ def register_new_user(conn, name, email, username, password_plain, is_officer):
             INSERT INTO users (username, password, email, fullname, is_officer)
             VALUES (%s, %s, %s, %s, %s);
             """,
-            (username, generate_password_hash(password_plain), email, name, is_officer)
+            (username, generate_password_hash(
+                password_plain), email, name, is_officer)
         )
     conn.commit()
     return None
@@ -243,7 +250,7 @@ def add_new_package(conn, resident_name, title):
         return clean_package_dict(dict(curs.fetchone()))
 
 
-def delete_package(conn,package_id):
+def delete_package(conn, package_id):
     with conn.cursor() as curs:
         curs.execute(
             """
@@ -253,10 +260,11 @@ def delete_package(conn,package_id):
             """,
             (package_id,)
         )
-        conn.commit() 
+        conn.commit()
     return True
 
-def collect_package(conn,package_id):
+
+def collect_package(conn, package_id):
     collection_time = datetime.datetime.now().isoformat()
     with conn.cursor() as curs:
         curs.execute(
@@ -267,7 +275,7 @@ def collect_package(conn,package_id):
             """,
             (collection_time, package_id,)
         )
-        conn.commit() 
+        conn.commit()
     return True
 
 
@@ -293,11 +301,13 @@ def clean_package_dict(pack_dict):
     Converts timestamps to RFC3339 and assigns default values to Nones.
     Creates new fields deliverednice and collectednice which can be read by non-programmers"""
 
-    pack_dict["deliverednice"] = pack_dict["delivered"].strftime(DATE_FORMAT_STRING)
+    pack_dict["deliverednice"] = pack_dict["delivered"].strftime(
+        DATE_FORMAT_STRING)
     pack_dict["delivered"] = pack_dict["delivered"].isoformat()
 
     if pack_dict["collected"] is not None:
-        pack_dict["collectednice"] = pack_dict["collected"].strftime(DATE_FORMAT_STRING)
+        pack_dict["collectednice"] = pack_dict["collected"].strftime(
+            DATE_FORMAT_STRING)
         pack_dict["collected"] = pack_dict["collected"].isoformat()
     else:
         pack_dict["collectednice"] = "Collection pending"

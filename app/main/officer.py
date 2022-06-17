@@ -1,4 +1,5 @@
-import functools, json
+import functools
+import json
 from .database import db
 from .database.signatures import (
     is_valid,
@@ -18,8 +19,10 @@ from .auth import login_required
 
 bp = Blueprint("officer", __name__, url_prefix="/officer")
 
-SUCCESS_200 = (json.dumps({'success':True}), 200, {'ContentType':'application/json'})
-FAILURE_404 = (json.dumps({'success':False}), 404, {'ContentType':'application/json'})
+SUCCESS_200 = (json.dumps({'success': True}), 200,
+               {'ContentType': 'application/json'})
+FAILURE_404 = (json.dumps({'success': False}), 404,
+               {'ContentType': 'application/json'})
 
 
 # Check user is logged in and is resident
@@ -78,7 +81,6 @@ def overview():
     )
 
 
-
 email_location = 'app/main/database/email-template.txt'
 
 
@@ -88,27 +90,30 @@ def template():
         email = f.read()
     return render_template("officer/template.html", email=email)
 
+
 @bp.route('/delete_package/<package_id>', methods=["GET", "POST"])
 def delete_package(package_id):
     success = db.delete_package(
-            current_app.db_conn,
-            package_id)
+        current_app.db_conn,
+        package_id)
     if success:
         flash('Package deleted.')
     else:
         flash("Oops! Couldn't delete")
     return redirect(url_for('officer.overview'))
 
+
 @bp.route('/collect_package/<package_id>', methods=["GET", "POST"])
 def collect_package(package_id):
     success = db.collect_package(
-            current_app.db_conn,
-            package_id)
+        current_app.db_conn,
+        package_id)
     if success:
         flash('Package Collected.')
     else:
         flash("Oops! Couldn't collect")
     return redirect(url_for('officer.overview'))
+
 
 @bp.route("/residents")
 def residents():
@@ -136,7 +141,6 @@ def email_all():
                                           description=package['title'])
             email_resident(package['email'], new_email)
     return render_template("officer/sent-email.html")
-
 
 
 @bp.route("/template", methods=['POST'])
@@ -180,8 +184,9 @@ def getsign():
             'dataUrl': get_data_url(package_id)
         }),
         200,
-        {'ContentType':'application/json'}
+        {'ContentType': 'application/json'}
     )
+
 
 @bp.route("/droppostdata", methods=['get'])
 def droppostdata():
