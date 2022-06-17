@@ -42,11 +42,12 @@
 button {
 background-color: #04AA6D;
 color: white;
-padding: 14px 20px;
-margin: 8px 0;
 border: none;
 cursor: pointer;
-width: 100%;
+padding-top: 0.3rem;
+padding-bottom: 0.3rem;
+margin-left: 1rem;
+margin-right: 1rem;
 opacity: 0.9;
 }
 
@@ -169,27 +170,4 @@ display: block;
 
 .dropdown-content button:hover {
 background-color: #ddd;
-}
-
-#packages_table td{
-  border: 2px solid #aaa;
-  padding:10px;
-}
-
-#packages_table th{
-  border: 2px solid #aaa;
-  padding:10px;
-}
-
-#packages_table th p{
-  align-items: center;
-}
-
-#packages_table td p{
-  align-items: center;
-}
-
-.overview-content{
-  left: 200px;
-  position: relative;
 }
