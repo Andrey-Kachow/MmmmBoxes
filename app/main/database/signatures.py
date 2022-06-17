@@ -43,7 +43,7 @@ def img_name(package_id):
 
 
 def package_is_signed(pakcage_id):
-    return os.path.exist(img_name(package_id))
+    return os.path.exists(img_name(package_id))
 
 
 def mark_package_signed(package_id):
