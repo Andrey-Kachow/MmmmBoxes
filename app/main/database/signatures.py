@@ -42,7 +42,7 @@ def img_name(package_id):
     return os.path.join(SIGNATURES_ROOT, f'sig{package_id}.txt')
 
 
-def package_is_signed(pakcage_id):
+def package_is_signed(package_id):
     return os.path.exists(img_name(package_id))
 
 
