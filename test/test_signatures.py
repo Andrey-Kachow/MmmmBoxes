@@ -60,7 +60,7 @@ def test_package_is_valid_if_exists(conn):
 @with_temp_directory
 def test_img_name_for_sanity(dirname):
     for package_id in range(100):
-        assert os.path.join(dirname, f'sig{package_id}.png') == sig.img_name(package_id)
+        assert os.path.join(dirname, f'sig{package_id}') in sig.img_name(package_id)
 
 
 @with_temp_directory
