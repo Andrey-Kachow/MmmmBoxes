@@ -6,6 +6,9 @@
       <th class="packages_col_heading">Package Title</th>
       <th class="packages_col_heading_date">Delivered</th>
       <th class="packages_col_heading_date">Collected</th>
+      {% if show_signature_button %}
+        <th class="packages_col_heading">Signature</th>
+      {% endif %}
   </tr>
 
   {% set ns = namespace(last_delivered="")%}
@@ -33,14 +36,14 @@
           {% if package.collectednice == "Collection pending" %}
             <td class="packages_col"> Collection Pending
             <button onclick="document.getElementById('collect-{{ package.id}}').style.display='block'">Collect Package</button>
-    
+
             <div id="collect-{{ package.id }}" class="modal">
               <span onclick="document.getElementById('collect-{{package.id}}').style.display='none'" class="close" title="Close Modal">×</span>
               <form class="modal-content" action="/action_page.php">
                 <div class="container">
                   <h1>Collect Package</h1>
                   <p>Confirm package entitled {{ package.title }} has been collected by {{package.fullname}} </p>
-            
+
                   <div class="clearfix">
                     <button type="button" onclick="document.getElementById('collect-{{ package.id }}').style.display='none'" class="cancelbtn">Cancel</button>
                     <a href = "{{ url_for('officer.collect_package', package_id=package.id) }}"><button type="button" class="deletebtn">Confirm</button></a>
@@ -49,14 +52,14 @@
               </form>
             </div>
             <button class = "delete" onclick="document.getElementById('delete-{{ package.id }}').style.display='block'">Delete Package</button>
-    
+
             <div id="delete-{{ package.id }}" class="modal">
               <span onclick="document.getElementById('delete-{{package.id}}').style.display='none'" class="close" title="Close Modal">×</span>
               <form class="modal-content" action="/action_page.php">
                 <div class="container">
                   <h1>Delete Package</h1>
                   <p>Confirm you wish to delete package entitled {{ package.title }} meant to be collected by {{package.fullname}}. Perhaps remind them instead.</p>
-            
+
                   <div class="clearfix">
                     <button type="button" onclick="document.getElementById('delete-{{ package.id }}').style.display='none'" class="cancelbtn">Cancel</button>
                     <a href = "{{ url_for('officer.delete_package', package_id=package.id) }}"><button type="button" class="deletebtn">Delete</button></a>
@@ -66,14 +69,20 @@
             </div>
           </td>
           </td>
-    
+
           {% else %}
             <td class="packages_col"> {{ package.collectednice }}</td>
           {% endif %}
+          {% include 'common/signature_btns_col.html' %}
         </tr>
+
+
+
     {% set ns.last_delivered = package.delivered[:10] %}
   {% endfor %}
 </table>
+
+{% include 'common/signature_canvas.html' %}
 
 {% include 'common/js_libs.html' %}
 <script type="text/javascript" charset="utf-8">

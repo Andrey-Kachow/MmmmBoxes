@@ -96,6 +96,7 @@ def register_new_user(conn, name, email, username, password_plain, is_officer):
     conn.commit()
     return None
 
+
 def verify_password(conn, username, password_plain):
     """Arguments: a database connection, details to check.
     Returns: a dict containing:
@@ -124,6 +125,7 @@ def verify_password(conn, username, password_plain):
             return {}
 
         return dict(result)
+
 
 def get_user_by_id(conn, id):
     """Arguments: a database connection, user id to get.
@@ -187,6 +189,7 @@ def get_all_packages(conn, id=None):
 
         return [clean_package_dict(dict(p)) for p in curs.fetchall()]
 
+
 def add_new_package(conn, resident_name, title):
     """Arguments: a database connection, recipient's name, package title
     Returns: A dict of the package added (BROADCAST THIS), or None if failed for some reason.
@@ -215,8 +218,6 @@ def add_new_package(conn, resident_name, title):
             return None
 
         rid = result["id"]
-
-        print(f"\n{rid}\n\n{title}\n")
 
         curs.execute(
             """
