@@ -1,6 +1,7 @@
 // globals
 
 let signatureProcessingUrl = null
+let signatureRequestUrl = null
 let signatureResidentName = null
 let signaturePackageTitle = null
 let signaturePackageId = null
@@ -9,6 +10,10 @@ let signaturePackageId = null
 
 function initializeSignatureProcessingUrl(url) {
   signatureProcessingUrl = url
+}
+
+function initializeSignatureRequestUrl(url) {
+  signatureRequestUrl = url
 }
 
 function resizeCanvas(canvas) {
@@ -56,6 +61,25 @@ function sendSignatureToServer() {
     error: () => notifyFailedSignature()
   });
   closeSignatureCanvas()
+}
+
+function requestSignaruteFromServer(packageId) {
+  $.ajax({
+    type: "POST",
+    url: signatureRequestUrl,
+    data: JSON.stringify({
+      packageId: packageId
+    }),
+    contentType: "application/json",
+    dataType: 'json',
+    success: (response) => showRequestedSignature(response),
+    error: () => notifyFailedSignature()
+  });
+}
+
+function showRequestedSignature(response) {
+  alert("logged")
+  console.log(response);
 }
 
 function notifySuccessfulSignature() {

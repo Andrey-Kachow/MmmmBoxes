@@ -4,7 +4,8 @@ from .database.signatures import (
     is_valid,
     add_signature,
     mark_package_signed,
-    package_is_signed
+    package_is_signed,
+    get_data_url
 )
 
 from flask import *
@@ -120,3 +121,20 @@ def sign():
         return FAILURE_404
 
     return SUCCESS_200
+
+
+@bp.route("/getsign", methods=['post'])
+def getsign():
+    package_id = request.json['packageId']
+
+    if not package_is_signed(package_id):
+        return FAILURE_404
+
+    return (
+        json.dumps({
+            'success': True,
+            'dataUrl': get_data_url(package_id)
+        }),
+        200,
+        {'ContentType':'application/json'}
+    )

@@ -60,3 +60,8 @@ def add_signature(package_id, data_url):
     except:
         return False
     return True
+
+
+def get_data_url(package_id):
+    with open(img_name(package_id)) as f:
+        return f.read()
