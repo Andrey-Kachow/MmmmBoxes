@@ -4,10 +4,6 @@ from flask import current_app
 # !!!TODO: Replace txt saved representation of imageData as actual image
 
 SIGNATURES_ROOT = None
-try:
-    SIGNATURES_ROOT = os.path.join(current_app.instance_path, 'media', 'signatures')
-except Exception as e:
-    pass
 
 
 def is_valid(conn, given_fullname, given_package_title, given_package_id):
@@ -22,8 +18,10 @@ def is_valid(conn, given_fullname, given_package_title, given_package_id):
             SELECT fullname, packages.id as package_id, title
             FROM packages
             INNER JOIN users
-            ON packages.resident_id = users.id;
-            """
+            ON packages.resident_id = users.id
+            WHERE packages.id = %s;
+            """,
+            (given_package_id,)
         )
         column = curs.fetchone()
 
@@ -38,7 +36,8 @@ def is_valid(conn, given_fullname, given_package_title, given_package_id):
 
 
 def img_name(package_id):
-    # return os.path.join(SIGNATURES_ROOT, f'sig{package_id}.png')
+    if SIGNATURES_ROOT is None:
+        return os.path.join(current_app.instance_path, 'media', 'signatures', f'sig{package_id}.txt')
     return os.path.join(SIGNATURES_ROOT, f'sig{package_id}.txt')
 
 
@@ -46,7 +45,7 @@ def package_is_signed(package_id):
     return os.path.exists(img_name(package_id))
 
 
-def mark_package_signed(package_id):
+def mark_package_signed(conn, package_id):
     # TODO: come back here after db migrations including signature representation
     return True
 

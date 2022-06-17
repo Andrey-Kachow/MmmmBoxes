@@ -1,6 +1,11 @@
 import functools, json
-from .database import db, signatures
-import base64
+from .database import db
+from .database.signatures import (
+    is_valid,
+    add_signature,
+    mark_package_signed,
+    package_is_signed
+)
 
 from flask import *
 from .. import socketio
@@ -11,6 +16,7 @@ from .auth import login_required
 bp = Blueprint("officer", __name__, url_prefix="/officer")
 
 SUCCESS_200 = (json.dumps({'success':True}), 200, {'ContentType':'application/json'})
+FAILURE_404 = (json.dumps({'success':False}), 404, {'ContentType':'application/json'})
 
 
 # Check user is logged in and is resident
@@ -26,7 +32,7 @@ def before_request():
 def utility_processor():
 
     def add_signed_flag(real_dict):
-        real_dict['is_signed'] = signatures.package_is_signed(real_dict['id'])
+        real_dict['is_signed'] = package_is_signed(real_dict['id'])
         return real_dict
 
     def get_package_list():
@@ -101,16 +107,16 @@ def submit():
 def sign():
     fullname = request.json['fullname']
     package_title = request.json['title']
-    package_id = request.json['pid']
+    package_id = request.json['packageId']
     data_url = request.json['dataUrl']
 
-    if not signatures.is_valid(current_app.db_conn, fullname, package_title, package_id):
-        return 404
+    if not is_valid(current_app.db_conn, fullname, package_title, package_id):
+        return FAILURE_404
 
-    if not signatures.add_signature(package_id, data_url):
-        return 404
+    if not add_signature(package_id, data_url):
+        return FAILURE_404
 
-    if not signatures.mark_package_signed(current_app.db_conn, package_id):
-        return 404
+    if not mark_package_signed(current_app.db_conn, package_id):
+        return FAILURE_404
 
     return SUCCESS_200

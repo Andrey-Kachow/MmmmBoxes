@@ -26,13 +26,16 @@ function initializeSignatureLabels(ownerFullName, packageTitle, packageId) {
   document.getElementById("package_title_placeholder").textContent = packageTitle
 }
 
-function openSignatureCanvas(ownerFullName, packageTitle) {
+function openSignatureCanvas(ownerFullName, packageTitle, packageId) {
   signaturePad.clear()
-  initializeSignatureLabels(ownerFullName, packageTitle)
+  initializeSignatureLabels(ownerFullName, packageTitle, packageId)
   document.getElementById("signature_canvas_wrapper").classList.remove("hidden_signature")
 }
 
 function closeSignatureCanvas() {
+  signatureResidentName = null
+  signaturePackageTitle = null
+  signaturePackageId = null
   document.getElementById("signature_canvas_wrapper").classList.add("hidden_signature")
 }
 
@@ -44,13 +47,13 @@ function sendSignatureToServer() {
     data: JSON.stringify({
       fullname: signatureResidentName,
       title: signaturePackageTitle,
-      pid: signaturePackageId,
+      packageId: signaturePackageId,
       dataUrl: signaturePad.toDataURL(),
     }),
     contentType: "application/json",
     dataType: 'json',
     success: () => notifySuccessfulSignature(),
-    failure: () => notifyFailedSignature()
+    error: () => notifyFailedSignature()
   });
   closeSignatureCanvas()
 }
