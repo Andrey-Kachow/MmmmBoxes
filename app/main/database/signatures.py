@@ -1,6 +1,8 @@
 import os, base64
 from flask import current_app
 
+# !!!TODO: Replace txt saved representation of imageData as actual image
+
 SIGNATURES_ROOT = None
 try:
     SIGNATURES_ROOT = os.path.join(current_app.instance_path, 'media', 'signatures')
@@ -36,7 +38,8 @@ def is_valid(conn, given_fullname, given_package_title, given_package_id):
 
 
 def img_name(package_id):
-    return os.path.join(SIGNATURES_ROOT, f'sig{package_id}.png')
+    # return os.path.join(SIGNATURES_ROOT, f'sig{package_id}.png')
+    return os.path.join(SIGNATURES_ROOT, f'sig{package_id}.txt')
 
 
 def package_is_signed(pakcage_id):
@@ -50,9 +53,11 @@ def mark_package_signed(package_id):
 
 def add_signature(package_id, data_url):
     try:
-        captured_img_data = data_url.split(';')[1].split(',')[1]
-        with open(img_name(package_id), "wb") as f:
-            f.write(base64.decodebytes(captured_img_data))
+        with open(img_name(package_id), "w") as f:
+            f.write(data_url)
+        # captured_img_data = data_url.split(';')[1].split(',')[1]
+        # with open(img_name(package_id), "wb") as f:
+        #     f.write(base64.decodebytes(captured_img_data))
     except:
         return False
     return True
