@@ -36,7 +36,7 @@
   <div class="requested_canvas_wrapper">
     <img id="signature-display" src="https://media3.giphy.com/media/3oEjI6SIIHBdRxXI40/200.gif"></img>
   </div>
-  <button type="button" onclick="closeRequestedSignatureDisplay()">Close</button>
+  <button type="button" id="signature_display_close" onclick="closeRequestedSignatureDisplay()">Close</button>
 </div>
 
 <script
@@ -49,4 +49,10 @@
 <script type="text/javascript">
   initializeSignatureProcessingUrl("{{ url_for('officer.sign') }}")
   initializeSignatureRequestUrl("{{ url_for('officer.getsign') }}")
+  initializeForcedRefreshUrl("{{ url_for('officer.droppostdata') }}")
 </script>
+{% if clear_post_data %}
+  <script type="text/javascript">
+    window.open(forcedRefreshUrl, "_self")
+  </script>
+{% endif %}

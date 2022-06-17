@@ -219,8 +219,6 @@ def add_new_package(conn, resident_name, title):
 
         rid = result["id"]
 
-        print(f"\n{rid}\n\n{title}\n")
-
         curs.execute(
             """
             INSERT INTO packages (resident_id, title)

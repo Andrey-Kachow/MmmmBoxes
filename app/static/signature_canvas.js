@@ -5,6 +5,7 @@ let signatureRequestUrl = null
 let signatureResidentName = null
 let signaturePackageTitle = null
 let signaturePackageId = null
+let forcedRefreshUrl = null
 
 // function definitions
 
@@ -14,6 +15,10 @@ function initializeSignatureProcessingUrl(url) {
 
 function initializeSignatureRequestUrl(url) {
   signatureRequestUrl = url
+}
+
+function initializeForcedRefreshUrl(url) {
+  forcedRefreshUrl = url
 }
 
 function resizeCanvas(canvas) {
@@ -32,6 +37,7 @@ function initializeSignatureLabels(ownerFullName, packageTitle, packageId) {
 }
 
 function openSignatureCanvas(ownerFullName, packageTitle, packageId) {
+  closeRequestedSignatureDisplay()
   signaturePad.clear()
   initializeSignatureLabels(ownerFullName, packageTitle, packageId)
   document.getElementById("signature_canvas_wrapper").classList.remove("hidden_signature")
@@ -79,13 +85,12 @@ function requestSignaruteFromServer(packageId) {
 }
 
 function showRequestedSignature(response) {
-  alert("logged")
-  console.log(response);
   document.getElementById("signature-display").src = response.dataUrl
   document.getElementById("signature_loading_info").textContent = "received OK!"
 }
 
 function openRequestedSignatureDisplay() {
+  closeSignatureCanvas()
   document.getElementById("signature_loading_info").textContent = "loading..."
   document.getElementById("requested_signature_display_wrapper").classList.remove("hidden_signature")
 }
@@ -95,11 +100,12 @@ function closeRequestedSignatureDisplay() {
 }
 
 function notifySuccessfulSignature() {
-  alert("success")
+  window.open(forcedRefreshUrl, "_self") // Temporary auto reload page
+  // alert("success")
 }
 
 function notifyFailedSignature() {
-  alert("failure")
+  // alert("failure")
 }
 
 // Initializing Canvas, SignaturePad

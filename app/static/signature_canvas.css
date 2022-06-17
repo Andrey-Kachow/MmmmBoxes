@@ -72,11 +72,9 @@ canvas#signature-pad {
   background-color: #ca3535;
   border-color: #c43c35;
 }
-
 #signature-cancel-btn:hover {
   background-color: #ee5f5b;
 }
-
 #signature-cancel-btn:active {
   background: #c43c35;
 }
@@ -86,11 +84,9 @@ canvas#signature-pad {
   background-color: #269CE9;
   border-color: #269CE9;
 }
-
 #signature-clear-btn:hover {
   background-color: #70B9E8;
 }
-
 #signature-clear-btn:active {
   background: #269CE9;
 }
@@ -117,4 +113,9 @@ canvas#signature-pad {
 img#signature-display {
   width: 256px;
   height: 128px;
+}
+
+#signature_display_close {
+  width: 100%;
+  height: 100%;
 }

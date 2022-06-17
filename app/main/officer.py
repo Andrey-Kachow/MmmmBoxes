@@ -69,9 +69,15 @@ def overview():
             flash("Oops! Didn't add")
         # Convert the just_added package timestamp to RFC3339 so it can be jsonified.
         socketio.emit("new_package", just_added, broadcast=True)
-    return render_template("officer/overview.html")
+
+    return render_template(
+        "officer/overview.html",
+        clear_post_data=(request.method == "POST")
+    )
+
 
 email_location = 'app/main/database/email-template.txt'
+
 
 @bp.route("/template")
 def template():
@@ -138,3 +144,7 @@ def getsign():
         200,
         {'ContentType':'application/json'}
     )
+
+@bp.route("/droppostdata", methods=['get'])
+def droppostdata():
+    return redirect(url_for("officer.overview"))
