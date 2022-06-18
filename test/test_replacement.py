@@ -1,4 +1,4 @@
-from app.main.populate_template import *
+from main.app.populate_template import *
 
 
 def test_replace():
@@ -8,8 +8,8 @@ def test_replace():
 def test_personalise_email():
     assert (
         personalise_email(
-            "Hello <first-name>. You have a package. Urgency = <urgency>",
-            first_name="Dave",
+            "Hello <full-name>. You have a package. Urgency = <urgency>",
+            full_name="Dave",
             urgency=str(5),
         )
         == "Hello Dave. You have a package. Urgency = 5"
