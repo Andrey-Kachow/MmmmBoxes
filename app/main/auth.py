@@ -2,7 +2,15 @@ import functools
 from .database import db
 
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, session, url_for, current_app
+    Blueprint,
+    flash,
+    g,
+    redirect,
+    render_template,
+    request,
+    session,
+    url_for,
+    current_app,
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -20,7 +28,8 @@ def register():
         is_officer = request.form.get("is_officer") is not None
 
         error = db.register_new_user(
-            current_app.db_conn, fullname, email, username, password, is_officer)
+            current_app.db_conn, fullname, email, username, password, is_officer
+        )
         if error is not None:
             flash(error)
             return redirect(url_for("auth.register"))
@@ -42,7 +51,7 @@ def login():
         # If details is empty, something went wrong during login.
         if not details:
             flash("Incorrect login details!")
-            return redirect(url_for('auth.register'))
+            return redirect(url_for("auth.register"))
 
         session.clear()
         session["user_id"] = details["id"]

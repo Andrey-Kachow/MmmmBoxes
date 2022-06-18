@@ -12,11 +12,14 @@ def replace_bg_colour(col):
     with open(path.join(path.dirname(__file__), "app/static/style.css")) as f:
         contents = f.read()
     with open(path.join(path.dirname(__file__), "app/static/style.css"), "w") as f:
-        f.write(sub(r"(html.*background:)[^;]*(;.*)",
-                    r"\1"+col+r"\2",
-                    contents,
-                    flags=DOTALL
-                    ))
+        f.write(
+            sub(
+                r"(html.*background:)[^;]*(;.*)",
+                r"\1" + col + r"\2",
+                contents,
+                flags=DOTALL,
+            )
+        )
 
 
 if __name__ == "__main__":

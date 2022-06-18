@@ -1,4 +1,7 @@
-<link rel="stylesheet" href="{{ url_for('static', filename='signature_canvas.css') }}">
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='signature_canvas.css') }}"
+/>
 
 <div id="signature_canvas_wrapper" class="tiny_blue_border hidden_signature">
   <div id="signature_labels">
@@ -29,27 +32,40 @@
     </div>
   </div>
 </div>
-<div id="requested_signature_display_wrapper" class="tiny_blue_border hidden_signature">
+<div
+  id="requested_signature_display_wrapper"
+  class="tiny_blue_border hidden_signature"
+>
   <div id="signature_loading_info_wrapper">
     <span id="signature_loading_info"></span>
   </div>
   <div class="requested_canvas_wrapper">
-    <img id="signature-display" src="https://media3.giphy.com/media/3oEjI6SIIHBdRxXI40/200.gif"></img>
+    <img
+      id="signature-display"
+      src="https://media3.giphy.com/media/3oEjI6SIIHBdRxXI40/200.gif"
+    />
   </div>
-  <button type="button" id="signature_display_close" onclick="closeRequestedSignatureDisplay()">Close</button>
+  <button
+    type="button"
+    id="signature_display_close"
+    onclick="closeRequestedSignatureDisplay()"
+  >
+    Close
+  </button>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js">
-</script>
-<script src="{{ url_for('static', filename='signature_canvas.js')}}" charset="utf-8">
-</script>
+<script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
+<script
+  src="{{ url_for('static', filename='signature_canvas.js')}}"
+  charset="utf-8"
+></script>
 <script type="text/javascript">
-  initializeSignatureProcessingUrl("{{ url_for('officer.sign') }}")
-  initializeSignatureRequestUrl("{{ url_for('officer.getsign') }}")
-  initializeForcedRefreshUrl("{{ url_for('officer.droppostdata') }}")
+  initializeSignatureProcessingUrl("{{ url_for('officer.sign') }}");
+  initializeSignatureRequestUrl("{{ url_for('officer.getsign') }}");
+  initializeForcedRefreshUrl("{{ url_for('officer.droppostdata') }}");
 </script>
 {% if clear_post_data %}
 <script type="text/javascript">
-  window.open(forcedRefreshUrl, "_self")
+  window.open(forcedRefreshUrl, "_self");
 </script>
 {% endif %}

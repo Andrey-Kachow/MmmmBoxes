@@ -20,7 +20,6 @@ def before_request():
 
 @bp.context_processor
 def utility_processor():
-
     def get_package_list():
         return db.get_all_packages(current_app.db_conn, session["user_id"])
 

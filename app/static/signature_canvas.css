@@ -85,16 +85,16 @@ canvas#signature-pad {
 
 /* Blue Clear Button */
 #signature-clear-btn {
-  background-color: #269CE9;
-  border-color: #269CE9;
+  background-color: #269ce9;
+  border-color: #269ce9;
 }
 
 #signature-clear-btn:hover {
-  background-color: #70B9E8;
+  background-color: #70b9e8;
 }
 
 #signature-clear-btn:active {
-  background: #269CE9;
+  background: #269ce9;
 }
 
 #requested_signature_display_wrapper {

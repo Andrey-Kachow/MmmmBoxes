@@ -1,63 +1,65 @@
 // globals
 
-let signatureProcessingUrl = null
-let signatureRequestUrl = null
-let signatureResidentName = null
-let signaturePackageTitle = null
-let signaturePackageId = null
-let forcedRefreshUrl = null
+let signatureProcessingUrl = null;
+let signatureRequestUrl = null;
+let signatureResidentName = null;
+let signaturePackageTitle = null;
+let signaturePackageId = null;
+let forcedRefreshUrl = null;
 
 // function definitions
 
 function initializeSignatureProcessingUrl(url) {
-  signatureProcessingUrl = url
+  signatureProcessingUrl = url;
 }
 
 function initializeSignatureRequestUrl(url) {
-  signatureRequestUrl = url
+  signatureRequestUrl = url;
 }
 
 function initializeForcedRefreshUrl(url) {
-  forcedRefreshUrl = url
+  forcedRefreshUrl = url;
 }
 
 function resizeCanvas(canvas) {
   const ratio = Math.max(window.devicePixelRatio || 1, 1);
-  canvas.width = canvas.offsetWidth * ratio
-  canvas.height = canvas.offsetHeight * ratio
-  canvas.getContext('2d').scale(ratio, ratio)
+  canvas.width = canvas.offsetWidth * ratio;
+  canvas.height = canvas.offsetHeight * ratio;
+  canvas.getContext("2d").scale(ratio, ratio);
 }
 
 function initializeSignatureLabels(ownerFullName, packageTitle, packageId) {
-  signatureResidentName = ownerFullName
-  signaturePackageTitle = packageTitle
-  signaturePackageId = packageId
-  document.getElementById('package_owner_placeholder').textContent =
-      ownerFullName
-  document.getElementById('package_title_placeholder').textContent =
-      packageTitle
+  signatureResidentName = ownerFullName;
+  signaturePackageTitle = packageTitle;
+  signaturePackageId = packageId;
+  document.getElementById("package_owner_placeholder").textContent =
+    ownerFullName;
+  document.getElementById("package_title_placeholder").textContent =
+    packageTitle;
 }
 
 function openSignatureCanvas(ownerFullName, packageTitle, packageId) {
-  closeRequestedSignatureDisplay()
-  signaturePad.clear()
-  initializeSignatureLabels(ownerFullName, packageTitle, packageId)
-  document.getElementById('signature_canvas_wrapper')
-      .classList.remove('hidden_signature')
+  closeRequestedSignatureDisplay();
+  signaturePad.clear();
+  initializeSignatureLabels(ownerFullName, packageTitle, packageId);
+  document
+    .getElementById("signature_canvas_wrapper")
+    .classList.remove("hidden_signature");
 }
 
 function closeSignatureCanvas() {
-  signatureResidentName = null
-  signaturePackageTitle = null
-  signaturePackageId = null
-  document.getElementById('signature_canvas_wrapper')
-      .classList.add('hidden_signature')
+  signatureResidentName = null;
+  signaturePackageTitle = null;
+  signaturePackageId = null;
+  document
+    .getElementById("signature_canvas_wrapper")
+    .classList.add("hidden_signature");
 }
 
 function sendSignatureToServer() {
-  alert('was sent')
+  alert("was sent");
   $.ajax({
-    type: 'POST',
+    type: "POST",
     url: signatureProcessingUrl,
     data: JSON.stringify({
       fullname: signatureResidentName,
@@ -65,46 +67,49 @@ function sendSignatureToServer() {
       packageId: signaturePackageId,
       dataUrl: signaturePad.toDataURL(),
     }),
-    contentType: 'application/json',
-    dataType: 'json',
+    contentType: "application/json",
+    dataType: "json",
     success: () => notifySuccessfulSignature(),
-    error: () => notifyFailedSignature()
+    error: () => notifyFailedSignature(),
   });
-  closeSignatureCanvas()
+  closeSignatureCanvas();
 }
 
 function requestSignaruteFromServer(packageId) {
-  openRequestedSignatureDisplay()
+  openRequestedSignatureDisplay();
   $.ajax({
-    type: 'POST',
+    type: "POST",
     url: signatureRequestUrl,
-    data: JSON.stringify({packageId: packageId}),
-    contentType: 'application/json',
-    dataType: 'json',
+    data: JSON.stringify({ packageId: packageId }),
+    contentType: "application/json",
+    dataType: "json",
     success: (response) => showRequestedSignature(response),
-    error: () => notifyFailedSignature()
+    error: () => notifyFailedSignature(),
   });
 }
 
 function showRequestedSignature(response) {
-  document.getElementById('signature-display').src = response.dataUrl
-  document.getElementById('signature_loading_info').textContent = 'received OK!'
+  document.getElementById("signature-display").src = response.dataUrl;
+  document.getElementById("signature_loading_info").textContent =
+    "received OK!";
 }
 
 function openRequestedSignatureDisplay() {
-  closeSignatureCanvas()
-  document.getElementById('signature_loading_info').textContent = 'loading...'
-  document.getElementById('requested_signature_display_wrapper')
-      .classList.remove('hidden_signature')
+  closeSignatureCanvas();
+  document.getElementById("signature_loading_info").textContent = "loading...";
+  document
+    .getElementById("requested_signature_display_wrapper")
+    .classList.remove("hidden_signature");
 }
 
 function closeRequestedSignatureDisplay() {
-  document.getElementById('requested_signature_display_wrapper')
-      .classList.add('hidden_signature')
+  document
+    .getElementById("requested_signature_display_wrapper")
+    .classList.add("hidden_signature");
 }
 
 function notifySuccessfulSignature() {
-  window.open(forcedRefreshUrl, '_self')  // Temporary auto reload page
+  window.open(forcedRefreshUrl, "_self"); // Temporary auto reload page
   // alert("success")
 }
 
@@ -114,23 +119,27 @@ function notifyFailedSignature() {
 
 // Initializing Canvas, SignaturePad
 
-const signatureCanvas = document.getElementById('signature-pad')
+const signatureCanvas = document.getElementById("signature-pad");
 
 window.onresize = () => {
-  resizeCanvas(signatureCanvas)
+  resizeCanvas(signatureCanvas);
 };
 
 resizeCanvas(signatureCanvas);
 
-let signaturePad = new SignaturePad(
-    signatureCanvas,
-    {backgroundColor: 'rgb(250,250,250)', penColor: 'rgb(69, 144, 259)'});
+let signaturePad = new SignaturePad(signatureCanvas, {
+  backgroundColor: "rgb(250,250,250)",
+  penColor: "rgb(69, 144, 259)",
+});
 
 // Adding events to the signature pad buttons
 
-document.getElementById('signature-clear-btn')
-    .addEventListener('click', () => signaturePad.clear())
-document.getElementById('signature-cancel-btn')
-    .addEventListener('click', () => closeSignatureCanvas())
-document.getElementById('signature-submit-btn')
-    .addEventListener('click', () => sendSignatureToServer())
+document
+  .getElementById("signature-clear-btn")
+  .addEventListener("click", () => signaturePad.clear());
+document
+  .getElementById("signature-cancel-btn")
+  .addEventListener("click", () => closeSignatureCanvas());
+document
+  .getElementById("signature-submit-btn")
+  .addEventListener("click", () => sendSignatureToServer());

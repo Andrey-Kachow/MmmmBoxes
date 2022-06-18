@@ -6,7 +6,7 @@ from .database.signatures import (
     add_signature,
     mark_package_signed,
     package_is_signed,
-    get_data_url
+    get_data_url,
 )
 
 from flask import *
@@ -19,10 +19,8 @@ from .auth import login_required
 
 bp = Blueprint("officer", __name__, url_prefix="/officer")
 
-SUCCESS_200 = (json.dumps({'success': True}), 200,
-               {'ContentType': 'application/json'})
-FAILURE_404 = (json.dumps({'success': False}), 404,
-               {'ContentType': 'application/json'})
+SUCCESS_200 = (json.dumps({"success": True}), 200, {"ContentType": "application/json"})
+FAILURE_404 = (json.dumps({"success": False}), 404, {"ContentType": "application/json"})
 
 
 # Check user is logged in and is resident
@@ -36,16 +34,12 @@ def before_request():
 
 @bp.context_processor
 def utility_processor():
-
     def add_signed_flag(real_dict):
-        real_dict['is_signed'] = package_is_signed(real_dict['id'])
+        real_dict["is_signed"] = package_is_signed(real_dict["id"])
         return real_dict
 
     def get_package_list():
-        return list(map(
-            add_signed_flag,
-            db.get_all_packages(current_app.db_conn)
-        ))
+        return list(map(add_signed_flag, db.get_all_packages(current_app.db_conn)))
 
     def get_all_resident_names():
         return db.get_all_resident_names(current_app.db_conn)
@@ -57,7 +51,7 @@ def utility_processor():
         get_package_list=get_package_list,
         get_all_resident_names=get_all_resident_names,
         get_residents=get_residents,
-        show_signature_button=True
+        show_signature_button=True,
     )
 
 
@@ -68,7 +62,7 @@ def overview():
         just_added = db.add_new_package(
             current_app.db_conn,
             request.form["resident_name"],
-            request.form["package_title"]
+            request.form["package_title"],
         )
         if not just_added:
             flash("Oops! Didn't add")
@@ -76,43 +70,38 @@ def overview():
         socketio.emit("new_package", just_added, broadcast=True)
 
     return render_template(
-        "officer/overview.html",
-        clear_post_data=(request.method == "POST")
+        "officer/overview.html", clear_post_data=(request.method == "POST")
     )
 
 
-email_location = 'app/main/database/email-template.txt'
+email_location = "app/main/database/email-template.txt"
 
 
 @bp.route("/template")
 def template():
-    with open(email_location, 'r') as f:
+    with open(email_location, "r") as f:
         email = f.read()
     return render_template("officer/template.html", email=email)
 
 
-@bp.route('/delete_package/<package_id>', methods=["GET", "POST"])
+@bp.route("/delete_package/<package_id>", methods=["GET", "POST"])
 def delete_package(package_id):
-    success = db.delete_package(
-        current_app.db_conn,
-        package_id)
+    success = db.delete_package(current_app.db_conn, package_id)
     if success:
-        flash('Package deleted.')
+        flash("Package deleted.")
     else:
         flash("Oops! Couldn't delete")
-    return redirect(url_for('officer.overview'))
+    return redirect(url_for("officer.overview"))
 
 
-@bp.route('/collect_package/<package_id>', methods=["GET", "POST"])
+@bp.route("/collect_package/<package_id>", methods=["GET", "POST"])
 def collect_package(package_id):
-    success = db.collect_package(
-        current_app.db_conn,
-        package_id)
+    success = db.collect_package(current_app.db_conn, package_id)
     if success:
-        flash('Package Collected.')
+        flash("Package Collected.")
     else:
         flash("Oops! Couldn't collect")
-    return redirect(url_for('officer.overview'))
+    return redirect(url_for("officer.overview"))
 
 
 @bp.route("/residents")
@@ -126,38 +115,42 @@ def resident_profile(id):
         "officer/resident_profile.html",
         resident=db.get_user_by_id(current_app.db_conn, id),
         get_package_list=lambda: db.get_all_packages(current_app.db_conn, id),
-        hide_owner_details_in_table=True
+        hide_owner_details_in_table=True,
     )
 
 
 @bp.route("/sent-email")
 def email_all():
     packages = db.get_all_packages(current_app.db_conn)
-    with open(email_location, 'r') as f:
+    with open(email_location, "r") as f:
         email = f.read()
     for package in packages:
-        if package['collected'] == 'Collection pending':
-            new_email = personalise_email(email, full_name=package['fullname'], date_d=package['delivered'],
-                                          description=package['title'])
-            email_resident(package['email'], new_email)
+        if package["collected"] == "Collection pending":
+            new_email = personalise_email(
+                email,
+                full_name=package["fullname"],
+                date_d=package["delivered"],
+                description=package["title"],
+            )
+            email_resident(package["email"], new_email)
     return render_template("officer/sent-email.html")
 
 
-@bp.route("/template", methods=['POST'])
+@bp.route("/template", methods=["POST"])
 def submit():
-    email = request.form['email']
-    with open(email_location, 'w') as f:
+    email = request.form["email"]
+    with open(email_location, "w") as f:
         f.write(email)
         flash("Changes Saved!")
     return render_template("officer/template.html", email=email)
 
 
-@bp.route("/sign", methods=['post'])
+@bp.route("/sign", methods=["post"])
 def sign():
-    fullname = request.json['fullname']
-    package_title = request.json['title']
-    package_id = request.json['packageId']
-    data_url = request.json['dataUrl']
+    fullname = request.json["fullname"]
+    package_title = request.json["title"]
+    package_id = request.json["packageId"]
+    data_url = request.json["dataUrl"]
 
     if not is_valid(current_app.db_conn, fullname, package_title, package_id):
         return FAILURE_404
@@ -171,23 +164,20 @@ def sign():
     return SUCCESS_200
 
 
-@bp.route("/getsign", methods=['post'])
+@bp.route("/getsign", methods=["post"])
 def getsign():
-    package_id = request.json['packageId']
+    package_id = request.json["packageId"]
 
     if not package_is_signed(package_id):
         return FAILURE_404
 
     return (
-        json.dumps({
-            'success': True,
-            'dataUrl': get_data_url(package_id)
-        }),
+        json.dumps({"success": True, "dataUrl": get_data_url(package_id)}),
         200,
-        {'ContentType': 'application/json'}
+        {"ContentType": "application/json"},
     )
 
 
-@bp.route("/droppostdata", methods=['get'])
+@bp.route("/droppostdata", methods=["get"])
 def droppostdata():
     return redirect(url_for("officer.overview"))

@@ -8,8 +8,8 @@ SIGNATURES_ROOT = None
 
 
 def is_valid(conn, given_fullname, given_package_title, given_package_id):
-    ''' Returns if the given full name, package title and package id
-        are consisitent with the database '''
+    """Returns if the given full name, package title and package id
+    are consisitent with the database"""
 
     column = None
 
@@ -22,7 +22,7 @@ def is_valid(conn, given_fullname, given_package_title, given_package_id):
             ON packages.resident_id = users.id
             WHERE packages.id = %s;
             """,
-            (given_package_id,)
+            (given_package_id,),
         )
         column = curs.fetchone()
 
@@ -30,16 +30,18 @@ def is_valid(conn, given_fullname, given_package_title, given_package_id):
         return False
 
     return (
-        given_fullname == column['fullname'] and
-        given_package_title == column['title'] and
-        given_package_id == column['package_id']
+        given_fullname == column["fullname"]
+        and given_package_title == column["title"]
+        and given_package_id == column["package_id"]
     )
 
 
 def img_name(package_id):
     if SIGNATURES_ROOT is None:
-        return os.path.join(current_app.instance_path, 'media', 'signatures', f'sig{package_id}.txt')
-    return os.path.join(SIGNATURES_ROOT, f'sig{package_id}.txt')
+        return os.path.join(
+            current_app.instance_path, "media", "signatures", f"sig{package_id}.txt"
+        )
+    return os.path.join(SIGNATURES_ROOT, f"sig{package_id}.txt")
 
 
 def package_is_signed(package_id):

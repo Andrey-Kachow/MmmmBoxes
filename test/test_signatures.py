@@ -5,7 +5,7 @@ import tempfile
 import os
 import sys
 
-sys.path.append('..')
+sys.path.append("..")
 
 
 AMONGUS_DATA_URL = """data:image/png;base64,
@@ -38,7 +38,6 @@ package_title = "HP printer"
 
 
 def with_temp_directory(test_func):
-
     def wrapper():
         with tempfile.TemporaryDirectory() as dirname:
             _temp = sig.SIGNATURES_ROOT
@@ -52,8 +51,7 @@ def with_temp_directory(test_func):
 @tdb.with_temp_psql_conn
 def test_package_is_valid_if_exists(conn):
 
-    db.register_new_user(conn, name, email, username,
-                         password_plain, is_officer)
+    db.register_new_user(conn, name, email, username, password_plain, is_officer)
     db.add_new_package(conn, name, package_title)
 
     assert sig.is_valid(conn, name, package_title, 1)
@@ -63,8 +61,7 @@ def test_package_is_valid_if_exists(conn):
 @with_temp_directory
 def test_img_name_for_sanity(dirname):
     for package_id in range(100):
-        assert os.path.join(
-            dirname, f'sig{package_id}') in sig.img_name(package_id)
+        assert os.path.join(dirname, f"sig{package_id}") in sig.img_name(package_id)
 
 
 @with_temp_directory

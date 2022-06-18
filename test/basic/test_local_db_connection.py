@@ -10,15 +10,19 @@ def test_functional():
     with conn.cursor() as curs:
         curs.execute("""DROP TABLE IF EXISTS temp;""")
         conn.commit()
-        curs.execute("""
+        curs.execute(
+            """
         CREATE TABLE temp (
             Name TEXT,
             Age INTEGER
-        );""")
+        );"""
+        )
         conn.commit()
-        curs.execute("""
+        curs.execute(
+            """
         INSERT INTO temp
-        VALUES (\'Bob\', 42);""")
+        VALUES (\'Bob\', 42);"""
+        )
         conn.commit()
 
         curs.execute("""SELECT * FROM temp;""")

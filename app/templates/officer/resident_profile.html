@@ -1,17 +1,14 @@
-{% extends 'base.html' %}
-
-{% block local_style %}
-<link rel="stylesheet" href="{{ url_for('static', filename='resident-profile.css') }}">
-{% endblock %}
-
-{% block header %}
+{% extends 'base.html' %} {% block local_style %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='resident-profile.css') }}"
+/>
+{% endblock %} {% block header %}
 <h1>{% block title %}Overview: {{ resident.username }}{% endblock %}</h1>
-{% endblock %}
-
-{% block content %}
+{% endblock %} {% block content %}
 
 <h2>{{ resident.fullname }}</h2>
-<img src="https://thiscatdoesnotexist.com/" width="128" height="128">
+<img src="https://thiscatdoesnotexist.com/" width="128" height="128" />
 <h3 class="profile_property">
   <span class="profile_label">Username: </span>
   <span class="profile_value">{{ resident.username }}</span>
@@ -27,9 +24,5 @@
 
 <h3>Packages:</h3>
 
-{% include 'common/package_table_noname.html' %}
-
-{% endblock %}
-
-{% block scripts %}
-{% endblock %}
+{% include 'common/package_table_noname.html' %} {% endblock %} {% block scripts
+%} {% endblock %}

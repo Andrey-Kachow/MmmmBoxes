@@ -12,7 +12,7 @@ def create_app():
     # Create and configure the app
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
-        SECRET_KEY='dev',
+        SECRET_KEY="dev",
     )
 
     # Ensure the instance folder exists
@@ -30,6 +30,7 @@ def create_app():
 
     # Database
     from .main.database import db
+
     app.db_conn = db.initialise_db_connection()
 
     # Check that tables are set up
@@ -37,6 +38,7 @@ def create_app():
 
     # Authentication, Officer and Resident blueprints
     from .main import auth, officer, resident
+
     app.register_blueprint(auth.bp)
     app.register_blueprint(officer.bp)
     app.register_blueprint(resident.bp)
@@ -50,6 +52,6 @@ def initialize_instance(app):
     print("Initializing instance...")
     try:
         os.makedirs(app.instance_path)
-        os.makedirs(os.path.join(app.instance_path, 'media', 'signatures'))
+        os.makedirs(os.path.join(app.instance_path, "media", "signatures"))
     except OSError:
         pass
