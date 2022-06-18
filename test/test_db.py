@@ -16,10 +16,10 @@ sys.path.append("..")
 
 
 DB_SCHEMA_PATH = os.path.join(
-    os.path.dirname(__file__), "..", "app", "main", "database", "schema.sql"
+    os.path.dirname(__file__), "..", "main", "database", "schema.sql"
 )
 DROP_DB_PATH = os.path.join(
-    os.path.dirname(__file__), "..", "app", "main", "database", "drop_all.sql"
+    os.path.dirname(__file__), "..", "main", "database", "drop_all.sql"
 )
 
 name = "Alex Jobson"
