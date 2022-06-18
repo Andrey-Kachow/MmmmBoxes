@@ -1,9 +1,10 @@
-from app import create_app, socketio
-from sys import argv
-from os import environ, path
+from os import environ, path, getcwd
+import sys
 from re import sub, DOTALL
 
-app = create_app()
+sys.path.append(".")
+print(getcwd())
+from main import create_app, socketio
 
 
 def replace_bg_colour(col):
@@ -23,6 +24,8 @@ def replace_bg_colour(col):
 
 
 if __name__ == "__main__":
+    app = create_app()
+
     if not "FLASK_ENV" in environ:
         print("FLASK_ENV is not set! Terminating.")
         exit()
@@ -37,4 +40,4 @@ if __name__ == "__main__":
     else:
         if environ["DRP_PHASE"] == "dev":
             replace_bg_colour("#ff8484")
-        socketio.run(app, host=argv[1], port=argv[2])
+        socketio.run(app, host=sys.argv[1], port=sys.argv[2])
