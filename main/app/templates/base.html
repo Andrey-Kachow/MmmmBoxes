@@ -8,18 +8,18 @@
       href="{{ url_for('static', filename='style.css') }}"
     />
 
-    {% block local_style %}{% endblock %}
+    {% block local-style %}{% endblock %}
   </head>
 
   <body>
     <section class="content">
-      {% if not hide_return %}
+      {% if not hide-return %}
       <p><a href="{{ url_for('hello') }}">Back to homepage</a></p>
       {% endif %}
 
       <header>{% block header %}{% endblock %}</header>
 
-      {% block content %}{% endblock %} {% for message in get_flashed_messages()
+      {% block content %}{% endblock %} {% for message in get-flashed-messages()
       %}
       <div class="flash">{{ message }}</div>
       {% endfor %} {% if g.user %}
@@ -32,4 +32,17 @@
     charset="utf-8"
   ></script>
   {% block scripts %}{% endblock %}
+
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.1/socket.io.js"
+    integrity="sha512-9mpsATI0KClwt+xVZfbcf2lJ8IFBAwsubJ6mI3rtULwyM3fBmQFzj0It4tGqxLOGQwGfJdk/G+fANnxfq9/cew=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  ></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"
+    integrity="sha512-n/4gHW3atM3QqRcbCn6ewmpxcLAHGaDjpEBu4xZd47N0W2oQ+6q7oc3PXstrJYXcbNU1OHdQ1T7pAP+gi5Yu8g=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  ></script>
 </html>

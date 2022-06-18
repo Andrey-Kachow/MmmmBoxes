@@ -1,20 +1,20 @@
 <link
   rel="stylesheet"
-  href="{{ url_for('static', filename='signature_canvas.css') }}"
+  href="{{ url_for('static', filename='signature-canvas.css') }}"
 />
 
-<div id="signature_canvas_wrapper" class="tiny_blue_border hidden_signature">
-  <div id="signature_labels">
-    <span id="signature_label_text">
+<div id="signature-canvas-wrapper" class="tiny-blue-border hidden-signature">
+  <div id="signature-labels">
+    <span id="signature-label-text">
       Signature for
-      <span id="package_owner_placeholder"></span>'s
-      <span id="package_title_placeholder"></span>
+      <span id="package-owner-placeholder"></span>'s
+      <span id="package-title-placeholder"></span>
     </span>
   </div>
-  <div id="canvas_wrapper">
+  <div id="canvas-wrapper">
     <canvas id="signature-pad"></canvas>
   </div>
-  <div id="signature_buttons_containter">
+  <div id="signature-buttons-containter">
     <div id="signature-cancel" class="signature-btn-wrapper">
       <button id="signature-cancel-btn" class="signature-btn">
         <span>Cancel</span>
@@ -33,13 +33,13 @@
   </div>
 </div>
 <div
-  id="requested_signature_display_wrapper"
-  class="tiny_blue_border hidden_signature"
+  id="requested-signature-display-wrapper"
+  class="tiny-blue-border hidden-signature"
 >
-  <div id="signature_loading_info_wrapper">
-    <span id="signature_loading_info"></span>
+  <div id="signature-loading-info-wrapper">
+    <span id="signature-loading-info"></span>
   </div>
-  <div class="requested_canvas_wrapper">
+  <div class="requested-canvas-wrapper">
     <img
       id="signature-display"
       src="https://media3.giphy.com/media/3oEjI6SIIHBdRxXI40/200.gif"
@@ -47,16 +47,16 @@
   </div>
   <button
     type="button"
-    id="signature_display_close"
+    id="signature-display-close"
     onclick="closeRequestedSignatureDisplay()"
   >
     Close
   </button>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/signature-pad@4.0.0/dist/signature-pad.umd.min.js"></script>
 <script
-  src="{{ url_for('static', filename='signature_canvas.js')}}"
+  src="{{ url_for('static', filename='signature-canvas.js')}}"
   charset="utf-8"
 ></script>
 <script type="text/javascript">
@@ -64,8 +64,8 @@
   initializeSignatureRequestUrl("{{ url_for('officer.getsign') }}");
   initializeForcedRefreshUrl("{{ url_for('officer.droppostdata') }}");
 </script>
-{% if clear_post_data %}
+{% if clear-post-data %}
 <script type="text/javascript">
-  window.open(forcedRefreshUrl, "_self");
+  window.open(forcedRefreshUrl, "-self");
 </script>
 {% endif %}

@@ -1,4 +1,4 @@
-#signature_canvas_wrapper {
+#signature-canvas-wrapper {
   width: 256px;
   position: fixed;
   top: 50%;
@@ -6,24 +6,24 @@
   transform: translate(-50%, -50%);
 }
 
-.tiny_blue_border {
+.tiny-blue-border {
   border: 2px solid #6a8ad4;
 }
 
-.hidden_signature {
+.hidden-signature {
   height: 0;
   overflow: hidden;
   border: 0px solid #000000;
 }
 
-#signature_labels {
+#signature-labels {
   background-color: #5d85e3;
   color: #ffffff;
   padding: 5px;
   font-size: 10pt;
 }
 
-#canvas_wrapper {
+#canvas-wrapper {
   width: 100%;
   height: 128px;
 }
@@ -35,7 +35,7 @@ canvas#signature-pad {
   cursor: crosshair;
 }
 
-#signature_buttons_containter {
+#signature-buttons-containter {
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -97,7 +97,7 @@ canvas#signature-pad {
   background: #269ce9;
 }
 
-#requested_signature_display_wrapper {
+#requested-signature-display-wrapper {
   min-width: 256px;
   max-width: 256px;
   position: fixed;
@@ -106,11 +106,11 @@ canvas#signature-pad {
   transform: translate(-50%, -50%);
 }
 
-#signature_loading_info_wrapper {
+#signature-loading-info-wrapper {
   background-color: #fff;
 }
 
-#requested_canvas_wrapper {
+#requested-canvas-wrapper {
   width: 100%;
   min-height: 128px;
   max-height: 128px;
@@ -121,7 +121,7 @@ img#signature-display {
   height: 128px;
 }
 
-#signature_display_close {
+#signature-display-close {
   width: 100%;
   height: 100%;
 }

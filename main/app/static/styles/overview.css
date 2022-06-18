@@ -1,12 +1,12 @@
-#resident_name_inp {
+#resident-name-inp {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-#resident_name_inp:focus {
+#resident-name-inp:focus {
   outline: none;
 }
 
-.dropdown_input_div {
+.dropdown-input-div {
   position: relative;
   display: inline-block;
 }
@@ -152,11 +152,11 @@ hr {
   }
 }
 
-#resident_name_inp:focus {
+#resident-name-inp:focus {
   outline: 3px solid #ddd;
 }
 
-.dropdown_input_div {
+.dropdown-input-div {
   position: relative;
   display: inline-block;
 }

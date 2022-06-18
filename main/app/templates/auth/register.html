@@ -1,4 +1,4 @@
-{% extends 'base.html' %} {% block local_style %}
+{% extends 'base.html' %} {% block local-style %}
 <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}" />
 {% endblock %} {% block header %}
 <h1>MmmmBoxes</h1>
@@ -32,11 +32,11 @@
   />
 
   <div class="entry">
-    <input type="checkbox" id="role_officer" name="is_officer" value="true" />
-    <label for="role_officer">I am an officer</label><br />
+    <input type="checkbox" id="role-officer" name="is-officer" value="true" />
+    <label for="role-officer">I am an officer</label><br />
   </div>
 
-  <input class="submit_button" type="submit" value="Create Account" />
+  <input class="submit-button" type="submit" value="Create Account" />
 </form>
 <a class="entry" href="{{ url_for('auth.login') }}">Log in</a>
 {% endblock %}

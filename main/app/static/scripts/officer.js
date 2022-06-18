@@ -1,9 +1,9 @@
 function showResidents() {
-  document.getElementById("dropdown_residents").style.display = "block";
+  document.getElementById("dropdown-residents").style.display = "block";
 }
 
 function hideResidents() {
-  document.getElementById("dropdown_residents").style.display = "none";
+  document.getElementById("dropdown-residents").style.display = "none";
 }
 
 function nonButtonFocusHide() {
@@ -16,7 +16,7 @@ function nonButtonFocusHide() {
 }
 
 function selectResidentName(name) {
-  document.getElementById("resident_name_inp").value = name;
+  document.getElementById("resident-name-inp").value = name;
   hideResidents();
 }
 
@@ -42,8 +42,8 @@ function filteredSearchDisplayAlter(
 
 function filterResidents() {
   filteredSearchDisplayAlter(
-    "resident_name_inp",
-    "dropdown_residents",
+    "resident-name-inp",
+    "dropdown-residents",
     "button",
     (elem) => elem.textContent
   );
@@ -51,8 +51,8 @@ function filterResidents() {
 
 function filterListOfresidents() {
   filteredSearchDisplayAlter(
-    "resident_list_name_inp",
-    "list_of_residents",
+    "resident-list-name-inp",
+    "list-of-residents",
     "li",
     (elem) => elem.textContent
   );

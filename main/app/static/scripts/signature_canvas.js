@@ -32,9 +32,9 @@ function initializeSignatureLabels(ownerFullName, packageTitle, packageId) {
   signatureResidentName = ownerFullName;
   signaturePackageTitle = packageTitle;
   signaturePackageId = packageId;
-  document.getElementById("package_owner_placeholder").textContent =
+  document.getElementById("package-owner-placeholder").textContent =
     ownerFullName;
-  document.getElementById("package_title_placeholder").textContent =
+  document.getElementById("package-title-placeholder").textContent =
     packageTitle;
 }
 
@@ -43,8 +43,8 @@ function openSignatureCanvas(ownerFullName, packageTitle, packageId) {
   signaturePad.clear();
   initializeSignatureLabels(ownerFullName, packageTitle, packageId);
   document
-    .getElementById("signature_canvas_wrapper")
-    .classList.remove("hidden_signature");
+    .getElementById("signature-canvas-wrapper")
+    .classList.remove("hidden-signature");
 }
 
 function closeSignatureCanvas() {
@@ -52,8 +52,8 @@ function closeSignatureCanvas() {
   signaturePackageTitle = null;
   signaturePackageId = null;
   document
-    .getElementById("signature_canvas_wrapper")
-    .classList.add("hidden_signature");
+    .getElementById("signature-canvas-wrapper")
+    .classList.add("hidden-signature");
 }
 
 function sendSignatureToServer() {
@@ -90,26 +90,26 @@ function requestSignaruteFromServer(packageId) {
 
 function showRequestedSignature(response) {
   document.getElementById("signature-display").src = response.dataUrl;
-  document.getElementById("signature_loading_info").textContent =
+  document.getElementById("signature-loading-info").textContent =
     "received OK!";
 }
 
 function openRequestedSignatureDisplay() {
   closeSignatureCanvas();
-  document.getElementById("signature_loading_info").textContent = "loading...";
+  document.getElementById("signature-loading-info").textContent = "loading...";
   document
-    .getElementById("requested_signature_display_wrapper")
-    .classList.remove("hidden_signature");
+    .getElementById("requested-signature-display-wrapper")
+    .classList.remove("hidden-signature");
 }
 
 function closeRequestedSignatureDisplay() {
   document
-    .getElementById("requested_signature_display_wrapper")
-    .classList.add("hidden_signature");
+    .getElementById("requested-signature-display-wrapper")
+    .classList.add("hidden-signature");
 }
 
 function notifySuccessfulSignature() {
-  window.open(forcedRefreshUrl, "_self"); // Temporary auto reload page
+  window.open(forcedRefreshUrl, "-self"); // Temporary auto reload page
   // alert("success")
 }
 

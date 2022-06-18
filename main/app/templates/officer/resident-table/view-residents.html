@@ -1,19 +1,19 @@
-{% extends 'base.html' %} {% block local_style %} {% endblock %} {% block header
+{% extends 'base.html' %} {% block local-style %} {% endblock %} {% block header
 %}
 <h1>{% block title %}All residents{% endblock %}</h1>
 {% endblock %} {% block content %}
 
 <input
-  id="resident_list_name_inp"
+  id="resident-list-name-inp"
   type="text"
   placeholder="Search Residents..."
   onkeyup="filterListOfresidents()"
 />
 
-<ul id="list_of_residents">
-  {% for resident in get_residents()|sort(attribute="fullname") %}
-  <li class="resident_list_elem">
-    <a href="{{ url_for('officer.resident_profile', id=resident.id) }}"
+<ul id="list-of-residents">
+  {% for resident in get-residents()|sort(attribute="fullname") %}
+  <li class="resident-list-elem">
+    <a href="{{ url_for('officer.resident-profile', id=resident.id) }}"
       >{{ resident.fullname }}</a
     >
   </li>

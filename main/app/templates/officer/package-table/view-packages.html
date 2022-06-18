@@ -1,6 +1,6 @@
 {% extends 'base.html' %} {% block header %}
 <h1>{% block title %}All packages{% endblock %}</h1>
-{% endblock %} {% block local_style %}
+{% endblock %} {% block local-style %}
 
 <link
   rel="stylesheet"
@@ -11,12 +11,12 @@
 
 <div class="overview-content">
   <form method="post" autocomplete="off">
-    <label for="resident_name">Resident name</label>
+    <label for="resident-name">Resident name</label>
 
-    <div class="dropdown_input_div">
+    <div class="dropdown-input-div">
       <input
-        id="resident_name_inp"
-        name="resident_name"
+        id="resident-name-inp"
+        name="resident-name"
         type="text"
         placeholder="Search Residents..."
         onfocus="showResidents()"
@@ -24,8 +24,8 @@
         onkeyup="filterResidents()"
         required
       />
-      <div id="dropdown_residents" class="dropdown-content">
-        {% for name in get_all_resident_names() %}
+      <div id="dropdown-residents" class="dropdown-content">
+        {% for name in get-all-resident-names() %}
         <button type="button" onclick="selectResidentName('{{ name }}')">
           {{ name }}
         </button>
@@ -33,14 +33,14 @@
       </div>
     </div>
 
-    <label for="package_title">Title</label>
-    <input name="package_title" id="package_title" required />
+    <label for="package-title">Title</label>
+    <input name="package-title" id="package-title" required />
     <input type="submit" value="Add new package" />
   </form>
 
-  <a href="{{ url_for('officer.email_all') }}">Push reminder to all</a>
+  <a href="{{ url_for('officer.email-all') }}">Push reminder to all</a>
 
-  {% include 'common/package_table.html' %}
+  {% include 'common/package-table.html' %}
 </div>
 {% endblock %} {% block scripts %}
 <script
@@ -48,7 +48,7 @@
   charset="utf-8"
 ></script>
 
-{% for package in get_package_list() %} {% if package.collected == "Collection
+{% for package in get-package-list() %} {% if package.collected == "Collection
 pending" %}
 <script>
   // Get the modal
