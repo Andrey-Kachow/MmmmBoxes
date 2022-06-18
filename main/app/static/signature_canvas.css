@@ -1,0 +1,127 @@
+#signature_canvas_wrapper {
+  width: 256px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.tiny_blue_border {
+  border: 2px solid #6a8ad4;
+}
+
+.hidden_signature {
+  height: 0;
+  overflow: hidden;
+  border: 0px solid #000000;
+}
+
+#signature_labels {
+  background-color: #5d85e3;
+  color: #ffffff;
+  padding: 5px;
+  font-size: 10pt;
+}
+
+#canvas_wrapper {
+  width: 100%;
+  height: 128px;
+}
+
+canvas#signature-pad {
+  background: #fff;
+  width: 100%;
+  height: 100%;
+  cursor: crosshair;
+}
+
+#signature_buttons_containter {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: stretch;
+  align-content: flex-start;
+}
+
+.signature-btn-wrapper {
+  width: calc(100% / 3);
+}
+
+.signature-btn {
+  color: #fff;
+  width: 100%;
+  height: 100%;
+}
+
+/* Green Submit Button */
+#signature-submit-btn {
+  background-color: #57a957;
+  border-color: #57a957;
+}
+
+#signature-submit-btn:hover {
+  background-color: #62c462;
+}
+
+#signature-submit-btn:active {
+  background: #57a957;
+}
+
+/* Red Cancel Button */
+#signature-cancel-btn {
+  background-color: #ca3535;
+  border-color: #c43c35;
+}
+
+#signature-cancel-btn:hover {
+  background-color: #ee5f5b;
+}
+
+#signature-cancel-btn:active {
+  background: #c43c35;
+}
+
+/* Blue Clear Button */
+#signature-clear-btn {
+  background-color: #269ce9;
+  border-color: #269ce9;
+}
+
+#signature-clear-btn:hover {
+  background-color: #70b9e8;
+}
+
+#signature-clear-btn:active {
+  background: #269ce9;
+}
+
+#requested_signature_display_wrapper {
+  min-width: 256px;
+  max-width: 256px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#signature_loading_info_wrapper {
+  background-color: #fff;
+}
+
+#requested_canvas_wrapper {
+  width: 100%;
+  min-height: 128px;
+  max-height: 128px;
+}
+
+img#signature-display {
+  width: 256px;
+  height: 128px;
+}
+
+#signature_display_close {
+  width: 100%;
+  height: 100%;
+}
