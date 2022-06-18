@@ -1,4 +1,4 @@
-from drp11.app.main.database.db import (
+from main.database.db import (
     execute_sql_file,
     register_new_user,
     verify_password,

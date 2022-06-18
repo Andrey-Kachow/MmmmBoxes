@@ -1,6 +1,6 @@
-import drp11.app.main.database.signatures as sig
-import drp11.test.test_db as tdb
-import drp11.app.main.database.db as db
+import main.database.signatures as sig
+import test.test_db as tdb
+import main.database.db as db
 import tempfile
 import os
 import sys
