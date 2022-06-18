@@ -1,0 +1,13 @@
+{% extends 'base.html' %} {% block header %}
+<h1>{% block title %}Your packages{% endblock %}</h1>
+{% endblock %} {% block local_style %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='overview.css') }}"
+/>
+{% endblock %} {% block content %}
+
+<p><a href="{{ url_for('hello') }}">Back to homepage</a></p>
+
+{% include 'common/package_table_noname.html' %} {% endblock %} {% block scripts
+%} {% endblock %}
