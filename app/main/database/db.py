@@ -1,7 +1,13 @@
-import psycopg2, json, os, string, psycopg2.extras, datetime
+import psycopg2
+import json
+import os
+import string
+import psycopg2.extras
+import datetime
 from werkzeug.security import check_password_hash, generate_password_hash
 
 DATE_FORMAT_STRING = "%H:%M on %a %e %B, %Y"
+
 
 def initialise_db_connection():
     """
@@ -13,10 +19,13 @@ def initialise_db_connection():
     # Attempt to get creds
     user_creds = None
     try:
-        with open(os.path.join(os.path.dirname(__file__),"local_db.json")) as f:
+        with open(os.path.join(os.path.dirname(__file__), "local_db.json")) as f:
             user_creds = json.loads(f.read())
             # Check that the relevant keys are in creds.json.
-            if not all(cred_key in user_creds for cred_key in ["host", "dbname", "user" ,"password"]):
+            if not all(
+                cred_key in user_creds
+                for cred_key in ["host", "dbname", "user", "password"]
+            ):
                 print("Credentials are incomplete. Using DATABASE_URL variable.")
                 user_creds = None
 
@@ -27,17 +36,17 @@ def initialise_db_connection():
     # Return a connection with user creds or DATABASE_URL, depending on existence of user_creds
     if user_creds is None:
         return psycopg2.connect(
-                os.environ["DATABASE_URL"],
-                sslmode="require",
-                cursor_factory=psycopg2.extras.RealDictCursor
-            )
-    return psycopg2.connect(
-            host=user_creds["host"],
-            database=user_creds["dbname"],
-            user=user_creds["user"],
-            password=user_creds["password"],
-            cursor_factory=psycopg2.extras.RealDictCursor
+            os.environ["DATABASE_URL"],
+            sslmode="require",
+            cursor_factory=psycopg2.extras.RealDictCursor,
         )
+    return psycopg2.connect(
+        host=user_creds["host"],
+        database=user_creds["dbname"],
+        user=user_creds["user"],
+        password=user_creds["password"],
+        cursor_factory=psycopg2.extras.RealDictCursor,
+    )
 
 
 def execute_sql_file(conn, filename):
@@ -69,7 +78,7 @@ def register_new_user(conn, name, email, username, password_plain, is_officer):
             FROM users
             WHERE username=%s;
             """,
-            (username, )
+            (username,),
         )
         if curs.fetchone() is not None:
             return "Username is taken!"
@@ -81,7 +90,7 @@ def register_new_user(conn, name, email, username, password_plain, is_officer):
             FROM users
             WHERE email=%s;
             """,
-            (email, )
+            (email,),
         )
         if curs.fetchone() is not None:
             return "Email is taken!"
@@ -91,10 +100,11 @@ def register_new_user(conn, name, email, username, password_plain, is_officer):
             INSERT INTO users (username, password, email, fullname, is_officer)
             VALUES (%s, %s, %s, %s, %s);
             """,
-            (username, generate_password_hash(password_plain), email, name, is_officer)
+            (username, generate_password_hash(password_plain), email, name, is_officer),
         )
     conn.commit()
     return None
+
 
 def verify_password(conn, username, password_plain):
     """Arguments: a database connection, details to check.
@@ -114,7 +124,7 @@ def verify_password(conn, username, password_plain):
             FROM users
             WHERE username=%s;
             """,
-            (username,)
+            (username,),
         )
         result = curs.fetchone()
         if result is None:
@@ -124,6 +134,7 @@ def verify_password(conn, username, password_plain):
             return {}
 
         return dict(result)
+
 
 def get_user_by_id(conn, id):
     """Arguments: a database connection, user id to get.
@@ -142,7 +153,7 @@ def get_user_by_id(conn, id):
             FROM users
             WHERE id=%s;
             """,
-            (id,)
+            (id,),
         )
         result = curs.fetchone()
         if result is None:
@@ -182,10 +193,11 @@ def get_all_packages(conn, id=None):
                 INNER JOIN users
                 ON packages.resident_id = users.id AND users.id=%s;
                 """,
-                (id,)
+                (id,),
             )
 
         return [clean_package_dict(dict(p)) for p in curs.fetchall()]
+
 
 def add_new_package(conn, resident_name, title):
     """Arguments: a database connection, recipient's name, package title
@@ -207,7 +219,7 @@ def add_new_package(conn, resident_name, title):
             FROM users
             WHERE fullname=%s AND is_officer=FALSE;
             """,
-            (resident_name,)
+            (resident_name,),
         )
         result = curs.fetchone()
         # Resident does not exist
@@ -216,15 +228,13 @@ def add_new_package(conn, resident_name, title):
 
         rid = result["id"]
 
-        print(f"\n{rid}\n\n{title}\n")
-
         curs.execute(
             """
             INSERT INTO packages (resident_id, title)
             VALUES (%s, %s)
             RETURNING id;
             """,
-            (result["id"], title)
+            (result["id"], title),
         )
         # Get the id, proceed to look up the rest of the details
         package_id = curs.fetchone()["id"]
@@ -236,13 +246,13 @@ def add_new_package(conn, resident_name, title):
             ON packages.resident_id = users.id
             WHERE packages.id = %s;
             """,
-            (package_id,)
+            (package_id,),
         )
         conn.commit()
         return clean_package_dict(dict(curs.fetchone()))
 
 
-def delete_package(conn,package_id):
+def delete_package(conn, package_id):
     with conn.cursor() as curs:
         curs.execute(
             """
@@ -250,12 +260,13 @@ def delete_package(conn,package_id):
             FROM packages
             WHERE packages.id = %s;
             """,
-            (package_id,)
+            (package_id,),
         )
-        conn.commit() 
+        conn.commit()
     return True
 
-def collect_package(conn,package_id):
+
+def collect_package(conn, package_id):
     collection_time = datetime.datetime.now().isoformat()
     with conn.cursor() as curs:
         curs.execute(
@@ -264,9 +275,12 @@ def collect_package(conn,package_id):
             SET collected = %s
             WHERE packages.id = %s;
             """,
-            (collection_time, package_id,)
+            (
+                collection_time,
+                package_id,
+            ),
         )
-        conn.commit() 
+        conn.commit()
     return True
 
 
@@ -279,10 +293,7 @@ def get_all_resident_names(conn):
             WHERE is_officer = false
             """
         )
-        return list(map(
-            lambda real_dict: real_dict['fullname'],
-            curs.fetchall()
-        ))
+        return list(map(lambda real_dict: real_dict["fullname"], curs.fetchall()))
     return []
 
 

@@ -1,9 +1,3 @@
-import testing.postgresql
-import psycopg2
-import os, sys
-
-sys.path.append('..')
-
 from drp11.app.main.database.db import (
     execute_sql_file,
     register_new_user,
@@ -11,12 +5,22 @@ from drp11.app.main.database.db import (
     get_user_by_id,
     get_all_packages,
     add_new_package,
-    get_all_resident_names
+    get_all_resident_names,
 )
+import testing.postgresql
+import psycopg2
+import os
+import sys
+
+sys.path.append("..")
 
 
-DB_SCHEMA_PATH = os.path.join(os.path.dirname(__file__), '..', 'app', 'main', 'database', 'schema.sql')
-DROP_DB_PATH = os.path.join(os.path.dirname(__file__), '..', 'app', 'main', 'database', 'drop_all.sql')
+DB_SCHEMA_PATH = os.path.join(
+    os.path.dirname(__file__), "..", "app", "main", "database", "schema.sql"
+)
+DROP_DB_PATH = os.path.join(
+    os.path.dirname(__file__), "..", "app", "main", "database", "drop_all.sql"
+)
 
 name = "Alex Jobson"
 email = "aljobex@gmail.com"
@@ -30,13 +34,12 @@ of_username = "patbat"
 of_password_plain = "solo322$"
 of_is_officer = True
 
-def with_temp_psql_conn(test_func):
 
+def with_temp_psql_conn(test_func):
     def wrapper():
         psql = testing.postgresql.Postgresql(port=8765)
         conn = psycopg2.connect(
-            **psql.dsn(),
-            cursor_factory=psycopg2.extras.RealDictCursor
+            **psql.dsn(), cursor_factory=psycopg2.extras.RealDictCursor
         )
         # initialise temp db
         execute_sql_file(conn, DROP_DB_PATH)
@@ -84,7 +87,7 @@ def test_verify_password_returns_proper_dict_when_success(conn):
 
     res = verify_password(conn, username, password_plain)
     assert bool(res)
-    for key in ['id', 'username', 'email', 'fullname', 'is_officer']:
+    for key in ["id", "username", "email", "fullname", "is_officer"]:
         assert key in res.keys()
 
 
@@ -122,7 +125,7 @@ def test_get_user_by_id_returns_user_dict_when_correct_id(conn):
 
     res = get_user_by_id(conn, 1)
     assert bool(res)
-    for key in ['id', 'username', 'email', 'fullname', 'is_officer']:
+    for key in ["id", "username", "email", "fullname", "is_officer"]:
         assert key in res.keys()
 
 
@@ -133,13 +136,24 @@ def test_add_new_package_returns_user_dict_when_correct_id(conn):
 
     res = add_new_package(conn, name, "HP printer")
     assert bool(res)
-    for key in ['id', 'title', 'email', 'fullname', 'delivered', 'collected', 'resident_id']:
+    for key in [
+        "id",
+        "title",
+        "email",
+        "fullname",
+        "delivered",
+        "collected",
+        "resident_id",
+    ]:
         assert key in res.keys()
+
 
 @with_temp_psql_conn
 def test_add_new_package_cannot_add_officer_package(conn):
 
-    register_new_user(conn, of_name, of_email, of_username, of_password_plain, of_is_officer)
+    register_new_user(
+        conn, of_name, of_email, of_username, of_password_plain, of_is_officer
+    )
 
     res = add_new_package(conn, of_name, "HP printer")
     assert res is None
@@ -180,7 +194,15 @@ def test_get_all_packages_items_are_added(conn):
     # Checking that all dictionaries have appropriate format and the dictionaries are not empty
     for package_dict in res:
         assert bool(package_dict)
-        for key in ['id', 'title', 'email', 'fullname', 'delivered', 'collected', 'resident_id']:
+        for key in [
+            "id",
+            "title",
+            "email",
+            "fullname",
+            "delivered",
+            "collected",
+            "resident_id",
+        ]:
             assert key in package_dict.keys()
 
 
@@ -188,6 +210,8 @@ def test_get_all_packages_items_are_added(conn):
 def test_get_all_resident_names_returns_only_names_of_residents(conn):
 
     register_new_user(conn, name, email, username, password_plain, is_officer)
-    register_new_user(conn, of_name, of_email, of_username, of_password_plain, of_is_officer)
+    register_new_user(
+        conn, of_name, of_email, of_username, of_password_plain, of_is_officer
+    )
 
     assert get_all_resident_names(conn) == [name]

@@ -1,35 +1,42 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% block local_style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}" />
+{% endblock %} {% block header %}
+<h1>MmmmBoxes</h1>
+{% endblock %} {% block title %} Register {% endblock %} {% block content %}
+<form method="post">
+  <input
+    class="entry"
+    name="username"
+    id="username"
+    placeholder="Username"
+    required
+  />
 
+  <input
+    class="entry"
+    type="password"
+    name="password"
+    id="password"
+    placeholder="Password"
+    required
+  />
 
-{% block local_style %}
-  <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
-{% endblock %}
+  <input class="entry" name="email" id="email" placeholder="Email" required />
 
-{% block header %}
-  <h1>MmmmBoxes</h1>
-{% endblock %}
+  <input
+    class="entry"
+    name="fullname"
+    id="fullname"
+    placeholder="Full Name"
+    required
+  />
 
-{% block title %}
-Register
-{% endblock %}
+  <div class="entry">
+    <input type="checkbox" id="role_officer" name="is_officer" value="true" />
+    <label for="role_officer">I am an officer</label><br />
+  </div>
 
-{% block content %}
-  <form method="post">
-    <input class="entry" name="username" id="username" placeholder="Username" required>
-
-    <input class="entry" type="password" name="password" id="password" placeholder="Password" required>
-
-    <input class="entry" name="email" id="email" placeholder="Email" required>
-
-    <input class="entry" name="fullname" id="fullname" placeholder="Full Name" required>
-
-    <div class="entry">
-      <input type="checkbox" id="role_officer" name="is_officer" value="true">
-      <label for="role_officer">I am an officer</label><br>
-    </div>
-
-    <input class="submit_button" type="submit" value="Create Account">
-
-  </form>
-  <a class = "entry" href="{{ url_for('auth.login') }}">Log in</a>
+  <input class="submit_button" type="submit" value="Create Account" />
+</form>
+<a class="entry" href="{{ url_for('auth.login') }}">Log in</a>
 {% endblock %}

@@ -1,32 +1,27 @@
-{% extends 'base.html' %}
-
-{% block header %}
-  <h1>{% block title %}Edit template email{% endblock %}</h1>
-{% endblock %}
-
-
-{% block local_style %}
-  <link rel="stylesheet" href="{{ url_for('static', filename='officer.css') }}">
-{% endblock %}
-
-
-{% block content %}
+{% extends 'base.html' %} {% block header %}
+<h1>{% block title %}Edit template email{% endblock %}</h1>
+{% endblock %} {% block local_style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='officer.css') }}" />
+{% endblock %} {% block content %}
 
 <form action="{{ url_for('officer.submit') }}" method="post">
-    <p><label for="email">Edit Email</label></p>
-    <textarea id="email" name="email" rows="20" cols="100">{{email}}</textarea>
-    <br>
-    <input type="submit" value="Submit">
+  <p><label for="email">Edit Email</label></p>
+  <textarea id="email" name="email" rows="20" cols="100">{{email}}</textarea>
+  <br />
+  <input type="submit" value="Submit" />
 </form>
 
 <p>Click the "Submit" button and the form-data will be saved</p>
-<p>To insert student specific information, insert the &#60;tag&#62; in the text where you would like it to appear in your text</p>
+<p>
+  To insert student specific information, insert the &#60;tag&#62; in the text
+  where you would like it to appear in your text
+</p>
 <p>Your options are:</p>
 <ul>
-    <li>&#60;full-name&#62; - full-name of student</li>
-    <li>&#60;date-d&#62; - date delivered</li>
-    <li>&#60;date-t&#62; - today's date</li>
-    <li>&#60;urgency&#62; - urgency level on package</li>
-    <li>&#60;description&#62; - description</li>
+  <li>&#60;full-name&#62; - full-name of student</li>
+  <li>&#60;date-d&#62; - date delivered</li>
+  <li>&#60;date-t&#62; - today's date</li>
+  <li>&#60;urgency&#62; - urgency level on package</li>
+  <li>&#60;description&#62; - description</li>
 </ul>
 {% endblock content %}

@@ -1,27 +1,29 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% block local_style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}" />
+{% endblock %} {% block header %}
+<h1>MmmmBoxes</h1>
+{% endblock %} {% block title %} Login {% endblock %} {% block content %}
+<form method="post">
+  <input
+    class="entry"
+    name="username"
+    id="username"
+    placeholder="Username"
+    required
+  />
 
+  <input
+    class="entry"
+    type="password"
+    name="password"
+    id="password"
+    placeholder="Password"
+    required
+  />
 
-{% block local_style %}
-  <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
-{% endblock %}
-
-{% block header %}
-  <h1>MmmmBoxes</h1>
-{% endblock %}
-
-{% block title %}
-Login
-{% endblock %}
-
-
-{% block content %}
-  <form method="post">
-    <input class = "entry"name="username" id="username" placeholder="Username" required>
-
-    <input class = "entry" type="password" name="password" id="password" placeholder="Password" required>
-
-    <input class = "submit_button" type="submit" value="Log In">
-
-  </form>
-  <div class = "entry" style="font-size:x-small;">not a user? <a href="{{ url_for('auth.register') }}">create account</a></div>
+  <input class="submit_button" type="submit" value="Log In" />
+</form>
+<div class="entry" style="font-size: x-small">
+  not a user? <a href="{{ url_for('auth.register') }}">create account</a>
+</div>
 {% endblock %}

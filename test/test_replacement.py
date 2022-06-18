@@ -6,5 +6,11 @@ def test_replace():
 
 
 def test_personalise_email():
-    assert personalise_email("Hello <first-name>. You have a package. Urgency = <urgency>", first_name="Dave",
-                             urgency=str(5)) == "Hello Dave. You have a package. Urgency = 5"
+    assert (
+        personalise_email(
+            "Hello <first-name>. You have a package. Urgency = <urgency>",
+            first_name="Dave",
+            urgency=str(5),
+        )
+        == "Hello Dave. You have a package. Urgency = 5"
+    )
