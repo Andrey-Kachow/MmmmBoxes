@@ -13,13 +13,13 @@
 }
 
 .card-block {
-  margin-top: 10px
+  margin-top: 10px;
 }
 
 .mytooltip {
   display: inline;
   position: relative;
-  z-index: 999
+  z-index: 999;
 }
 
 .mytooltip .tooltip-item {
@@ -27,7 +27,7 @@
   cursor: pointer;
   display: inline-block;
   font-weight: 500;
-  padding: 0 10px
+  padding: 0 10px;
 }
 
 .mytooltip .tooltip-content {
@@ -45,11 +45,11 @@
   background: #2b2b2b;
   opacity: 0;
   cursor: default;
-  pointer-events: none
+  pointer-events: none;
 }
 
 .mytooltip .tooltip-content::after {
-  content: '';
+  content: "";
   top: 100%;
   left: 50%;
   border: solid transparent;
@@ -59,7 +59,7 @@
   pointer-events: none;
   border-color: #2a3035 transparent transparent;
   border-width: 10px;
-  margin-left: -10px
+  margin-left: -10px;
 }
 
 .mytooltip .tooltip-content img {
@@ -67,11 +67,11 @@
   height: 140px;
   display: block;
   float: left;
-  margin-right: 1em
+  margin-right: 1em;
 }
 
 .mytooltip .tooltip-item::after {
-  content: '';
+  content: "";
   position: absolute;
   width: 360px;
   height: 20px;
@@ -79,23 +79,23 @@
   left: 50%;
   pointer-events: none;
   -webkit-transform: translateX(-50%);
-  transform: translateX(-50%)
+  transform: translateX(-50%);
 }
 
 .mytooltip:hover .tooltip-item::after {
-  pointer-events: auto
+  pointer-events: auto;
 }
 
 .mytooltip:hover .tooltip-content {
   pointer-events: auto;
   opacity: 1;
   -webkit-transform: translate3d(0, 0, 0) rotate3d(0, 0, 0, 0deg);
-  transform: translate3d(0, 0, 0) rotate3d(0, 0, 0, 0deg)
+  transform: translate3d(0, 0, 0) rotate3d(0, 0, 0, 0deg);
 }
 
 .mytooltip:hover .tooltip-content2 {
   opacity: 1;
-  font-size: 18px
+  font-size: 18px;
 }
 
 .mytooltip .tooltip-text {
@@ -103,5 +103,5 @@
   line-height: 24px;
   display: block;
   padding: 1.31em 1.21em 1.21em 0;
-  color: #fff
+  color: #fff;
 }
