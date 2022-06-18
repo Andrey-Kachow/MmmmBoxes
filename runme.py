@@ -10,9 +10,13 @@ from main.app import create_app, socketio
 def replace_bg_colour(col):
     # Replace app/static/style.css background colour
     contents = None
-    with open(path.join(path.dirname(__file__), "app/static/style.css")) as f:
+    with open(
+        path.join(path.dirname(__file__), "main/app/static/styles/style.css")
+    ) as f:
         contents = f.read()
-    with open(path.join(path.dirname(__file__), "app/static/style.css"), "w") as f:
+    with open(
+        path.join(path.dirname(__file__), "main/app/static/styles/style.css"), "w"
+    ) as f:
         f.write(
             sub(
                 r"(html.*background:)[^;]*(;.*)",
