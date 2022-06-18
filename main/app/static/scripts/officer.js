@@ -7,8 +7,8 @@ function hideResidents() {
 }
 
 function nonButtonFocusHide() {
-  if (event.relatedTarget != null) {
-    if (event.relatedTarget.tagName == "BUTTON") {
+  if (relatedTarget != null) {
+    if (relatedTarget.tagName == "BUTTON") {
       return;
     }
   }

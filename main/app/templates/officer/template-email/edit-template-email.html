@@ -1,7 +1,10 @@
 {% extends 'base.html' %} {% block header %}
 <h1>{% block title %}Edit template email{% endblock %}</h1>
-{% endblock %} {% block local-style %}
-<link rel="stylesheet" href="{{ url_for('static', filename='officer.css') }}" />
+{% endblock %} {% block local_style %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='styles/officer.css') }}"
+/>
 {% endblock %} {% block content %}
 
 <form action="{{ url_for('officer.submit') }}" method="post">

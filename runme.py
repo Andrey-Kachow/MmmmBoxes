@@ -4,7 +4,7 @@ from re import sub, DOTALL
 
 sys.path.append(".")
 print(getcwd())
-from main import create_app, socketio
+from main.app import create_app, socketio
 
 
 def replace_bg_colour(col):

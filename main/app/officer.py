@@ -10,7 +10,6 @@ from main.database.signatures import (
 )
 
 from flask import *
-from .. import socketio
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from main.app.populate_template import personalise_email, email_resident
@@ -21,14 +20,15 @@ bp = Blueprint("officer", __name__, url_prefix="/officer")
 
 SUCCESS_200 = (json.dumps({"success": True}), 200, {"ContentType": "application/json"})
 FAILURE_404 = (json.dumps({"success": False}), 404, {"ContentType": "application/json"})
+EMAIL_LOCATION = "main/database/email-template.txt"
 
 
 # Check user is logged in and is resident
 @bp.before_request
 def before_request():
-    if "user_id" not in session:
+    if "user-id" not in session:
         abort(403, "You are not logged in")
-    if not session["user_is_officer"]:
+    if not session["user-is-officer"]:
         abort(403, "You are not an officer")
 
 
@@ -70,18 +70,18 @@ def overview():
         socketio.emit("new_package", just_added, broadcast=True)
 
     return render_template(
-        "officer/overview.html", clear_post_data=(request.method == "POST")
+        "officer/package-table/view-packages.html",
+        clear_post_data=(request.method == "POST"),
     )
-
-
-email_location = "app/main/database/email-template.txt"
 
 
 @bp.route("/template")
 def template():
-    with open(email_location, "r") as f:
+    with open(EMAIL_LOCATION, "r") as f:
         email = f.read()
-    return render_template("officer/template.html", email=email)
+    return render_template(
+        "officer/template-email/edit-template-email.html", email=email
+    )
 
 
 @bp.route("/delete_package/<package_id>", methods=["GET", "POST"])
@@ -106,13 +106,13 @@ def collect_package(package_id):
 
 @bp.route("/residents")
 def residents():
-    return render_template("officer/residents.html")
+    return render_template("officer/resident-table/view-residents.html")
 
 
 @bp.route("/residents/<int:id>/profile")
 def resident_profile(id):
     return render_template(
-        "officer/resident_profile.html",
+        "officer/resident-table/resident-profile.html",
         resident=db.get_user_by_id(current_app.db_conn, id),
         get_package_list=lambda: db.get_all_packages(current_app.db_conn, id),
         hide_owner_details_in_table=True,
@@ -122,7 +122,7 @@ def resident_profile(id):
 @bp.route("/sent-email")
 def email_all():
     packages = db.get_all_packages(current_app.db_conn)
-    with open(email_location, "r") as f:
+    with open(EMAIL_LOCATION, "r") as f:
         email = f.read()
     for package in packages:
         if package["collected"] == "Collection pending":
@@ -133,16 +133,18 @@ def email_all():
                 description=package["title"],
             )
             email_resident(package["email"], new_email)
-    return render_template("officer/sent-email.html")
+    return render_template("officer/template-email/emails-sent.html")
 
 
 @bp.route("/template", methods=["POST"])
 def submit():
     email = request.form["email"]
-    with open(email_location, "w") as f:
+    with open(EMAIL_LOCATION, "w") as f:
         f.write(email)
         flash("Changes Saved!")
-    return render_template("officer/template.html", email=email)
+    return render_template(
+        "officer/template-email/edit-template-email.html", email=email
+    )
 
 
 @bp.route("/sign", methods=["post"])

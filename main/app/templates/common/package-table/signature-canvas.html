@@ -1,6 +1,6 @@
 <link
   rel="stylesheet"
-  href="{{ url_for('static', filename='signature-canvas.css') }}"
+  href="{{ url_for('static', filename='styles/signature-canvas.css') }}"
 />
 
 <div id="signature-canvas-wrapper" class="tiny-blue-border hidden-signature">
@@ -54,9 +54,9 @@
   </button>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/signature-pad@4.0.0/dist/signature-pad.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
 <script
-  src="{{ url_for('static', filename='signature-canvas.js')}}"
+  src="{{ url_for('static', filename='scripts/signature-canvas.js')}}"
   charset="utf-8"
 ></script>
 <script type="text/javascript">
@@ -64,7 +64,7 @@
   initializeSignatureRequestUrl("{{ url_for('officer.getsign') }}");
   initializeForcedRefreshUrl("{{ url_for('officer.droppostdata') }}");
 </script>
-{% if clear-post-data %}
+{% if clear_post_data %}
 <script type="text/javascript">
   window.open(forcedRefreshUrl, "-self");
 </script>

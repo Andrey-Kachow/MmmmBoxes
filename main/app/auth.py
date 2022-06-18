@@ -1,5 +1,5 @@
 import functools
-from ..database import db
+from main.database import db
 
 from flask import (
     Blueprint,
@@ -25,7 +25,7 @@ def register():
         password = request.form["password"]
         email = request.form["email"]
         fullname = request.form["fullname"]
-        is_officer = request.form.get("is_officer") is not None
+        is_officer = request.form.get("is-officer") is not None
 
         error = db.register_new_user(
             current_app.db_conn, fullname, email, username, password, is_officer
@@ -54,9 +54,9 @@ def login():
             return redirect(url_for("auth.register"))
 
         session.clear()
-        session["user_id"] = details["id"]
-        session["user_fullname"] = details["fullname"]
-        session["user_is_officer"] = details["is_officer"]
+        session["user-id"] = details["id"]
+        session["user-fullname"] = details["fullname"]
+        session["user-is-officer"] = details["is_officer"]
         return redirect(url_for("hello"))
 
     else:
@@ -65,8 +65,8 @@ def login():
 
 @bp.before_app_request
 def load_logged_in_user():
-    user_id = session.get("user_id")
-    is_officer = session.get("user_is_officer")
+    user_id = session.get("user-id")
+    is_officer = session.get("user-is-officer")
 
     # No user_id
     if user_id is None:
@@ -78,7 +78,6 @@ def load_logged_in_user():
     if not details:
         g.user = None
         return
-
     g.user = details
 
 

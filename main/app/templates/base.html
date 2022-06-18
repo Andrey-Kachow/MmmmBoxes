@@ -1,38 +1,5 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8" />
-    <title>{% block title %}{% endblock %} - DRP11</title>
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='style.css') }}"
-    />
-
-    {% block local-style %}{% endblock %}
-  </head>
-
-  <body>
-    <section class="content">
-      {% if not hide-return %}
-      <p><a href="{{ url_for('hello') }}">Back to homepage</a></p>
-      {% endif %}
-
-      <header>{% block header %}{% endblock %}</header>
-
-      {% block content %}{% endblock %} {% for message in get-flashed-messages()
-      %}
-      <div class="flash">{{ message }}</div>
-      {% endfor %} {% if g.user %}
-      <a href="{{ url_for('auth.logout') }}">Log out</a>
-      {% endif %}
-    </section>
-  </body>
-  <script
-    src="{{ url_for('static', filename='utils.js') }}"
-    charset="utf-8"
-  ></script>
-  {% block scripts %}{% endblock %}
-
   <script
     src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.1/socket.io.js"
     integrity="sha512-9mpsATI0KClwt+xVZfbcf2lJ8IFBAwsubJ6mI3rtULwyM3fBmQFzj0It4tGqxLOGQwGfJdk/G+fANnxfq9/cew=="
@@ -45,4 +12,35 @@
     crossorigin="anonymous"
     referrerpolicy="no-referrer"
   ></script>
+
+  <head>
+    <meta charset="utf-8" />
+    <title>{% block title %}{% endblock %} - DRP11</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles/style.css') }}"
+    />
+
+    {% block local_style %}{% endblock %}
+  </head>
+
+  <body>
+    <section class="content">
+      {% if not hide_return %}
+      <p><a href="{{ url_for('hello') }}">Back to homepage</a></p>
+      {% endif %}
+
+      <header>{% block header %}{% endblock %}</header>
+      {% for message in get_flashed_messages() %}
+      <div class="flash">{{ message }}</div>
+      {% endfor %} {% block content %}{% endblock %} {% if g.user %}
+      <a href="{{ url_for('auth.logout') }}">Log out</a>
+      {% endif %}
+    </section>
+  </body>
+  <script
+    src="{{ url_for('static', filename='scripts/utils.js') }}"
+    charset="utf-8"
+  ></script>
+  {% block scripts %}{% endblock %}
 </html>

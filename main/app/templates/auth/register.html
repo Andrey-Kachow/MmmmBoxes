@@ -1,5 +1,8 @@
-{% extends 'base.html' %} {% block local-style %}
-<link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}" />
+{% extends 'base.html' %} {% block local_style %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='styles/login.css') }}"
+/>
 {% endblock %} {% block header %}
 <h1>MmmmBoxes</h1>
 {% endblock %} {% block title %} Register {% endblock %} {% block content %}

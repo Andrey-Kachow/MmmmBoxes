@@ -1,6 +1,6 @@
 <link
   rel="stylesheet"
-  href="{{ url_for('static', filename='package-table.css') }}"
+  href="{{ url_for('static', filename='styles/package-table.css') }}"
 />
 
 <table id="packages-table">
@@ -9,14 +9,14 @@
     <th class="packages-col-heading">Package Title</th>
     <th class="packages-col-heading-date">Delivered</th>
     <th class="packages-col-heading-date">Collected</th>
-    {% if show-signature-button %}
+    {% if show_signature_button %}
     <th class="packages-col-heading">Signature</th>
     {% endif %}
   </tr>
 
-  {% set ns = namespace(last-delivered="")%} {% for package in
-  get-package-list()|sort(reverse=True, attribute="delivered") %} {% if
-  ns.last-delivered != package.delivered[:10] and ns.last-delivered != "" %}
+  {% set ns = namespace(last_delivered="")%} {% for package in
+  get_package_list()|sort(reverse=True, attribute="delivered") %} {% if
+  ns.last_delivered != package.delivered[:10] and ns.last_delivered != "" %}
   <tr>
     <td class="packages-spacer" style="border-width: 0"></td>
   </tr>
@@ -37,7 +37,7 @@
                 >{{ package.fullname }} <br />
                 {{package.email}}
               </span>
-              <a href="/officer/residents/{{ package.resident-id }}/profile"
+              <a href="/officer/residents/{{ package.resident_id }}/profile"
                 >View resident profile</a
               >
             </span>
@@ -80,7 +80,7 @@
                 Cancel
               </button>
               <a
-                href="{{ url_for('officer.collect-package', package-id=package.id) }}"
+                href="{{ url_for('officer.collect_package', package_id=package.id) }}"
                 ><button type="button" class="deletebtn">Confirm</button></a
               >
             </div>
@@ -119,7 +119,7 @@
                 Cancel
               </button>
               <a
-                href="{{ url_for('officer.delete-package', package-id=package.id) }}"
+                href="{{ url_for('officer.delete_package', package_id=package.id) }}"
                 ><button type="button" class="deletebtn">Delete</button></a
               >
             </div>
@@ -130,39 +130,40 @@
 
     {% else %}
     <td class="packages-col">{{ package.collectednice }}</td>
-    {% endif %} {% include 'common/signature-btns-col.html' %}
+    {% endif %} {% include 'common/package-table/signature-button-column.html'
+    %}
   </tr>
 
-  {% set ns.last-delivered = package.delivered[:10] %} {% endfor %}
+  {% set ns.last_delivered = package.delivered[:10] %} {% endfor %}
 </table>
 
-{% include 'common/signature-canvas.html' %} {% include 'common/js-libs.html' %}
+{% include 'common/package-table/signature-canvas.html' %}
 <script type="text/javascript" charset="utf-8">
   let socket = io();
   socket.on("new-package", (data) => {
     console.log(data);
-    let package-table = document.getElementById("packages-table");
-    let package-row = package-table.insertRow(1);
-    package-row.classList.add("packages-row");
+    let package_table = document.getElementById("packages-table");
+    let package_row = package_table.insertRow(1);
+    package_row.classList.add("packages-row");
 
-    let fullname-cell = package-row.insertCell();
-    fullname-cell.classList.add("packages-col");
-    fullname-cell.appendChild(document.createTextNode(data.fullname));
+    let fullname_cell = package_row.insertCell();
+    fullname_cell.classList.add("packages-col");
+    fullname_cell.appendChild(document.createTextNode(data.fullname));
 
-    let email-cell = package-row.insertCell();
-    email-cell.classList.add("packages-col");
-    email-cell.appendChild(document.createTextNode(data.email));
+    let email_cell = package_row.insertCell();
+    email_cell.classList.add("packages-col");
+    email_cell.appendChild(document.createTextNode(data.email));
 
-    let title-cell = package-row.insertCell();
-    title-cell.classList.add("packages-col");
-    title-cell.appendChild(document.createTextNode(data.title));
+    let title_cell = package_row.insertCell();
+    title_cell.classList.add("packages-col");
+    title_cell.appendChild(document.createTextNode(data.title));
 
-    let delivered-cell = package-row.insertCell();
-    delivered-cell.classList.add("packages-col");
-    delivered-cell.appendChild(document.createTextNode(data.deliverednice));
+    let delivered_cell = package_row.insertCell();
+    delivered_cell.classList.add("packages-col");
+    delivered_cell.appendChild(document.createTextNode(data.deliverednice));
 
-    let collected-cell = package-row.insertCell();
-    collected-cell.classList.add("packages-col");
-    collected-cell.appendChild(document.createTextNode(data.collectednice));
+    let collected_cell = package_row.insertCell();
+    collected_cell.classList.add("packages-col");
+    collected_cell.appendChild(document.createTextNode(data.collectednice));
   });
 </script>

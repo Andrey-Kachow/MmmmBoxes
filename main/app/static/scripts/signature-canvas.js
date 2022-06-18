@@ -75,7 +75,7 @@ function sendSignatureToServer() {
   closeSignatureCanvas();
 }
 
-function requestSignaruteFromServer(packageId) {
+function requestSignatureFromServer(packageId) {
   openRequestedSignatureDisplay();
   $.ajax({
     type: "POST",

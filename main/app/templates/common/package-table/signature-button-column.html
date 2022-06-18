@@ -1,8 +1,8 @@
-{% if show-signature-button %}
+{% if show_signature_button %}
 <td class="packages-col">
-  {% if package.is-signed %}
+  {% if package.is_signed %}
   <span>Signed</span>
-  <button type="button" onclick="requestSignaruteFromServer({{ package.id }})">
+  <button type="button" onclick="requestSignatureFromServer({{ package.id }})">
     View
   </button>
   {% else %}
