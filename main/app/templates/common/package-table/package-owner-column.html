@@ -1,0 +1,20 @@
+<td class="packages-col">
+    <div class="card-block">
+        <p class="text-center">
+            <span class="mytooltip tooltip-effect-1">
+                <span class="tooltip-item">{{ package.fullname }}</span>
+                <span class="tooltip-content clearfix">
+                    <img src="https://thiscatdoesnotexist.com/"
+                         width="128"
+                         height="128"/>
+                    <span class="tooltip-text">
+                        {{ package.fullname }}
+                        <br />
+                        {{ package.email }}
+                    </span>
+                    <a href="{{ url_for('officer.resident_profile', id=package.resident_id)}}">View resident profile</a>
+                </span>
+            </span>
+        </p>
+    </div>
+</td>
