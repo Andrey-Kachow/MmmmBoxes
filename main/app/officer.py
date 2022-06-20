@@ -13,7 +13,7 @@ from flask import *
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from main.app.populate_template import personalise_email, email_resident
-
+from main.app import socketio
 from main.app.auth import login_required
 
 bp = Blueprint("officer", __name__, url_prefix="/officer")
