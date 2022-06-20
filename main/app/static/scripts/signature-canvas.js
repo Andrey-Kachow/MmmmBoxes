@@ -5,7 +5,6 @@ let signatureRequestUrl = null;
 let signatureResidentName = null;
 let signaturePackageTitle = null;
 let signaturePackageId = null;
-let forcedRefreshUrl = null;
 
 // function definitions
 
@@ -15,10 +14,6 @@ function initializeSignatureProcessingUrl(url) {
 
 function initializeSignatureRequestUrl(url) {
   signatureRequestUrl = url;
-}
-
-function initializeForcedRefreshUrl(url) {
-  forcedRefreshUrl = url;
 }
 
 function resizeCanvas(canvas) {
@@ -109,7 +104,6 @@ function closeRequestedSignatureDisplay() {
 }
 
 function notifySuccessfulSignature() {
-  window.open(forcedRefreshUrl, "-self"); // Temporary auto reload page
   // alert("success")
 }
 

@@ -54,6 +54,4 @@
 <script type="text/javascript">
     initializeSignatureProcessingUrl("{{ url_for('officer.sign') }}");
     initializeSignatureRequestUrl("{{ url_for('officer.getsign') }}");
-    initializeForcedRefreshUrl("{{ url_for('officer.droppostdata') }}");
 </script>
-{% if clear_post_data %}<script type="text/javascript">window.open(forcedRefreshUrl, "-self");</script>{% endif %}
