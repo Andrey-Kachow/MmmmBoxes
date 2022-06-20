@@ -57,10 +57,10 @@ def login():
         session["user-id"] = details["id"]
         session["user-fullname"] = details["fullname"]
         session["user-is-officer"] = details["is_officer"]
-        return redirect(url_for("hello"))
+        return redirect(url_for("officer.overview"))
 
     else:
-        return render_template("auth/login.html", hide_return=True)
+        return render_template("auth/login.html", login=True)
 
 
 @bp.before_app_request

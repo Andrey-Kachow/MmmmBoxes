@@ -15,11 +15,6 @@
     </head>
     <body>
         <section class="content">
-            {% if not hide_return %}
-                <p>
-                    <a href="{{ url_for('hello') }}">Back to homepage</a>
-                </p>
-            {% endif %}
             <header>
                 {% block header %}{% endblock %}
             </header>
@@ -27,8 +22,35 @@
                 <div class="flash">{{ message }}</div>
             {% endfor %}
             {% block content %}{% endblock %}
-            {% if g.user %}<a href="{{ url_for('auth.logout') }}">Log out</a>{% endif %}
         </section>
+        {% if not login %}
+            <aside>
+                <div id="navigation-list">
+                    {% if session.get("user-is-officer") %}
+                        <p>You are an officer.</p>
+                        <p>
+                            <a href="{{ url_for('officer.overview') }}">View all packages</a>
+                        </p>
+                        <p>
+                            <a href="{{ url_for('officer.residents') }}">Browse residents</a>
+                        </p>
+                        <p>
+                            <a href="{{ url_for('officer.template') }}">Edit reminder email</a>
+                        </p>
+                    {% else %}
+                        <p>You are a resident.</p>
+                        <p>
+                            <a href="{{ url_for('resident.overview') }}">View your packages</a>
+                        </p>
+                    {% endif %}
+                    <!-- <p style="font-size: x-small">
+                        Not {{ session.get("user-fullname") }}?
+                        <a href="{{ url_for('auth.logout') }}">Logout</a>
+                    </p> -->
+                    {% if g.user %}<a href="{{ url_for('auth.logout') }}">Log out</a>{% endif %}
+                </div>
+            </aside>
+        {% endif %}
     </body>
     {% block scripts %}{% endblock %}
 </html>
