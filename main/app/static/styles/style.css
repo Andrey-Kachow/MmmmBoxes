@@ -25,3 +25,15 @@ h1 {
   margin-right: auto;
   text-align: center;
 }
+
+aside {
+  width: 20%;
+  padding-left: 15px;
+  font-style: italic;
+  background-color: rgb(158, 158, 158);
+  position: fixed;
+  top: 0;
+  right: 0;
+  overflow-y: auto;
+  height: 100vh;
+}
