@@ -33,23 +33,27 @@ test-db:
   rules:
     - *on-master-or-merge
     - changes:
-      - app/main/database/db.py
+      - main/database/**.*
 
 test-signatures:
   stage: test
   script:
     - *preamble
     - pytest test/test_signatures.py
-  # rules:
-  #   - *on-master-or-merge
-  #   - changes:
-  #     - app/main/database/**/*
+  rules:
+    - *on-master-or-merge
+    - changes:
+      - main/database/**/*
 
-# test-template:
-#   stage: test
-#   script:
-#     - *preamble
-#     - pytest test/test_replacement.py
+test-template:
+  stage: test
+  script:
+    - *preamble
+    - pytest test/test_replacement.py
+  rules:
+    - *on-master-or-merge
+    - changes:
+      - main/app/populate_template.py
 
 # ##############################
 

@@ -10,4 +10,12 @@ repos:
     rev: v2.7.1
     hooks:
     -   id: prettier
-        types_or: [html, css, javascript]
+        types_or: [css, javascript]
+
+-   repo: https://github.com/Riverside-Healthcare/djLint
+    rev: v1.2.0
+    hooks:
+    -   id: djlint-jinja
+        types_or: [file, html]
+        files: "\\.html"
+        args: [--reformat]
