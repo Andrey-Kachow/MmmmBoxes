@@ -1,11 +1,12 @@
 // globals
+const loadingUrl = "https://media3.giphy.com/media/3oEjI6SIIHBdRxXI40/200.gif";
 
 let signatureProcessingUrl = null;
 let signatureRequestUrl = null;
 let signatureResidentName = null;
 let signaturePackageTitle = null;
 let signaturePackageId = null;
-let forcedRefreshUrl = null;
+let signatureBtnTableCell = null;
 
 // function definitions
 
@@ -15,10 +16,6 @@ function initializeSignatureProcessingUrl(url) {
 
 function initializeSignatureRequestUrl(url) {
   signatureRequestUrl = url;
-}
-
-function initializeForcedRefreshUrl(url) {
-  forcedRefreshUrl = url;
 }
 
 function resizeCanvas(canvas) {
@@ -38,9 +35,10 @@ function initializeSignatureLabels(ownerFullName, packageTitle, packageId) {
     packageTitle;
 }
 
-function openSignatureCanvas(ownerFullName, packageTitle, packageId) {
+function openSignatureCanvas(signBtn, ownerFullName, packageTitle, packageId) {
   closeRequestedSignatureDisplay();
   signaturePad.clear();
+  signatureBtnTableCell = signBtn.parentElement;
   initializeSignatureLabels(ownerFullName, packageTitle, packageId);
   document
     .getElementById("signature-canvas-wrapper")
@@ -57,7 +55,7 @@ function closeSignatureCanvas() {
 }
 
 function sendSignatureToServer() {
-  alert("was sent");
+  const pid = signaturePackageId;
   $.ajax({
     type: "POST",
     url: signatureProcessingUrl,
@@ -69,8 +67,8 @@ function sendSignatureToServer() {
     }),
     contentType: "application/json",
     dataType: "json",
-    success: () => notifySuccessfulSignature(),
-    error: () => notifyFailedSignature(),
+    success: () => notifySuccessfulSignature(pid),
+    error: () => notifyFailedSignatureSent(),
   });
   closeSignatureCanvas();
 }
@@ -84,19 +82,22 @@ function requestSignatureFromServer(packageId) {
     contentType: "application/json",
     dataType: "json",
     success: (response) => showRequestedSignature(response),
-    error: () => notifyFailedSignature(),
+    error: () => notifyFailedSignatureRequest(),
   });
 }
 
 function showRequestedSignature(response) {
-  document.getElementById("signature-display").src = response.dataUrl;
-  document.getElementById("signature-loading-info").textContent =
-    "received OK!";
+  setTimeout(() => {
+    document.getElementById("signature-display").src = response.dataUrl;
+    document.getElementById("signature-loading-info").textContent =
+      "received OK!";
+  }, 500);
 }
 
 function openRequestedSignatureDisplay() {
   closeSignatureCanvas();
   document.getElementById("signature-loading-info").textContent = "loading...";
+  document.getElementById("signature-display").src = loadingUrl;
   document
     .getElementById("requested-signature-display-wrapper")
     .classList.remove("hidden-signature");
@@ -108,13 +109,27 @@ function closeRequestedSignatureDisplay() {
     .classList.add("hidden-signature");
 }
 
-function notifySuccessfulSignature() {
-  window.open(forcedRefreshUrl, "-self"); // Temporary auto reload page
-  // alert("success")
+function notifySuccessfulSignature(pid) {
+  updateSignatureSubmittedCell(signatureBtnTableCell, pid);
 }
 
-function notifyFailedSignature() {
-  // alert("failure")
+function notifyFailedSignatureSent() {
+  alert("Could not submit signature!");
+}
+
+function notifyFailedSignatureRequest() {
+  alert("Could not get signature!");
+}
+
+function updateSignatureSubmittedCell(cell, pid) {
+  removeAllChildNodes(cell);
+  const span = document.createElement("span");
+  const button = document.createElement("button");
+  span.textContent = "Signed";
+  button.textContent = "View";
+  button.addEventListener("click", () => requestSignatureFromServer(pid));
+  cell.appendChild(span);
+  cell.appendChild(button);
 }
 
 // Initializing Canvas, SignaturePad
