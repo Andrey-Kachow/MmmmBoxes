@@ -1,26 +1,6 @@
-from main.database.db import (
-    execute_sql_file,
-    register_new_user,
-    verify_password,
-    get_user_by_id,
-    get_all_packages,
-    add_new_package,
-    get_all_resident_names,
-)
-import testing.postgresql
-import psycopg2
-import os
-import sys
-
-sys.path.append("..")
-
-
-DB_SCHEMA_PATH = os.path.join(
-    os.path.dirname(__file__), "..", "main", "database", "schema.sql"
-)
-DROP_DB_PATH = os.path.join(
-    os.path.dirname(__file__), "..", "main", "database", "drop_all.sql"
-)
+from main.database.db import *
+from test.decorators import with_temp_directory, with_temp_psql_conn
+from main.database.signatures import package_is_signed, add_signature
 
 name = "Alex Jobson"
 email = "aljobex@gmail.com"
@@ -34,23 +14,7 @@ of_username = "patbat"
 of_password_plain = "solo322$"
 of_is_officer = True
 
-
-def with_temp_psql_conn(test_func):
-    def wrapper():
-        psql = testing.postgresql.Postgresql(port=8765)
-        conn = psycopg2.connect(
-            **psql.dsn(), cursor_factory=psycopg2.extras.RealDictCursor
-        )
-        # initialise temp db
-        execute_sql_file(conn, DROP_DB_PATH)
-        execute_sql_file(conn, DB_SCHEMA_PATH)
-
-        test_func(conn)
-
-        conn.close()
-        psql.stop()
-
-    return wrapper
+SAMPLE_DATA_URL = "data:image/png;base64,abcdefghijklmnopqrstuvqwxyz"
 
 
 @with_temp_psql_conn
@@ -215,3 +179,28 @@ def test_get_all_resident_names_returns_only_names_of_residents(conn):
     )
 
     assert get_all_resident_names(conn) == [name]
+
+
+@with_temp_psql_conn
+@with_temp_directory
+def test_delete_package_successfull_if_exists(conn, dirname):
+
+    register_new_user(conn, name, email, username, password_plain, is_officer)
+    add_new_package(conn, name, "HP printer")
+
+    assert not delete_package(conn, 2)
+    assert delete_package(conn, 1)
+    assert not delete_package(conn, 1)
+
+
+@with_temp_psql_conn
+@with_temp_directory
+def test_delete_package_deletes_signature(conn, dirname):
+
+    register_new_user(conn, name, email, username, password_plain, is_officer)
+    add_new_package(conn, name, "HP printer")
+    add_signature(1, SAMPLE_DATA_URL)
+
+    assert package_is_signed(1)
+    delete_package(conn, 1)
+    assert not package_is_signed(1)

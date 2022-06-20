@@ -1,11 +1,9 @@
 import main.database.signatures as sig
 import test.test_db as tdb
 import main.database.db as db
-import tempfile
 import os
-import sys
 
-sys.path.append("..")
+from test.decorators import *
 
 
 AMONGUS_DATA_URL = """data:image/png;base64,
@@ -35,17 +33,6 @@ username = "aljobex"
 password_plain = "_huligancheg324_"
 is_officer = False
 package_title = "HP printer"
-
-
-def with_temp_directory(test_func):
-    def wrapper():
-        with tempfile.TemporaryDirectory() as dirname:
-            _temp = sig.SIGNATURES_ROOT
-            sig.SIGNATURES_ROOT = dirname
-            test_func(dirname)
-            sig.SIGNATURES_ROOT = _temp
-
-    return wrapper
 
 
 @tdb.with_temp_psql_conn
