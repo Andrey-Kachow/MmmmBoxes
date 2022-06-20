@@ -6,6 +6,8 @@ import psycopg2.extras
 import datetime
 from werkzeug.security import check_password_hash, generate_password_hash
 
+from main.database.signatures import delete_signature
+
 DATE_FORMAT_STRING = "%H:%M on %a %e %B, %Y"
 
 
@@ -262,8 +264,12 @@ def delete_package(conn, package_id):
             """,
             (package_id,),
         )
+        deleted = curs.rowcount == 1
         conn.commit()
-    return True
+
+    if deleted:
+        delete_signature(package_id)
+    return deleted
 
 
 def collect_package(conn, package_id):
