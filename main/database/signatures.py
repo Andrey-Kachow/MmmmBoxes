@@ -68,3 +68,16 @@ def add_signature(package_id, data_url):
 def get_data_url(package_id):
     with open(img_name(package_id)) as f:
         return f.read()
+
+
+def delete_signature(package_id):
+    """Removes the img file from signatures root.
+    Return True if the operation was successfull"""
+
+    if not os.path.exists(img_name(package_id)):
+        return False
+    try:
+        os.remove(img_name(package_id))
+    except Exception as e:
+        return False
+    return True

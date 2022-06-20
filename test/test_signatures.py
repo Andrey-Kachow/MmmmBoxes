@@ -74,3 +74,18 @@ def test_package_is_signed_if_exists(dirname):
     sig.add_signature(1, AMONGUS_DATA_URL)
     assert sig.package_is_signed(1)
     assert not sig.package_is_signed(2)
+
+
+@with_temp_directory
+def test_delete_signature_successfull_if_exists(dirname):
+    sig.add_signature(1, AMONGUS_DATA_URL)
+    assert sig.delete_signature(1)
+    assert not sig.delete_signature(2)
+
+
+@with_temp_directory
+def test_delete_signature_with_signed_check(dirname):
+    sig.add_signature(1, AMONGUS_DATA_URL)
+    assert sig.package_is_signed(1)
+    assert sig.delete_signature(1)
+    assert not sig.package_is_signed(1)
