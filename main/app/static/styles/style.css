@@ -27,7 +27,7 @@ h1 {
 }
 
 #navigation-list aside {
-  width: 200px;
+  width: 14vw;
   padding-left: 15px;
   font-style: italic;
   background-color: #989cb4;
@@ -36,7 +36,7 @@ h1 {
   right: 0;
   overflow-y: auto;
   height: 100vh;
-  right: -150px; /* Position them outside of the screen */
+  right: -10vw; /* Position them outside of the screen */
   transition: 0.3s; /* Add transition on hover */
   border-radius: 5px 0 0 5px; /* Rounded corners on the top right and bottom right side */
   overflow-y: unset;
@@ -44,12 +44,14 @@ h1 {
 
 .sidebar-navigation a {
   position: absolute;
-  width: 170px;
+  width: 11vw;
   padding: 15px; /* 15px padding */
   border: 2px solid gray;
   text-decoration: none;
   border-radius: 5px 5px 5px 5px;
   text-align: center;
+  float: left;
+  background-color: rgb(209, 215, 222);
 }
 
 #navigation-list aside:hover {
