@@ -181,7 +181,7 @@ def get_all_packages(conn, id=None):
         if id is None:
             curs.execute(
                 """
-                SELECT packages.id, packages.title, packages.delivered, packages.collected, users.fullname, users.id as resident_id, users.email
+                SELECT packages.id, packages.title, packages.delivered, packages.collected, users.fullname, users.id as resident_id, users.email, users.profile_picture
                 FROM packages
                 INNER JOIN users
                 ON packages.resident_id = users.id;
@@ -190,7 +190,7 @@ def get_all_packages(conn, id=None):
         else:
             curs.execute(
                 """
-                SELECT packages.id, packages.title, packages.delivered, packages.collected, users.fullname, users.id as resident_id, users.email
+                SELECT packages.id, packages.title, packages.delivered, packages.collected, users.fullname, users.id as resident_id, users.email, users.profile_picture
                 FROM packages
                 INNER JOIN users
                 ON packages.resident_id = users.id AND users.id=%s;
