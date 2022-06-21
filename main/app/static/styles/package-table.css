@@ -3,6 +3,11 @@
   padding-right: 2rem;
 }
 
+.tablecenter {
+  margin-left: 100px;
+  margin-right: 0px;
+}
+
 .packages-col-heading-date {
   text-align: left;
   padding-right: 10rem;
@@ -19,7 +24,7 @@
 .mytooltip {
   display: inline;
   position: relative;
-  z-index: 999;
+  z-index: 2;
 }
 
 .mytooltip .tooltip-item {
@@ -32,7 +37,7 @@
 
 .mytooltip .tooltip-content {
   position: absolute;
-  z-index: 9999;
+  z-index: 2;
   width: 360px;
   left: 50%;
   margin: 0 0 20px -180px;
