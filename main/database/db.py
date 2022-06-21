@@ -11,7 +11,7 @@ from main.database.signatures import delete_signature
 DATE_FORMAT_STRING = "%H:%M on %a %e %B, %Y"
 
 
-def initialise_db_connection():
+def initialise_db_connection(ignore_local_db=False):
     """
     Returns: a psycopg2 database connection.
 
@@ -36,7 +36,7 @@ def initialise_db_connection():
         user_creds = None
 
     # Return a connection with user creds or DATABASE_URL, depending on existence of user_creds
-    if user_creds is None:
+    if user_creds is None or ignore_local_db:
         return psycopg2.connect(
             os.environ["DATABASE_URL"],
             sslmode="require",
