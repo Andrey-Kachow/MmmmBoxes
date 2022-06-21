@@ -24,23 +24,23 @@
             {% block content %}{% endblock %}
         </section>
         {% if not signed_out %}
-            <!-- <aside> -->
             <div id="navigation-list"
-                 class="sidenav">
-                {% if session.get("user-is-officer") %}
-                    <a href="{{ url_for('officer.overview') }}"
-                       id="packages">View all packages</a>
-                    <a href="{{ url_for('officer.residents') }}"
-                       id="browse">Browse residents</a>
-                    <a href="{{ url_for('officer.template') }}"
-                       id="email">Edit reminder email</a>
-                {% else %}
-                    <a href="{{ url_for('resident.overview') }}">View your packages</a>
-                {% endif %}
-                {% if g.user %}<a href="{{ url_for('auth.logout') }}"
+                 class="sidebar-navigation">
+                <aside>
+                    {% if session.get("user-is-officer") %}
+                        <a href="{{ url_for('officer.overview') }}"
+                           id="packages">View all packages</a>
+                        <a href="{{ url_for('officer.residents') }}"
+                           id="browse">Browse residents</a>
+                        <a href="{{ url_for('officer.template') }}"
+                           id="email">Edit reminder email</a>
+                    {% else %}
+                        <a href="{{ url_for('resident.overview') }}">View your packages</a>
+                    {% endif %}
+                    {% if g.user %}<a href="{{ url_for('auth.logout') }}"
    id="log-out">Log out</a>{% endif %}
+                </aside>
             </div>
-            <!-- </aside> -->
         {% endif %}
     </body>
     {% block scripts %}{% endblock %}
