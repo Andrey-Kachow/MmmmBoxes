@@ -23,7 +23,7 @@
             {% endfor %}
             {% block content %}{% endblock %}
         </section>
-        {% if not login %}
+        {% if signed_in %}
             <aside>
                 <div id="navigation-list">
                     {% if session.get("user-is-officer") %}
