@@ -24,28 +24,23 @@
             {% block content %}{% endblock %}
         </section>
         {% if not signed_out %}
-            <aside>
-                <div id="navigation-list">
-                    {% if session.get("user-is-officer") %}
-                        <p>You are an officer.</p>
-                        <p>
-                            <a href="{{ url_for('officer.overview') }}">View all packages</a>
-                        </p>
-                        <p>
-                            <a href="{{ url_for('officer.residents') }}">Browse residents</a>
-                        </p>
-                        <p>
-                            <a href="{{ url_for('officer.template') }}">Edit reminder email</a>
-                        </p>
-                    {% else %}
-                        <p>You are a resident.</p>
-                        <p>
-                            <a href="{{ url_for('resident.overview') }}">View your packages</a>
-                        </p>
-                    {% endif %}
-                    {% if g.user %}<a href="{{ url_for('auth.logout') }}">Log out</a>{% endif %}
-                </div>
-            </aside>
+            <!-- <aside> -->
+            <div id="navigation-list"
+                 class="sidenav">
+                {% if session.get("user-is-officer") %}
+                    <a href="{{ url_for('officer.overview') }}"
+                       id="packages">View all packages</a>
+                    <a href="{{ url_for('officer.residents') }}"
+                       id="browse">Browse residents</a>
+                    <a href="{{ url_for('officer.template') }}"
+                       id="email">Edit reminder email</a>
+                {% else %}
+                    <a href="{{ url_for('resident.overview') }}">View your packages</a>
+                {% endif %}
+                {% if g.user %}<a href="{{ url_for('auth.logout') }}"
+   id="log-out">Log out</a>{% endif %}
+            </div>
+            <!-- </aside> -->
         {% endif %}
     </body>
     {% block scripts %}{% endblock %}

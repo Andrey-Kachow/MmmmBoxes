@@ -26,7 +26,7 @@ h1 {
   text-align: center;
 }
 
-aside {
+/* aside {
   width: 20%;
   padding-left: 15px;
   font-style: italic;
@@ -36,4 +36,38 @@ aside {
   right: 0;
   overflow-y: auto;
   height: 100vh;
+} */
+
+/* Style the links inside the sidenav */
+#navigation-list a {
+  position: fixed; /* Position them relative to the browser window */
+  right: -140px; /* Position them outside of the screen */
+  transition: 0.3s; /* Add transition on hover */
+  padding: 15px; /* 15px padding */
+  width: 200px; /* Set a specific width */
+  text-decoration: none; /* Remove underline */
+  font-size: 20px; /* Increase font size */
+  color: white; /* White text color */
+  border-radius: 5px 0 0 5px; /* Rounded corners on the top right and bottom right side */
+  background-color: #9c8aff;
+}
+
+#navigation-list a:hover {
+  right: 0; /* On mouse-over, make the elements appear as they should */
+}
+
+#packages {
+  top: 10px;
+}
+
+#browse {
+  top: 70px;
+}
+
+#email {
+  top: 130px;
+}
+
+#log-out {
+  bottom: 10px;
 }
