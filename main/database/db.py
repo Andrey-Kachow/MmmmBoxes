@@ -144,12 +144,13 @@ def get_user_by_id(conn, id):
         - email,
         - fullname,
         - is_officer
+        - profile_picture
         If id does not exist, returns empty dict.
     """
     with conn.cursor() as curs:
         curs.execute(
             """
-            SELECT id, username, email, fullname, is_officer
+            SELECT id, username, email, fullname, is_officer, profile_picture
             FROM users
             WHERE id=%s;
             """,
@@ -174,6 +175,7 @@ def get_all_packages(conn, id=None):
         - fullname (of resident)
         - resident_id
         - email (of resident)
+        - profile_picture (url)
     """
     with conn.cursor() as curs:
         if id is None:
@@ -282,6 +284,23 @@ def collect_package(conn, package_id):
         )
         conn.commit()
     return True
+
+
+def update_profile_picture_extension(conn, extension, id):
+    """Arguments: database connection, extension of new user profile pic, id of user"""
+    with conn.cursor() as curs:
+        curs.execute(
+            """
+            UPDATE users
+            SET profile_picture = %s
+            WHERE users.id = %s;
+            """,
+            (
+                extension,
+                id,
+            ),
+        )
+        conn.commit()
 
 
 def get_all_resident_names(conn):
