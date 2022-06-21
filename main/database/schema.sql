@@ -5,7 +5,8 @@ CREATE TABLE IF NOT EXISTS users (
 	password VARCHAR(102) NOT NULL,
   email VARCHAR(255) UNIQUE NOT NULL,
   fullname VARCHAR(70) NOT NULL,
-  is_officer BOOLEAN NOT NULL
+  is_officer BOOLEAN NOT NULL,
+  profile_picture VARCHAR(255)
 );
 
 CREATE TABLE IF NOT EXISTS packages (
