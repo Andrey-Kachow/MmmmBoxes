@@ -23,7 +23,7 @@
             {% endfor %}
             {% block content %}{% endblock %}
         </section>
-        {% if signed_in %}
+        {% if not signed_out %}
             <aside>
                 <div id="navigation-list">
                     {% if session.get("user-is-officer") %}
@@ -43,10 +43,6 @@
                             <a href="{{ url_for('resident.overview') }}">View your packages</a>
                         </p>
                     {% endif %}
-                    <!-- <p style="font-size: x-small">
-                        Not {{ session.get("user-fullname") }}?
-                        <a href="{{ url_for('auth.logout') }}">Logout</a>
-                    </p> -->
                     {% if g.user %}<a href="{{ url_for('auth.logout') }}">Log out</a>{% endif %}
                 </div>
             </aside>

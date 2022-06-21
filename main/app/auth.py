@@ -38,7 +38,7 @@ def register():
             return redirect(url_for("auth.login"))
 
     else:
-        return render_template("auth/register.html", signed_in=False)
+        return render_template("auth/register.html", signed_out=True)
 
 
 @bp.route("/login", methods=["GET", "POST"])
@@ -61,7 +61,7 @@ def login():
         return redirect(url_for("officer.overview"))
 
     else:
-        return render_template("auth/login.html", signed_in=False)
+        return render_template("auth/login.html", signed_out=True)
 
 
 @bp.before_app_request
