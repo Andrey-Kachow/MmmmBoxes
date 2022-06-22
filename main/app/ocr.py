@@ -43,6 +43,7 @@ def titled_as_from_whatever(read_data, matched_name):
         lowercase_line = line.lower()
 
         if (
+            matched_name and
             matched_name.lower() in lowercase_line and
             len(lowercase_line) - len(matched_name) < MIN_VALUABLE_STR_SIZE
         ):
@@ -74,7 +75,11 @@ def parse_read_data(conn, read_data):
 
     # Use the heading of the read_data if it looks like a fine package title
     nice_first_line = nice_read_heading(read_data)
-    if nice_first_line and not matched_name.lower() in nice_first_line.lower():
+    if (
+        nice_first_line and
+        matched_name and
+        not matched_name.lower() in nice_first_line.lower()
+    ):
         return matched_name, nice_first_line
 
     # Name package a.k. "From Someone"
