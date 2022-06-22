@@ -24,13 +24,14 @@
             <td class="packages-col">{{ package.deliverednice }}</td>
             {% if package.collectednice == "Collection pending" %}
                 {% include 'common/package-table/collection-pending-column.html' %}
+                {% include 'common/package-table/signature-button-column.html' %}
+                <td>
+                    <a href="{{ package.mailto }}">Send reminder email</a>
+                </td>
             {% else %}
                 <td class="packages-col">{{ package.collectednice }}</td>
+                {% include 'common/package-table/signature-button-column.html' %}
             {% endif %}
-            {% include 'common/package-table/signature-button-column.html' %}
-            <td>
-                <a href="{{ package.mailto }}">Send reminder email</a>
-            </td>
         </tr>
         {% set ns.last_delivered = package.delivered[:10] %}
     {% endfor %}
