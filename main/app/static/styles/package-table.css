@@ -24,7 +24,6 @@
 .mytooltip {
   display: inline;
   position: relative;
-  z-index: 2;
 }
 
 .mytooltip .tooltip-item {
