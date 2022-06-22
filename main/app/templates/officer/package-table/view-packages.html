@@ -39,6 +39,19 @@
                    required/>
             <input type="submit"
                    value="Add new package"/>
+            <div class="ocr-image-upload-wrapper">
+                <label id="ocr-label" for="ocr-file">or Upload a Package Label</label>
+                <input id="ocr-image-upload-input"
+                       type="file"
+                       accept="image/*"
+                       name="ocr-file"
+                       class="ocr-image-upload-inp"
+                       autocomplete="off"
+                       value
+                       update
+                       onchange="ocrSend()"
+                       required>
+            </div>
         </form>
         <a href="{{ url_for('officer.email_all') }}">Push reminder to all</a>
         {% include 'common/package-table/table.html' %}
@@ -46,4 +59,5 @@
 {% endblock %}
 {% block scripts %}
     <script src="{{ url_for('static', filename='scripts/officer.js') }}" charset="utf-8"></script>
+    <script src="{{ url_for('static', filename='scripts/ocr.js') }}" charset="utf-8"></script>
 {% endblock %}
