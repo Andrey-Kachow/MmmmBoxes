@@ -6,7 +6,6 @@
   outline: none;
 }
 
-
 #resident-name-inp:focus {
   outline: 3px solid #ddd;
 }
