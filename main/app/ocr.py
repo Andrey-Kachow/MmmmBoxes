@@ -65,11 +65,12 @@ def parse_read_data(conn, read_data):
         title :: is a Package title '''
 
     existing_names = get_all_resident_names(conn)
+    lowercase_data = read_data.lower()
 
     # Searching any of the existing resident names in the read_data
     matched_name = None
     for name in existing_names:
-        if name in read_data:
+        if name.lower() in lowercase_data:
             matched_name = name
             break
 
@@ -84,7 +85,7 @@ def parse_read_data(conn, read_data):
 
     # Name package a.k. "From Someone"
     matched_package_title = None
-    if 'from' in read_data.lower():
+    if 'from' in lowercase_data:
         matched_package_title = titled_as_from_whatever(read_data, matched_name)
 
     return matched_name, matched_package_title
