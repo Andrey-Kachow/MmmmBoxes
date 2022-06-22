@@ -177,3 +177,25 @@ def getsign():
         200,
         {"ContentType": "application/json"},
     )
+
+
+@bp.route("/ocr", methods=["post"])
+def ocr():
+
+    name = None
+    title = None
+
+    print(f"\n{request.files}\n")
+    print(f"\n{type(request.files)}\n")
+    print(f"\n{request.files['file']}\n")
+    print(f"\n{type(request.files['file'])}\n")
+
+    return (
+        json.dumps({
+            "success": True,
+            "name": name,
+            "title": title,
+        }),
+        200,
+        {"ContentType": "application/json"},
+    )
