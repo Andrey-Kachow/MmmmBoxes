@@ -182,8 +182,8 @@ def getsign():
 @bp.route("/ocr", methods=["post"])
 def ocr():
 
-    name = None
-    title = None
+    name = "Resik Odin"
+    title = "boxxx pox"
 
     print(f"\n{request.files}\n")
     print(f"\n{type(request.files)}\n")
