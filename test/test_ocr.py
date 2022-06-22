@@ -117,4 +117,4 @@ def test_titled_as_from_whatever():
     assert titled_as_from_whatever(read_data_james_bond, "dnest+sta012") == "From James Bond FBA: dnest+sta012"
     assert titled_as_from_whatever(read_data_jim_clark, "Jim Clark") == "From US POSTAGE & FEES PAID 062S0017063017"
     assert titled_as_from_whatever(read_data_jack_ship, "James Ship") == "From US POSTAGE AND FEES PAID"
-    assert titled_as_from_whatever(read_data_john_amburn, "John Amburn") "From JERRY GUZI"
+    assert titled_as_from_whatever(read_data_john_amburn, "John Amburn") == "From JERRY GUZI"
