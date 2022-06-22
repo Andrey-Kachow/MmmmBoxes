@@ -8,6 +8,7 @@
         <th class="packages-col-heading-date">Delivered</th>
         <th class="packages-col-heading-date">Collected</th>
         {% if show_signature_button %}<th class="packages-col-heading">Signature</th>{% endif %}
+        <th class="packages-col-heading">Email reminder</th>
     </tr>
     {% set ns = namespace(last_delivered="")%}
     {% for package in get_package_list()|sort(reverse=True, attribute="delivered") %}
@@ -27,6 +28,9 @@
                 <td class="packages-col">{{ package.collectednice }}</td>
             {% endif %}
             {% include 'common/package-table/signature-button-column.html' %}
+            <td>
+                <a href="{{ package.mailto }}">Send reminder email</a>
+            </td>
         </tr>
         {% set ns.last_delivered = package.delivered[:10] %}
     {% endfor %}
