@@ -8,8 +8,10 @@ function hideResidents() {
 
 function nonButtonFocusHide() {
   const target = event.relatedTarget;
+  console.log(target);
+  console.log(target.parent);
   if (target != null) {
-    if (target.classList.contains("dropdown-content")) {
+    if (target.classList.contains("dropdown-content-button")) {
       return;
     }
   }
