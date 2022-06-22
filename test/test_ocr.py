@@ -1,3 +1,4 @@
+from main.database.db import register_new_user
 from main.app.ocr import *
 from test.decorators import with_temp_psql_conn
 
