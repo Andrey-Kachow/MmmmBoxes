@@ -40,11 +40,15 @@ function ocrSend() {
 }
 
 function verifyAndAutoFill(data) {
+  if (data.name == null && data.title == null) {
+    notifyCouldNotReadAnything();
+    return;
+  }
   if (data.name == null) {
     notifyCouldNotReadRecipientName();
     return;
   }
-  else if (data.title == null) {
+  if (data.title == null) {
     notifyCouldNotReadPackageTitle();
     return;
   }
