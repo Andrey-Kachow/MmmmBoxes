@@ -2,8 +2,8 @@
       href="{{ url_for('static', filename='styles/signature-canvas.css') }}"/>
 <div id="signature-canvas-wrapper"
      class="tiny-blue-border hidden-signature">
-    <div id="signature-labels">
-        <span id="signature-label-text">
+    <div class="signature-labels">
+        <span class="signature-label-text">
             Signature for
             <span id="package-owner-placeholder"></span>'s
             <span id="package-title-placeholder"></span>
@@ -38,10 +38,10 @@
 </div>
 <div id="requested-signature-display-wrapper"
      class="tiny-blue-border hidden-signature">
-    <div id="signature-loading-info-wrapper">
-        <span id="signature-loading-info"></span>
+    <div id="signature-loading-info-wrapper" class="signature-labels">
+        <span id="signature-loading-info" class="signature-label-text"></span>
     </div>
-    <div class="requested-canvas-wrapper">
+    <div id="requested-canvas-wrapper">
         <img id="signature-display"
              src="https://media3.giphy.com/media/3oEjI6SIIHBdRxXI40/200.gif"/>
     </div>
@@ -54,6 +54,4 @@
 <script type="text/javascript">
     initializeSignatureProcessingUrl("{{ url_for('officer.sign') }}");
     initializeSignatureRequestUrl("{{ url_for('officer.getsign') }}");
-    initializeForcedRefreshUrl("{{ url_for('officer.droppostdata') }}");
 </script>
-{% if clear_post_data %}<script type="text/javascript">window.open(forcedRefreshUrl, "-self");</script>{% endif %}

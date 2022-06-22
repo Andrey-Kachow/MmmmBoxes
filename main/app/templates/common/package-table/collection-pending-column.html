@@ -1,0 +1,55 @@
+<td class="packages-col">
+    Collection Pending
+    <button onclick="showCollectionModal({{ package.id }})">Collect Package</button>
+    <div id="collect-{{ package.id }}"
+         class="modal">
+        <span onclick="closeCollectionModal({{ package.id }})"
+              class="close"
+              title="Close Modal">×</span>
+        <form class="modal-content">
+            <div class="container">
+                <h1>Collect Package</h1>
+                <p>
+                    Confirm package entitled {{ package.title }} has been collected by
+                    {{ package.fullname }}
+                </p>
+                <div class="clearfix">
+                    <button type="button"
+                            onclick="closeCollectionModal({{ package.id }})"
+                            class="cancelbtn">Cancel</button>
+                    <a href="{{ url_for('officer.collect_package', package_id=package.id) }}">
+                        <button type="button"
+                                class="deletebtn">Confirm</button>
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+    <button class="delete"
+            onclick="showDeletionModal({{ package.id }})">Delete Package</button>
+    <div id="delete-{{ package.id }}"
+         class="modal">
+        <span onclick="closeDeletionModal({{ package.id }})"
+              class="close"
+              title="Close Modal">×</span>
+        <form class="modal-content">
+            <div class="container">
+                <h1>Delete Package</h1>
+                <p>
+                    Confirm you wish to delete package entitled {{ package.title }}
+                    meant to be collected by {{ package.fullname }}. Perhaps remind them
+                    instead.
+                </p>
+                <div class="clearfix">
+                    <button type="button"
+                            onclick="closeDeletionModal({{ package.id }})"
+                            class="cancelbtn">Cancel</button>
+                    <a href="{{ url_for('officer.delete_package', package_id=package.id) }}">
+                        <button type="button"
+                                class="deletebtn">Delete</button>
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</td>

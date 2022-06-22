@@ -15,11 +15,6 @@
     </head>
     <body>
         <section class="content">
-            {% if not hide_return %}
-                <p>
-                    <a href="{{ url_for('hello') }}">Back to homepage</a>
-                </p>
-            {% endif %}
             <header>
                 {% block header %}{% endblock %}
             </header>
@@ -27,8 +22,26 @@
                 <div class="flash">{{ message }}</div>
             {% endfor %}
             {% block content %}{% endblock %}
-            {% if g.user %}<a href="{{ url_for('auth.logout') }}">Log out</a>{% endif %}
         </section>
+        {% if not signed_out %}
+            <div id="navigation-list"
+                 class="sidebar-navigation">
+                <aside>
+                    {% if session.get("user-is-officer") %}
+                        <a href="{{ url_for('officer.overview') }}"
+                           id="packages">View all packages</a>
+                        <a href="{{ url_for('officer.residents') }}"
+                           id="browse">Browse residents</a>
+                        <a href="{{ url_for('officer.template') }}"
+                           id="email">Edit reminder email</a>
+                    {% else %}
+                        <a href="{{ url_for('resident.overview') }}">View your packages</a>
+                    {% endif %}
+                    {% if g.user %}<a href="{{ url_for('auth.logout') }}"
+   id="log-out">Log out</a>{% endif %}
+                </aside>
+            </div>
+        {% endif %}
     </body>
     {% block scripts %}{% endblock %}
 </html>

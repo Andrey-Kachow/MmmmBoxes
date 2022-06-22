@@ -13,7 +13,7 @@ from flask import *
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from main.app.populate_template import personalise_email, email_resident
-
+from main.app import socketio
 from main.app.auth import login_required
 
 bp = Blueprint("officer", __name__, url_prefix="/officer")
@@ -61,8 +61,8 @@ def overview():
     if request.method == "POST":
         just_added = db.add_new_package(
             current_app.db_conn,
-            request.form["resident_name"],
-            request.form["package_title"],
+            request.form["resident-name"],
+            request.form["package-title"],
         )
         if not just_added:
             flash("Oops! Didn't add")
@@ -71,7 +71,6 @@ def overview():
 
     return render_template(
         "officer/package-table/view-packages.html",
-        clear_post_data=(request.method == "POST"),
     )
 
 
@@ -178,8 +177,3 @@ def getsign():
         200,
         {"ContentType": "application/json"},
     )
-
-
-@bp.route("/droppostdata", methods=["get"])
-def droppostdata():
-    return redirect(url_for("officer.overview"))

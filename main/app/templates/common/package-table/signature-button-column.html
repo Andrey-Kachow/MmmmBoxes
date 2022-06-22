@@ -7,7 +7,7 @@
         {% else %}
             <span>Not signed</span>
             <button type="button"
-                    onclick="openSignatureCanvas('{{ package.fullname }}', '{{ package.title }}', {{ package.id }})">
+                    onclick="openSignatureCanvas(this, '{{ package.fullname }}', '{{ package.title }}', {{ package.id }})">
                 Sign
             </button>
         {% endif %}

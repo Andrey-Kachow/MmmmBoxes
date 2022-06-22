@@ -7,6 +7,8 @@
 {% block local_style %}
     <link rel="stylesheet"
           href="{{ url_for('static', filename='styles/overview.css') }}"/>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='styles/drop-down.css') }}"/>
 {% endblock %}
 {% block content %}
     <div class="overview-content">
@@ -25,7 +27,7 @@
                 <div id="dropdown-residents"
                      class="dropdown-content">
                     {% for name in get_all_resident_names() %}
-                        <button type="button"
+                        <button class="dropdown-content-button" type="button"
                                 onclick="selectResidentName('{{ name }}')">{{ name }}</button>
                     {% endfor %}
                 </div>
@@ -43,20 +45,4 @@
 {% endblock %}
 {% block scripts %}
     <script src="{{ url_for('static', filename='scripts/officer.js') }}" charset="utf-8"></script>
-    {% for package in get_package_list() %}
-        {% if package.collected == "Collection
-            pending" %}
-            <script>
-            // Get the modal
-            var modal = document.getElementById("{{package.id}}");
-
-            // When the user clicks anywhere outside of the modal, close it
-            window.onclick = function (event) {
-                if (event.target == modal) {
-                    modal.style.display = "none";
-                }
-            };
-            </script>
-        {% endif %}
-    {% endfor %}
 {% endblock %}

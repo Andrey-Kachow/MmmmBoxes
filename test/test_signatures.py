@@ -1,11 +1,9 @@
 import main.database.signatures as sig
 import test.test_db as tdb
 import main.database.db as db
-import tempfile
 import os
-import sys
 
-sys.path.append("..")
+from test.decorators import *
 
 
 AMONGUS_DATA_URL = """data:image/png;base64,
@@ -37,17 +35,6 @@ is_officer = False
 package_title = "HP printer"
 
 
-def with_temp_directory(test_func):
-    def wrapper():
-        with tempfile.TemporaryDirectory() as dirname:
-            _temp = sig.SIGNATURES_ROOT
-            sig.SIGNATURES_ROOT = dirname
-            test_func(dirname)
-            sig.SIGNATURES_ROOT = _temp
-
-    return wrapper
-
-
 @tdb.with_temp_psql_conn
 def test_package_is_valid_if_exists(conn):
 
@@ -74,3 +61,18 @@ def test_package_is_signed_if_exists(dirname):
     sig.add_signature(1, AMONGUS_DATA_URL)
     assert sig.package_is_signed(1)
     assert not sig.package_is_signed(2)
+
+
+@with_temp_directory
+def test_delete_signature_successfull_if_exists(dirname):
+    sig.add_signature(1, AMONGUS_DATA_URL)
+    assert sig.delete_signature(1)
+    assert not sig.delete_signature(2)
+
+
+@with_temp_directory
+def test_delete_signature_with_signed_check(dirname):
+    sig.add_signature(1, AMONGUS_DATA_URL)
+    assert sig.package_is_signed(1)
+    assert sig.delete_signature(1)
+    assert not sig.package_is_signed(1)

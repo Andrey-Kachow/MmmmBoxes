@@ -6,10 +6,12 @@ import psycopg2.extras
 import datetime
 from werkzeug.security import check_password_hash, generate_password_hash
 
+from main.database.signatures import delete_signature
+
 DATE_FORMAT_STRING = "%H:%M on %a %e %B, %Y"
 
 
-def initialise_db_connection():
+def initialise_db_connection(ignore_local_db=False):
     """
     Returns: a psycopg2 database connection.
 
@@ -34,7 +36,7 @@ def initialise_db_connection():
         user_creds = None
 
     # Return a connection with user creds or DATABASE_URL, depending on existence of user_creds
-    if user_creds is None:
+    if user_creds is None or ignore_local_db:
         return psycopg2.connect(
             os.environ["DATABASE_URL"],
             sslmode="require",
@@ -144,12 +146,13 @@ def get_user_by_id(conn, id):
         - email,
         - fullname,
         - is_officer
+        - profile_picture
         If id does not exist, returns empty dict.
     """
     with conn.cursor() as curs:
         curs.execute(
             """
-            SELECT id, username, email, fullname, is_officer
+            SELECT id, username, email, fullname, is_officer, profile_picture
             FROM users
             WHERE id=%s;
             """,
@@ -174,12 +177,13 @@ def get_all_packages(conn, id=None):
         - fullname (of resident)
         - resident_id
         - email (of resident)
+        - profile_picture (url)
     """
     with conn.cursor() as curs:
         if id is None:
             curs.execute(
                 """
-                SELECT packages.id, packages.title, packages.delivered, packages.collected, users.fullname, users.id as resident_id, users.email
+                SELECT packages.id, packages.title, packages.delivered, packages.collected, users.fullname, users.id as resident_id, users.email, users.profile_picture
                 FROM packages
                 INNER JOIN users
                 ON packages.resident_id = users.id;
@@ -188,7 +192,7 @@ def get_all_packages(conn, id=None):
         else:
             curs.execute(
                 """
-                SELECT packages.id, packages.title, packages.delivered, packages.collected, users.fullname, users.id as resident_id, users.email
+                SELECT packages.id, packages.title, packages.delivered, packages.collected, users.fullname, users.id as resident_id, users.email, users.profile_picture
                 FROM packages
                 INNER JOIN users
                 ON packages.resident_id = users.id AND users.id=%s;
@@ -262,8 +266,12 @@ def delete_package(conn, package_id):
             """,
             (package_id,),
         )
+        deleted = curs.rowcount == 1
         conn.commit()
-    return True
+
+    if deleted:
+        delete_signature(package_id)
+    return deleted
 
 
 def collect_package(conn, package_id):
@@ -282,6 +290,23 @@ def collect_package(conn, package_id):
         )
         conn.commit()
     return True
+
+
+def update_profile_picture_extension(conn, extension, id):
+    """Arguments: database connection, extension of new user profile pic, id of user"""
+    with conn.cursor() as curs:
+        curs.execute(
+            """
+            UPDATE users
+            SET profile_picture = %s
+            WHERE users.id = %s;
+            """,
+            (
+                extension,
+                id,
+            ),
+        )
+        conn.commit()
 
 
 def get_all_resident_names(conn):

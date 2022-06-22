@@ -1,4 +1,5 @@
 import functools
+from pickle import FALSE
 from main.database import db
 
 from flask import (
@@ -37,7 +38,7 @@ def register():
             return redirect(url_for("auth.login"))
 
     else:
-        return render_template("auth/register.html")
+        return render_template("auth/register.html", signed_out=True)
 
 
 @bp.route("/login", methods=["GET", "POST"])
@@ -57,10 +58,14 @@ def login():
         session["user-id"] = details["id"]
         session["user-fullname"] = details["fullname"]
         session["user-is-officer"] = details["is_officer"]
-        return redirect(url_for("hello"))
+
+        if not details["is_officer"]:
+            return redirect(url_for("resident.overview"))
+            
+        return redirect(url_for("officer.overview"))
 
     else:
-        return render_template("auth/login.html", hide_return=True)
+        return render_template("auth/login.html", signed_out=True)
 
 
 @bp.before_app_request
