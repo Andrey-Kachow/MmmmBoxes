@@ -17,7 +17,11 @@
                         <br />
                         {{ package.email }}
                     </span>
-                    <a href="/officer/residents/{{ package.resident_id }}/profile">View resident profile</a>
+                    {% if session.get("user-is-officer") %}
+                      <a href="{{ url_for('officer.resident_profile', id=package.resident_id) }}">
+                        View resident profile
+                      </a>
+                    {% endif %}
                 </span>
             </span>
         </p>
