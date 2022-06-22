@@ -27,7 +27,7 @@
                 <div id="dropdown-residents"
                      class="dropdown-content">
                     {% for name in get_all_resident_names() %}
-                        <button type="button"
+                        <button class="dropdown-content-button" type="button"
                                 onclick="selectResidentName('{{ name }}')">{{ name }}</button>
                     {% endfor %}
                 </div>
