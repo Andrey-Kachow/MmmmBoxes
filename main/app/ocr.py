@@ -73,6 +73,8 @@ def parse_read_data(conn, read_data):
         if name.lower() in lowercase_data:
             matched_name = name
             break
+        else:
+            print(f"<<{name.lower()}>> not in <<{lowercase_data}>>")
 
     # Use the heading of the read_data if it looks like a fine package title
     nice_first_line = nice_read_heading(read_data)

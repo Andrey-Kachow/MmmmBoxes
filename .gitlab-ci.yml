@@ -59,7 +59,7 @@ test-ocr:
   stage: test
   script:
     - *preamble
-    - pytest test/test_ocr.py
+    - pytest -s test/test_ocr.py
   rules:
     - *on-master-or-merge
     - changes:
