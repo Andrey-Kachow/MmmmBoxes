@@ -138,7 +138,7 @@ def test_parse_read_data(conn):
 
     name, title = parse_read_data(conn, read_data_from_james_bond)
     assert name == "dnest+sta012"
-    assert title == "From James Bond FBA: dnest+sta012"
+    assert title == "FBA Box.1 of 1 - 1lb"
 
     name, title = parse_read_data(conn, read_data_jim_clark)
     assert name == "Jim Clark"
