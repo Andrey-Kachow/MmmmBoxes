@@ -61,7 +61,7 @@ def login():
 
         if not details["is_officer"]:
             return redirect(url_for("resident.overview"))
-            
+
         return redirect(url_for("officer.overview"))
 
     else:
