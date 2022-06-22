@@ -4,7 +4,7 @@
 }
 
 .tablecenter {
-  margin-left: 100px;
+  margin-left: 0px;
   margin-right: 0px;
 }
 
@@ -24,6 +24,8 @@
 .mytooltip {
   display: inline;
   position: relative;
+  width: 100%;
+  display: inline-block;
 }
 
 .mytooltip .tooltip-item {
@@ -37,9 +39,9 @@
 .mytooltip .tooltip-content {
   position: absolute;
   z-index: 2;
-  width: 360px;
+  width: 128px;
   left: 50%;
-  margin: 0 0 20px -180px;
+  margin: 0 0 20px -50%;
   bottom: 100%;
   text-align: left;
   font-size: 14px;
@@ -70,8 +72,8 @@
   position: relative;
   height: 140px;
   display: block;
-  float: left;
-  margin-right: 1em;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .mytooltip .tooltip-item::after {
@@ -109,7 +111,6 @@
   padding: 1.31em 1.21em 1.21em 0;
   color: #fff;
 }
-
 
 /* * {
   box-sizing: border-box;
