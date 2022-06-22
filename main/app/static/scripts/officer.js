@@ -7,8 +7,9 @@ function hideResidents() {
 }
 
 function nonButtonFocusHide() {
-  if (relatedTarget != null) {
-    if (relatedTarget.tagName == "BUTTON") {
+  const target = event.relatedTarget;
+  if (target != null) {
+    if (target.classList.contains("dropdown-content")) {
       return;
     }
   }

@@ -6,36 +6,6 @@
   outline: none;
 }
 
-.dropdown-input-div {
-  position: relative;
-  display: inline-block;
-}
-
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f6f6f6;
-  overflow: auto;
-  width: 100%;
-  z-index: 3;
-}
-
-.dropdown-content button {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #ffffff;
-  width: 100%;
-  color: black;
-  text-decoration: none;
-  text-align: left;
-  padding-left: 0.2rem;
-  border: none;
-  display: block;
-}
-
-.dropdown-content button:hover {
-  background-color: #ddd;
-}
-
 /* * {
   box-sizing: border-box;
 } */
@@ -156,34 +126,4 @@ hr {
 
 #resident-name-inp:focus {
   outline: 3px solid #ddd;
-}
-
-.dropdown-input-div {
-  position: relative;
-  display: inline-block;
-}
-
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f6f6f6;
-  overflow: auto;
-  width: 100%;
-  border: 1px solid #ddd;
-  z-index: 1;
-}
-
-.dropdown-content button {
-  background-color: #ffffff;
-  width: 100%;
-  color: black;
-  text-decoration: none;
-  text-align: left;
-  padding-left: 4px;
-  border: none;
-  display: block;
-}
-
-.dropdown-content button:hover {
-  background-color: #ddd;
 }
