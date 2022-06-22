@@ -1,4 +1,5 @@
 from main.app.ocr import *
+from test.decorators import with_temp_psql_conn
 
 read_data_from_james_bond = """
 FBA Box.1 of 1 - 1lb
@@ -114,7 +115,38 @@ def test_nice_read_heading():
 
 def test_titled_as_from_whatever():
     assert titled_as_from_whatever("", None) is None
-    assert titled_as_from_whatever(read_data_james_bond, "dnest+sta012") == "From James Bond FBA: dnest+sta012"
-    assert titled_as_from_whatever(read_data_jim_clark, "Jim Clark") == "From US POSTAGE & FEES PAID 062S0017063017"
-    assert titled_as_from_whatever(read_data_jack_ship, "James Ship") == "From US POSTAGE AND FEES PAID"
+    assert titled_as_from_whatever(read_data_from_james_bond, "dnest+sta012") == "From James Bond FBA: dnest+sta012"
     assert titled_as_from_whatever(read_data_john_amburn, "John Amburn") == "From JERRY GUZI"
+
+    # Those identify the current wished behaviour in mind, though may not look like ones
+    assert titled_as_from_whatever(read_data_jim_clark, "Jim Clark") == "From COMMERCIAL BASE PRICING"
+    assert titled_as_from_whatever(read_data_jack_ship, "Jack Ship") == "From Son Frat Clase Pag Sve"
+
+
+@with_temp_psql_conn
+def test_parse_read_data(conn):
+
+    name, title = parse_read_data(conn, "sad input")
+    assert name is None
+    assert title is None
+
+    register_new_user(conn, "dnest+sta012", "email", "username", "password_plain", False)
+    register_new_user(conn, "John Amburn", "email", "username", "password_plain", False)
+    register_new_user(conn, "Jim Clark", "email", "username", "password_plain", False)
+    register_new_user(conn, "Jack Ship", "email", "username", "password_plain", False)
+
+    name, title = parse_read_data(conn, read_data_from_james_bond)
+    assert name == "dnest+sta012"
+    assert title == "From James Bond FBA: dnest+sta012"
+
+    name, title = parse_read_data(conn, read_data_jim_clark)
+    assert name == "Jim Clark"
+    assert title == "US POSTAGE & FEES PAID 062S0017063017"
+
+    name, title = parse_read_data(conn, read_data_jack_ship)
+    assert name == "Jack Ship"
+    assert title == "US POSTAGE AND FEES PAID"
+
+    name, title = parse_read_data(conn, read_data_john_amburn)
+    assert name == "John Amburn"
+    assert title == "From JERRY GUZI"

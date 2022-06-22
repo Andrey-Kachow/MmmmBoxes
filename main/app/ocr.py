@@ -14,8 +14,17 @@ common_keywords = [
 ]
 
 
+def get_meaningful_lines(read_data):
+    ''' Splits the text into lines and removes empty or too short lines '''
+
+    return list(filter(
+        lambda line: len(line) >= MIN_VALUABLE_STR_SIZE,
+        read_data.split("\n")
+    ))
+
+
 def nice_read_heading(read_data):
-    first_line = read_data.split("\n")[0]
+    first_line = get_meaningful_lines(read_data)[0]
     lowercase_line = first_line.lower()
     if any([keyword in lowercase_line for keyword in common_keywords]):
         return first_line
@@ -27,10 +36,7 @@ def titled_as_from_whatever(read_data, matched_name):
         the already matched name
         Returns the title of the parcel as "From X" '''
 
-    lines = list(filter(
-        lambda line: line != '' and len(line) > MIN_VALUABLE_STR_SIZE,
-        read_data.split("\n")
-    ))
+    lines = get_meaningful_lines(read_data)
     line_with_from = None
     for line in lines:
 
@@ -47,10 +53,6 @@ def titled_as_from_whatever(read_data, matched_name):
 
         if 'from' in lowercase_line:
             line_with_from = line
-
-            remainder = lowercase_line.split('from')[1]
-            if len(remainder) > MIN_VALUABLE_STR_SIZE:
-                return f"From {remainder}"
 
     return None
 
