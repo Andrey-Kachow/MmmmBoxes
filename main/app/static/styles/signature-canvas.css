@@ -55,7 +55,7 @@ canvas#signature-pad {
   height: 100%;
   margin-left: 0;
   margin-right: 0;
-  opacity: 1.0;
+  opacity: 1;
 }
 
 /* Green Submit Button */
@@ -129,5 +129,5 @@ img#signature-display {
   height: 100%;
   margin-left: 0;
   margin-right: 0;
-  opacity: 1.0;
+  opacity: 1;
 }
