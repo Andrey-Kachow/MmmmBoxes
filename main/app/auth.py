@@ -58,6 +58,10 @@ def login():
         session["user-id"] = details["id"]
         session["user-fullname"] = details["fullname"]
         session["user-is-officer"] = details["is_officer"]
+
+        if not details["is_officer"]:
+            return redirect(url_for("resident.overview"))
+            
         return redirect(url_for("officer.overview"))
 
     else:
