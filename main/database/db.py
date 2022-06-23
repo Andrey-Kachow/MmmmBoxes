@@ -188,23 +188,23 @@ def get_all_packages(conn, id=None):
         if id is None:
             curs.execute(
                 """
-                SELECT packages.id, packages.title, packages.delivered, packages.collected, users.fullname, users.id as resident_id, users.email, users.profile_picture, nominee_table.id as nominee_id, nominee_table.email as nominee_email, nominee_table.fullname as nominee_fullname, nominee_table.profile_picture as nominee_profile_picture 
+                SELECT packages.id, packages.title, packages.delivered, packages.collected, packages.nominee_id, users.fullname, users.id AS resident_id, users.email, users.profile_picture, nominee_table.id AS nominee_id, nominee_table.email AS nominee_email, nominee_table.fullname AS nominee_fullname, nominee_table.profile_picture AS nominee_profile_picture 
                 FROM packages
                 INNER JOIN users
                 ON packages.resident_id = users.id 
-                LEFT JOIN users as nominee_table
-                ON nominee_table.id = nominee_id;
+                LEFT JOIN users AS nominee_table
+                ON nominee_table.id = packages.nominee_id;
                 """
             )
         else:
             curs.execute(
                 """
-                SELECT packages.id, packages.title, packages.delivered, packages.collected, users.fullname, users.id as resident_id, users.email, users.profile_picture, nominee_table.id as nominee_id, nominee_table.email as nominee_email, nominee_table.fullname as nominee_fullname, nominee_table.profile_picture as nominee_profile_picture 
+                SELECT packages.id, packages.title, packages.delivered, packages.collected, packages.nominee_id, users.fullname, users.id AS resident_id, users.email, users.profile_picture, nominee_table.email AS nominee_email, nominee_table.fullname AS nominee_fullname, nominee_table.profile_picture AS nominee_profile_picture 
                 FROM packages
                 INNER JOIN users
                 ON packages.resident_id = users.id AND users.id=%s
-                LEFT JOIN users as nominee_table
-                ON nominee_table.id = nominee_id;
+                LEFT JOIN users AS nominee_table
+                ON nominee_table.id = packages.nominee_id;
                 """,
                 (id,),
             )
@@ -267,7 +267,7 @@ def add_new_package(conn, resident_name, title):
         package_id = curs.fetchone()["id"]
         curs.execute(
             """
-            SELECT packages.id, packages.title, packages.delivered, packages.collected, packages.nominee_id, users.fullname, users.id as resident_id, users.email
+            SELECT packages.id, packages.title, packages.delivered, packages.collected, packages.nominee_id, users.fullname, users.id AS resident_id, users.email
             FROM packages
             INNER JOIN users
             ON packages.resident_id = users.id
