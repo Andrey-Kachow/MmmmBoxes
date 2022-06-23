@@ -1,3 +1,7 @@
+from PIL import Image
+
+import pytesseract
+
 from main.database.db import register_new_user
 from main.app.ocr import *
 from test.decorators import with_temp_psql_conn
@@ -151,3 +155,11 @@ def test_parse_read_data(conn):
     name, title = parse_read_data(conn, read_data_john_amburn)
     assert name == "John Amburn"
     assert title == "From JERRY GUZI"
+
+
+def test_tesseract_sanity():
+    try:
+        temp_img = Image.new('RGB', (60, 30), color = 'red')
+        assert type(pytesseract.image_to_string(temp_img)) is str
+    except Exception as e:
+        assert False

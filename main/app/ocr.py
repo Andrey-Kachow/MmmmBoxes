@@ -1,6 +1,7 @@
 from PIL import Image
 
-import pytesseract, re
+import pytesseract, re, tempfile, os
+from werkzeug.utils import secure_filename
 
 from main.database.db import get_all_resident_names
 
@@ -87,5 +88,22 @@ def parse_read_data(conn, read_data):
     matched_package_title = None
     if 'from' in lowercase_data:
         matched_package_title = titled_as_from_whatever(read_data, matched_name)
+
+    return matched_name, matched_package_title
+
+
+def get_package_details_from_file(ocr_file, conn):
+
+    if not os.path.exists(pytesseract.pytesseract.tesseract_cmd):
+        pytesseract.pytesseract.tesseract_cmd = os.environ["PYTESSERACT_PATH"]
+
+    with tempfile.TemporaryDirectory() as dirname:
+
+        ocr_img_path = os.path.join(dirname, secure_filename(ocr_file.filename))
+        ocr_file.save(ocr_img_path)
+
+        read_data = pytesseract.image_to_string(Image.open(ocr_img_path))
+
+        matched_name, matched_package_title = parse_read_data(conn, read_data)
 
     return matched_name, matched_package_title

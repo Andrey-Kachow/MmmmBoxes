@@ -15,6 +15,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from main.app.populate_template import personalise_email, email_resident
 from main.app import socketio
 from main.app.auth import login_required
+from main.app.ocr import get_package_details_from_file
 
 bp = Blueprint("officer", __name__, url_prefix="/officer")
 
@@ -185,10 +186,10 @@ def ocr():
     name = "Resik Odin"
     title = "boxxx pox"
 
-    print(f"\n{request.files}\n")
-    print(f"\n{type(request.files)}\n")
-    print(f"\n{request.files['file']}\n")
-    print(f"\n{type(request.files['file'])}\n")
+    if 'file' not in request.files:
+        return FAILURE_404
+
+    name, title = get_package_details_from_file(request.files['file'], current_app.db_conn)
 
     return (
         json.dumps({
