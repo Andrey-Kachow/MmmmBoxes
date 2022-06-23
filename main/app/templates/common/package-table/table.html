@@ -35,7 +35,7 @@
                 {% include 'common/package-table/signature-button-column.html' %}
                 {% if session.get("user-is-officer") %}
                   <td>
-                      <a href="{{ package.mailto }}">Send reminder email</a>
+                      <a href="{{ package.mailto }}"><button class = "remind-button">Send Reminder</button></a>
                   </td>
                 {% endif %}
             {% else %}
