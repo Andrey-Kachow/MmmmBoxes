@@ -65,9 +65,7 @@
         <span class="profile-label">Full Name:</span>
         <span class="profile-value">{{ resident.fullname }}</span>
     </h3>
-    {% if not user_profile %}
-        <h3>Packages:</h3>
-        {% include 'common/package-table/table.html' %}
-    {% endif %}
+    <h3>Packages:</h3>
+    {% include 'common/package-table/table.html' %}
 {% endblock %}
 {% block scripts %}{% endblock %}

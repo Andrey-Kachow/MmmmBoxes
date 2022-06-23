@@ -7,6 +7,7 @@ import datetime
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from main.database.signatures import delete_signature
+from main.app.populate_template import personalise_email
 
 DATE_FORMAT_STRING = "%H:%M on %a %e %B, %Y"
 
@@ -183,6 +184,7 @@ def get_all_packages(conn, id=None):
         - nominee_email
         - nominee_fullname
         - nominee_profile_picture
+        - mailto, a mailto: link for an individual package
     """
     with conn.cursor() as curs:
         if id is None:
@@ -363,6 +365,9 @@ def clean_package_dict(pack_dict):
         pack_dict["collectednice"] = "Collection pending"
         pack_dict["collected"] = "Collection pending"
 
+    pack_dict[
+        "mailto"
+    ] = f"mailto:{pack_dict['email']}?subject=Package collection: {pack_dict['title']}&body={personalise_email(email=get_template_email(), full_name=pack_dict['fullname'], date_d=pack_dict['deliverednice'], date_t=datetime.date.today().strftime(DATE_FORMAT_STRING), description=pack_dict['title'])}"
     return pack_dict
 
 
@@ -394,3 +399,7 @@ def nominate_parcel(conn, package_id, nominee_id):
             ),
         )
         conn.commit()
+
+def get_template_email():
+    with open(os.path.join(os.path.dirname(__file__), "email-template.txt")) as f:
+        return f.read().replace("\n", "%0D%0A")

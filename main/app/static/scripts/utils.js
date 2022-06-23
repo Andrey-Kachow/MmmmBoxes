@@ -7,3 +7,7 @@ function removeAllChildNodes(parent) {
     parent.removeChild(parent.firstChild);
   }
 }
+
+function hasNoFiles(input) {
+  return input.files.length == 0;
+}

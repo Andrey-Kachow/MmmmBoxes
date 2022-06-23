@@ -15,6 +15,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from main.app.populate_template import personalise_email, email_resident
 from main.app import socketio
 from main.app.auth import login_required
+from main.app.ocr import get_package_details_from_file
 
 bp = Blueprint("officer", __name__, url_prefix="/officer")
 
@@ -174,6 +175,28 @@ def getsign():
 
     return (
         json.dumps({"success": True, "dataUrl": get_data_url(package_id)}),
+        200,
+        {"ContentType": "application/json"},
+    )
+
+
+@bp.route("/ocr", methods=["post"])
+def ocr():
+
+    name = "Resik Odin"
+    title = "boxxx pox"
+
+    if 'file' not in request.files:
+        return FAILURE_404
+
+    name, title = get_package_details_from_file(request.files['file'], current_app.db_conn)
+
+    return (
+        json.dumps({
+            "success": True,
+            "name": name,
+            "title": title,
+        }),
         200,
         {"ContentType": "application/json"},
     )

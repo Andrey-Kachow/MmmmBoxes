@@ -49,8 +49,7 @@ def revoke_nomination(package_id):
         flash("Oops! Couldn't revoke nomination")
     return redirect(url_for("resident.overview"))
 
-
-@bp.route("/profile")
+@bp.route("/profile", methods=["GET"])
 @login_required
 def profile():
     return render_template(
