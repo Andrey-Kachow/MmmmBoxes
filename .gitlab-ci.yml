@@ -6,6 +6,7 @@
   - pip install -r test/requirements.txt
   - pip install -r requirements.txt
   - export DATABASE_URL="postgres://gitlab-runner:memes@localhost:5432/postgres"
+  # - apt install imagemagick
 
 .on-master-or-merge: &on-master-or-merge
   - if: $CI_COMMIT_BRANCH == "master" #don't change me
@@ -54,6 +55,18 @@ test-template:
     - *on-master-or-merge
     - changes:
       - main/app/populate_template.py
+
+test-ocr:
+  stage: test
+  script:
+    - *preamble
+    - pytest -s test/test_ocr.py
+  rules:
+    - *on-master-or-merge
+    - if: $CI_COMMIT_BRANCH == "feat/ocr_parcel"
+    - changes:
+      - main/app/ocr.py
+      - test/test_ocr.py
 
 # ##############################
 

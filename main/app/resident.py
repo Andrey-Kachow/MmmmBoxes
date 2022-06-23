@@ -32,10 +32,10 @@ def utility_processor():
 @bp.route("/overview", methods=["GET"])
 @login_required
 def overview():
-    return render_template("resident/view-packages.html")
+    return redirect(url_for("resident.profile"))
 
 
-@bp.route("/profile")
+@bp.route("/profile", methods=["GET"])
 @login_required
 def profile():
     return render_template(
