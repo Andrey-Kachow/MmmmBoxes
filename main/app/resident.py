@@ -26,17 +26,25 @@ def utility_processor():
     def get_package_list():
         return db.get_all_packages(current_app.db_conn, session["user-id"])
 
-    return dict(get_package_list=get_package_list)
+    return dict(
+        resident=db.get_user_by_id(current_app.db_conn, session.get("user-id")),
+        get_package_list=get_package_list,
+        hide_owner_details_in_table=True,
+        user_profile=True
+    )
+
+
+def post_nominate(request):
+    if request.method == "POST":
+        nominee_id = request.form['nominee-id']
+        package_id = request.form["package-id"]
+        db.nominate_parcel(current_app.db_conn, package_id, nominee_id)
 
 
 @bp.route("/overview", methods=["GET", "POST"])
 @login_required
 def overview():
-    if request.method == "POST":
-        nominee = request.form["resident"]
-        nominee_id = nominee.split(":")[0]
-        package_id = request.form["package-id"]
-        db.nominate_parcel(current_app.db_conn, package_id, nominee_id)
+    post_nominate(request)
     return render_template("resident/view-packages.html")
 
 
@@ -53,15 +61,7 @@ def revoke_nomination(package_id):
 @bp.route("/profile", methods=["GET"])
 @login_required
 def profile():
-    return render_template(
-        "officer/resident-table/resident-profile.html",
-        resident=db.get_user_by_id(current_app.db_conn, session.get("user-id")),
-        get_package_list=lambda: db.get_all_packages(
-            current_app.db_conn, session.get("user-id")
-        ),
-        hide_owner_details_in_table=True,
-        user_profile=True,
-    )
+    return render_template("officer/resident-table/resident-profile.html")
 
 
 ALLOWED_EXTENSIONS = set(["png", "jpg", "jpeg"])
@@ -73,6 +73,9 @@ def allowed_file(filename):
 
 @bp.route("/profile", methods=["POST"])
 def upload_image():
+    if "nominee-id" in request.form:
+        post_nominate(request)
+        return redirect(request.url)
     if "file" not in request.files:
         flash("No file part")
         return redirect(request.url)

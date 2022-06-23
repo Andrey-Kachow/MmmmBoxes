@@ -76,25 +76,14 @@
                               autocomplete="off">
                             <label for="resident-name">Select resident to nominate</label>
                             <div class="dropdown-input-div">
-                                <input id="package-id" style="display:none" name="package-id" value {{ package.id }}/>
-                                <input id="resident-id-inp"
-                                       name="resident"
-                                       type="text"
-                                       placeholder="Search Residents..."
-                                       onfocus="showResidents()"
-                                       onblur="nonButtonFocusHide()"
-                                       onkeyup="filterResidents()"
-                                       required/>
-                                <div id="dropdown-residents"
-                                     class="dropdown-content">
-                                    {% for resident in get_residents() %}
-                                        <button class="dropdown-content-button"
-                                                type="button"
-                                                onclick="selectResidentId('{{ resident['id'] }}','{{ resident['fullname'] }}')">
-                                            {{ resident['fullname'] }}
-                                        </button>
-                                    {% endfor %}
-                                </div>
+                                <input style="display:none" name="package-id" value="{{ package.id }}"/>
+                                <select name="nominee-id">
+                                  {% for other in get_residents() %}
+                                    {% if other.id != resident.id %}
+                                      <option value="{{ other.id }}">{{ other.fullname }}</option>
+                                    {% endif %}
+                                  {% endfor %}
+                                </select>
                             </div>
                             <input type="submit"
                                    value="Nominate"/>
@@ -105,12 +94,12 @@
         {% else %}
             {% if package.nominee_id != session.get("user-id") %}
                 You nominated {{ package.nominee_fullname }} for collection
-                <a href="revoke_nomination/{{ package.id }}">
+                <a href="{{ url_for('resident.revoke_nomination', package_id=package.id) }}">
                     <button class="delete">Revoke Nomination</button>
                 </a>
             {% else %}
                 You were nominated by {{ package.fullname }} for collection
-                <a href="revoke_nomination/{{ package.id }}">
+                <a href="{{ url_for('resident.revoke_nomination', package_id=package.id) }}">
                     <button class="delete">Cancel Nomination</button>
                 </a>
             {% endif %}
