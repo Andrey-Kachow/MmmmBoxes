@@ -202,11 +202,12 @@ def get_all_packages(conn, id=None):
                 SELECT packages.id, packages.title, packages.delivered, packages.collected, packages.nominee_id, users.fullname, users.id AS resident_id, users.email, users.profile_picture, nominee_table.email AS nominee_email, nominee_table.fullname AS nominee_fullname, nominee_table.profile_picture AS nominee_profile_picture 
                 FROM packages
                 INNER JOIN users
-                ON packages.resident_id = users.id AND users.id=%s
+                ON packages.resident_id = users.id 
                 LEFT JOIN users AS nominee_table
-                ON nominee_table.id = packages.nominee_id;
+                ON nominee_table.id = packages.nominee_id
+                WHERE users.id=%s OR packages.nominee_id=%s;
                 """,
-                (id,),
+                (id,id,),
             )
 
         return [clean_package_dict(dict(p)) for p in curs.fetchall()]
