@@ -6,8 +6,8 @@
   - pip install -r test/requirements.txt
   - pip install -r requirements.txt
   - export DATABASE_URL="postgres://gitlab-runner:memes@localhost:5432/postgres"
-  - sudo apt install tesseract-ocr -y
-  - sudo apt install imagemagick
+  - apt install tesseract-ocr -y
+  - apt install imagemagick
 
 .on-master-or-merge: &on-master-or-merge
   - if: $CI_COMMIT_BRANCH == "master" #don't change me
