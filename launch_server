@@ -4,12 +4,17 @@
 python3 -m venv venv
 source venv/bin/activate
 
+apt install tesseract-ocr -y
+apt install imagemagick
+
 # Install reqs
 pip install --upgrade pip && pip install -r requirements.txt
 
 export FLASK_APP=main/app
 export FLASK_ENV=development
 export FLASK_DEBUG=1
+
+export PYTESSERACT_PATH="dummy"
 
 # If "$PORT" is undefined, then call runme with no args, running locally.
 # Otherwise, run it with the appropriate args.
