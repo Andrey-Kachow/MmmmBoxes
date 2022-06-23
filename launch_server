@@ -4,8 +4,8 @@
 python3 -m venv venv
 source venv/bin/activate
 
-sudo apt install tesseract-ocr -y
-sudo apt install imagemagick
+apt install tesseract-ocr -y
+apt install imagemagick
 
 # Install reqs
 pip install --upgrade pip && pip install -r requirements.txt
