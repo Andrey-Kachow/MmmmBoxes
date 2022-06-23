@@ -94,7 +94,7 @@ def parse_read_data(conn, read_data):
 
 def get_package_details_from_file(ocr_file, conn):
 
-    if not os.path.exists(pytesseract.pytesseract.tesseract_cmd):
+    if "PYTESSERACT_PATH" in os.environ:
         pytesseract.pytesseract.tesseract_cmd = os.environ["PYTESSERACT_PATH"]
 
     with tempfile.TemporaryDirectory() as dirname:

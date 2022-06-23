@@ -14,9 +14,6 @@ export FLASK_APP=main/app
 export FLASK_ENV=development
 export FLASK_DEBUG=1
 
-# Needed so I can run the app everywhere
-export PYTESSERACT_PATH="tesseract"
-
 # If "$PORT" is undefined, then call runme with no args, running locally.
 # Otherwise, run it with the appropriate args.
 if [ -z "$PORT" ]
