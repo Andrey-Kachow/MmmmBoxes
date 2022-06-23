@@ -167,6 +167,7 @@ def get_user_by_id(conn, id):
 
 def get_all_packages(conn, id=None):
     """Arguments: a database connection, Optional: id of user whose packages to get
+    All nominee fields are nullable
     Returns: a list of every package in the system. Packages are dicts:
         - id
         - title
@@ -178,29 +179,53 @@ def get_all_packages(conn, id=None):
         - resident_id
         - email (of resident)
         - profile_picture (url)
+        - nominee_id 
+        - nominee_email
+        - nominee_fullname
+        - nominee_profile_picture
     """
     with conn.cursor() as curs:
         if id is None:
             curs.execute(
                 """
-                SELECT packages.id, packages.title, packages.delivered, packages.collected, users.fullname, users.id as resident_id, users.email, users.profile_picture
+                SELECT packages.id, packages.title, packages.delivered, packages.collected, packages.nominee_id, users.fullname, users.id AS resident_id, users.email, users.profile_picture, nominee_table.id AS nominee_id, nominee_table.email AS nominee_email, nominee_table.fullname AS nominee_fullname, nominee_table.profile_picture AS nominee_profile_picture 
                 FROM packages
                 INNER JOIN users
-                ON packages.resident_id = users.id;
+                ON packages.resident_id = users.id 
+                LEFT JOIN users AS nominee_table
+                ON nominee_table.id = packages.nominee_id;
                 """
             )
         else:
             curs.execute(
                 """
-                SELECT packages.id, packages.title, packages.delivered, packages.collected, users.fullname, users.id as resident_id, users.email, users.profile_picture
+                SELECT packages.id, packages.title, packages.delivered, packages.collected, packages.nominee_id, users.fullname, users.id AS resident_id, users.email, users.profile_picture, nominee_table.email AS nominee_email, nominee_table.fullname AS nominee_fullname, nominee_table.profile_picture AS nominee_profile_picture 
                 FROM packages
                 INNER JOIN users
-                ON packages.resident_id = users.id AND users.id=%s;
+                ON packages.resident_id = users.id 
+                LEFT JOIN users AS nominee_table
+                ON nominee_table.id = packages.nominee_id
+                WHERE users.id=%s OR packages.nominee_id=%s;
                 """,
-                (id,),
+                (id,id,),
             )
 
         return [clean_package_dict(dict(p)) for p in curs.fetchall()]
+
+def revoke_nomination(conn, package_id):
+    """Arguments: a database connectoin, package id
+    sets the nominee_id to null in the specific entry of the package table which
+    effectively cancels nomination"""
+    with conn.cursor() as curs:
+        curs.execute(
+            """
+            UPDATE packages 
+            SET nominee_id = NULL 
+            WHERE id = %s
+            """, 
+            (package_id,),
+        )
+    return True
 
 
 def add_new_package(conn, resident_name, title):
@@ -244,7 +269,7 @@ def add_new_package(conn, resident_name, title):
         package_id = curs.fetchone()["id"]
         curs.execute(
             """
-            SELECT packages.id, packages.title, packages.delivered, packages.collected, users.fullname, users.id as resident_id, users.email
+            SELECT packages.id, packages.title, packages.delivered, packages.collected, packages.nominee_id, users.fullname, users.id AS resident_id, users.email
             FROM packages
             INNER JOIN users
             ON packages.resident_id = users.id
@@ -352,3 +377,20 @@ def get_residents(conn):
         )
         return curs.fetchall()
     return []
+
+def nominate_parcel(conn, package_id, nominee_id):
+    """Arguments: database connection, primary key of package, foreign key of nominee
+       sets the nominee field of package entry in packages table to be the foreign key of the nominee"""
+    with conn.cursor() as curs:
+        curs.execute(
+            """
+            UPDATE packages
+            SET nominee_id = %s
+            WHERE id = %s;
+            """,
+            (
+                nominee_id,
+                package_id,
+            ),
+        )
+        conn.commit()

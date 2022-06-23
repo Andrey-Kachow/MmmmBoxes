@@ -29,10 +29,25 @@ def utility_processor():
     return dict(get_package_list=get_package_list)
 
 
-@bp.route("/overview", methods=["GET"])
+@bp.route("/overview", methods=["GET","POST"])
 @login_required
 def overview():
+    if request.method == "POST":
+        nominee = request.form["resident"]
+        nominee_id = nominee.split(":")[0]
+        package_id = request.form["package-id"]
+        db.nominate_parcel(current_app.db_conn, package_id, nominee_id)
     return render_template("resident/view-packages.html")
+
+
+@bp.route("/revoke_nomination/<package_id>", methods=["GET", "POST"])
+def revoke_nomination(package_id):
+    success = db.revoke_nomination(current_app.db_conn, package_id)
+    if success:
+        flash("Nomination revoked.")
+    else:
+        flash("Oops! Couldn't revoke nomination")
+    return redirect(url_for("resident.overview"))
 
 
 @bp.route("/profile")
@@ -81,3 +96,13 @@ def upload_image():
     else:
         flash("Allowed image types are - png, jpg, jpeg")
         return redirect(request.url)
+
+@bp.context_processor
+def utility_processor():
+
+    def get_residents():
+        return db.get_residents(current_app.db_conn)
+
+    return dict(
+        get_residents=get_residents,
+    )

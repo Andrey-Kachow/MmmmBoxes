@@ -8,9 +8,13 @@
   margin-right: 0px;
 }
 
+#nominate-button {
+  background-color: #a7149a;
+}
+
 .packages-col-heading-date {
   text-align: left;
-  padding-right: 10rem;
+  padding-right: 10rem;s
 }
 
 .packages-spacer {
