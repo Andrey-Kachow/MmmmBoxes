@@ -8,6 +8,42 @@ apt install tesseract-ocr -y
 apt install imagemagick
 apt install libtesseract-dev
 
+
+# This is temporary
+echo ""
+echo ""
+echo ""
+tesseract
+echo ""
+echo ""
+which tesseract
+echo ""
+echo ""
+echo ""
+
+if [ -d "/usr/bin/tesseractr" ]
+then
+    echo "Directory /usr/bin/tesseract exists. Adding tesseract to PATH"
+    PATH=$PATH:"/usr/bin/tesseractr"
+
+    # This is temporary
+    echo ""
+    echo ""
+    echo ""
+    tesseract
+    echo ""
+    echo ""
+    which tesseract
+    echo ""
+    echo ""
+    echo ""
+
+else
+    echo "Error: Directory /usr/bin/tesseract does not exists. No tesseract this time"
+fi
+
+
+
 # Install reqs
 pip install --upgrade pip && pip install -r requirements.txt
 
