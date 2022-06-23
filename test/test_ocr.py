@@ -22,7 +22,7 @@ United States
 
 FBA (10/30/19 10:55 AM) - 1
 
-FBA15JD9C5R9U000001 ee
+FBA15JD9C5R9U000001
 |
 
 Mixed SKUs
@@ -52,11 +52,11 @@ TO:
 
 123 Chapman Lane
 Lotus CA 95651
-WadeslalaelDecedelesesllsdeell
+Wadesl tAS
 
 USPS TRACKING #
 
-9999 9999 9999 9999 9999 99
+9999999999999999999999
 
 Thanks for Shopping with Us!
 """
@@ -86,7 +86,7 @@ AUSTIN TX 78746-5147
 
 USPS TRACKING #
 
-9400 1102 0079 3961 8936 91
+9400110200793961893691
 """
 
 read_data_john_amburn = """
@@ -145,7 +145,7 @@ def test_parse_read_data(conn):
 
     name, title = parse_read_data(conn, "sad input")
     assert name is None
-    assert title is None
+    assert title is "sad input"
 
     register_new_user(
         conn, "dnest+sta012", "email1", "username1", "password_plain1", False
@@ -162,19 +162,19 @@ def test_parse_read_data(conn):
 
     name, title = parse_read_data(conn, read_data_from_james_bond)
     assert name == "dnest+sta012"
-    assert title == "FBA Box.1 of 1 - 1lb"
+    assert title == "FBA15JD9C5R9U000001"
 
     name, title = parse_read_data(conn, read_data_jim_clark)
     assert name == "Jim Clark"
-    assert title == "US POSTAGE & FEES PAID 062S0017063017"
+    assert title == "9999999999999999999999"
 
     name, title = parse_read_data(conn, read_data_jack_ship)
     assert name == "Jack Ship"
-    assert title == "US POSTAGE AND FEES PAID"
+    assert title == "9400110200793961893691"
 
     name, title = parse_read_data(conn, read_data_john_amburn)
     assert name == "John Amburn"
-    assert title == "From JERRY GUZI"
+    assert title == "BURRIS COMPUTER FORMS."
 
 
 def test_tesseract_sanity():
