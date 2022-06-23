@@ -1,6 +1,8 @@
 function initializeResidentNames() {
-  const residentButtons = document.getElementsByClassName("dropdown-content-button");
-  return Array.from(residentButtons).map(it => it.textContent);
+  const residentButtons = document.getElementsByClassName(
+    "dropdown-content-button"
+  );
+  return Array.from(residentButtons).map((it) => it.textContent);
 }
 
 const MAX_OCR_FILE_SIZE = 67108864; // 64 MiB
@@ -28,16 +30,16 @@ function ocrSend() {
   }
   ocrInfoClear();
   const formData = new FormData();
-  formData.append('file', input.files[0]);
+  formData.append("file", input.files[0]);
   $.ajax({
     url: ocrUrl,
     data: formData,
     dataType: "json",
     processData: false,
     contentType: false,
-    type: 'POST',
+    type: "POST",
     success: (data) => verifyAndAutoFill(data),
-    error: () => notifyCouldNotGetResponse()
+    error: () => notifyCouldNotGetResponse(),
   });
 }
 
@@ -91,12 +93,14 @@ function notifyFileTooLarge() {
 
 function notifyResidentNameDoesNotMatchExistingOne() {
   ocrStatusError();
-  ocrInfo("The read package recipient name does not match any existing resident!");
+  ocrInfo(
+    "The read package recipient name does not match any existing resident!"
+  );
 }
 
 function notifySuccessfullOcr() {
   ocrStatusCorrect();
-  ocrInfo("The uploaded image was processed successfully!")
+  ocrInfo("The uploaded image was processed successfully!");
 }
 
 function ocrInfo(msg) {

@@ -8,11 +8,12 @@
   margin-right: 0px;
 }
 
-#nominate-button, .remind-button {
+#nominate-button,
+.remind-button {
   background-color: #a7149a;
 }
 
-.remind-all-button{
+.remind-all-button {
   margin-left: 0rem;
   background-color: #e204a0;
   height: 34px;
@@ -20,11 +21,9 @@
   margin-bottom: 20px;
 }
 
-
-
 .packages-col-heading-date {
   text-align: left;
-  padding-right: 10rem;s
+  padding-right: 10rem;
 }
 
 .package-title-col {

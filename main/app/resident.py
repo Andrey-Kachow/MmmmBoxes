@@ -29,7 +29,7 @@ def utility_processor():
     return dict(get_package_list=get_package_list)
 
 
-@bp.route("/overview", methods=["GET","POST"])
+@bp.route("/overview", methods=["GET", "POST"])
 @login_required
 def overview():
     if request.method == "POST":
@@ -48,6 +48,7 @@ def revoke_nomination(package_id):
     else:
         flash("Oops! Couldn't revoke nomination")
     return redirect(url_for("resident.overview"))
+
 
 @bp.route("/profile", methods=["GET"])
 @login_required
@@ -96,9 +97,9 @@ def upload_image():
         flash("Allowed image types are - png, jpg, jpeg")
         return redirect(request.url)
 
+
 @bp.context_processor
 def utility_processor():
-
     def get_residents():
         return db.get_residents(current_app.db_conn)
 

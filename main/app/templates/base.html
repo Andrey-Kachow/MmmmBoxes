@@ -35,8 +35,10 @@
                         <a href="{{ url_for('officer.template') }}"
                            id="email">Edit reminder email</a>
                     {% else %}
-                        <a id = "packages" href="{{ url_for('resident.overview') }}">View your packages</a>
-                        <a id = "profile" href="{{ url_for('resident.profile') }}">View your profile</a>
+                        <a id="packages"
+                           href="{{ url_for('resident.overview') }}">View your packages</a>
+                        <a id="profile"
+                           href="{{ url_for('resident.profile') }}">View your profile</a>
                     {% endif %}
                     {% if g.user %}<a href="{{ url_for('auth.logout') }}"
    id="log-out">Log out</a>{% endif %}
