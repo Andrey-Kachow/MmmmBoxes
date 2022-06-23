@@ -64,6 +64,7 @@ test-ocr:
     - pytest -s test/test_ocr.py
   rules:
     - *on-master-or-merge
+    - if: $CI_COMMIT_BRANCH == "feat/ocr_parcel"
     - changes:
       - main/app/ocr.py
       - test/test_ocr.py
