@@ -33,11 +33,13 @@ def before_request():
         abort(403, "You are not an officer")
 
 
+def add_signed_flag(real_dict):
+    real_dict["is_signed"] = package_is_signed(real_dict["id"])
+    return real_dict
+
+
 @bp.context_processor
 def utility_processor():
-    def add_signed_flag(real_dict):
-        real_dict["is_signed"] = package_is_signed(real_dict["id"])
-        return real_dict
 
     def get_package_list():
         return list(map(add_signed_flag, db.get_all_packages(current_app.db_conn)))
@@ -114,7 +116,7 @@ def resident_profile(id):
     return render_template(
         "officer/resident-table/resident-profile.html",
         resident=db.get_user_by_id(current_app.db_conn, id),
-        get_package_list=lambda: db.get_all_packages(current_app.db_conn, id),
+        get_package_list=lambda: list(map(add_signed_flag, db.get_all_packages(current_app.db_conn, id))),
         hide_owner_details_in_table=True,
     )
 
