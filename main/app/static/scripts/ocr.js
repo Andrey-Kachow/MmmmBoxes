@@ -4,6 +4,7 @@ function initializeResidentNames() {
 }
 
 const MAX_OCR_FILE_SIZE = 67108864; // 64 MiB
+const THREE_SECONDS = 3000;
 const residentNames = initializeResidentNames();
 
 let ocrUrl = null;
@@ -63,6 +64,11 @@ function verifyAndAutoFill(data) {
   notifySuccessfullOcr();
 }
 
+function notifyCouldNotReadAnything() {
+  ocrStatusError();
+  ocrInfo("Could not read anything from the provided image!");
+}
+
 function notifyCouldNotGetResponse() {
   ocrStatusError();
   ocrInfo("Could not process uploaded image!");
@@ -95,6 +101,9 @@ function notifySuccessfullOcr() {
 
 function ocrInfo(msg) {
   document.getElementById("ocr-status-info-text").textContent = msg;
+  if (msg != "") {
+    setTimeout(() => ocrInfoClear(), THREE_SECONDS);
+  }
 }
 
 function ocrInfoClear() {
