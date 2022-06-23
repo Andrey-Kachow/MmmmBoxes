@@ -65,6 +65,7 @@ def parse_read_data(conn, read_data):
         title :: is a Package title '''
 
     existing_names = get_all_resident_names(conn)
+    print(f"Existings names are {existing_names}")
     lowercase_data = read_data.lower()
 
     # Searching any of the existing resident names in the read_data
