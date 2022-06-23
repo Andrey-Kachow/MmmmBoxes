@@ -2,7 +2,7 @@ libgl1
 libsm6
 libxrender1
 libfontconfig1
-libarchive-dev
+libarchive13
 libtesseract-dev
 tesseract-ocr
 tesseract-ocr-eng
