@@ -55,7 +55,9 @@
                 <span id="ocr-status-info-text"></span>
             </div>
         </form>
-        <a href="{{ url_for('officer.email_all') }}"><button class = "remind-all-button">Push reminder to all</button></a>
+        <a href="{{ url_for('officer.email_all') }}">
+            <button class="remind-all-button">Push reminder to all</button>
+        </a>
         {% include 'common/package-table/table.html' %}
     </div>
 {% endblock %}
