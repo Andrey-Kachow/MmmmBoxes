@@ -193,16 +193,18 @@ def get_all_packages(conn, id=None):
                 INNER JOIN users
                 ON packages.resident_id = users.id 
                 LEFT JOIN users as nominee_table
-                ON nominee_table.id = packages.nominee_id;
+                ON nominee_table.id = nominee_id;
                 """
             )
         else:
             curs.execute(
                 """
-                SELECT packages.id, packages.title, packages.delivered, packages.collected, users.fullname, users.id as resident_id, users.email, users.profile_picture
+                SELECT packages.id, packages.title, packages.delivered, packages.collected, users.fullname, users.id as resident_id, users.email, users.profile_picture, nominee_table.id as nominee_id, nominee_table.email as nominee_email, nominee_table.fullname as nominee_fullname, nominee_table.profile_picture as nominee_profile_picture 
                 FROM packages
                 INNER JOIN users
-                ON packages.resident_id = users.id AND users.id=%s;
+                ON packages.resident_id = users.id AND users.id=%s
+                LEFT JOIN users as nominee_table
+                ON nominee_table.id = nominee_id;
                 """,
                 (id,),
             )
