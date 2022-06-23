@@ -265,7 +265,7 @@ def add_new_package(conn, resident_name, title):
         package_id = curs.fetchone()["id"]
         curs.execute(
             """
-            SELECT packages.id, packages.title, packages.delivered, packages.collected, users.fullname, users.id as resident_id, users.email
+            SELECT packages.id, packages.title, packages.delivered, packages.collected, packages.nominee_id, users.fullname, users.id as resident_id, users.email
             FROM packages
             INNER JOIN users
             ON packages.resident_id = users.id
