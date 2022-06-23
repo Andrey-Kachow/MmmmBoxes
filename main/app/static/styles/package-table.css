@@ -17,6 +17,10 @@
   padding-right: 10rem;s
 }
 
+.package-title-col {
+  max-width: 100px;
+}
+
 .packages-spacer {
   padding: 0.5rem;
 }

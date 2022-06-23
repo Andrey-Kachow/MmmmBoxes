@@ -25,10 +25,13 @@ def get_meaningful_lines(read_data):
 
 
 def nice_read_heading(read_data):
-    first_line = get_meaningful_lines(read_data)[0]
-    lowercase_line = first_line.lower()
-    if any([keyword in lowercase_line for keyword in common_keywords]):
-        return first_line
+    try:
+        first_line = get_meaningful_lines(read_data)[0]
+        lowercase_line = first_line.lower()
+        if any([keyword in lowercase_line for keyword in common_keywords]):
+            return first_line
+    except Exception as e:
+        pass
     return None
 
 

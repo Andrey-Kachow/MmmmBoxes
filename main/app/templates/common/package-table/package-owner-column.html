@@ -2,7 +2,6 @@
     <div class="card-block">
         <p class="text-center">
             <span class="mytooltip tooltip-effect-1">
-                
                 {% if package.nominee_id is not none %}
                     <a href="{{ url_for('officer.resident_profile', id=package.nominee_id) }}">
                         <span class="tooltip-item">
@@ -16,7 +15,6 @@
                         </span>
                     </a>
                 {% endif %}
-                    
                 <span class="tooltip-content clearfix">
                     {% if package.nominee_id is not none and package.nominee_profile_picture %}
                         <img src="{{ package.nominee_profile_picture }}"
