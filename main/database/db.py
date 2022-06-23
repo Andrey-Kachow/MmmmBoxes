@@ -220,10 +220,11 @@ def revoke_nomination(conn, package_id):
             """
             UPDATE packages 
             SET nominee_id = NULL 
-            WHERE package_id = %s
+            WHERE id = %s
             """, 
-            (package_id)
+            (package_id,),
         )
+    return True
 
 
 def add_new_package(conn, resident_name, title):
@@ -382,8 +383,8 @@ def nominate_parcel(conn, package_id, nominee_id):
     with conn.cursor() as curs:
         curs.execute(
             """
-            UPDATE packges
-            SET nominee = %s
+            UPDATE packages
+            SET nominee_id = %s
             WHERE id = %s;
             """,
             (

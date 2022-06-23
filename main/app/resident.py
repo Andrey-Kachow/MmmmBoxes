@@ -40,6 +40,16 @@ def overview():
     return render_template("resident/view-packages.html")
 
 
+@bp.route("/revoke_nomination/<package_id>", methods=["GET", "POST"])
+def revoke_nomination(package_id):
+    success = db.revoke_nomination(current_app.db_conn, package_id)
+    if success:
+        flash("Nomination revoked.")
+    else:
+        flash("Oops! Couldn't revoke nomination")
+    return redirect(url_for("resident.overview"))
+
+
 @bp.route("/profile")
 @login_required
 def profile():
