@@ -95,7 +95,7 @@ def parse_read_data(conn, read_data):
 def get_package_details_from_file(ocr_file, conn):
 
     if "TESSDATA_PREFIX" in os.environ:
-        pytesseract.pytesseract.tesseract_cmd = './.apt/usr/bin/tesseract'
+        pytesseract.pytesseract.tesseract_cmd = '/app/.apt/usr/bin/tesseract'
     elif "PYTESSERACT_PATH" in os.environ:
         pytesseract.pytesseract.tesseract_cmd = os.environ['PYTESSERACT_PATH']
 
