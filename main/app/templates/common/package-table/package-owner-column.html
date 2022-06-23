@@ -2,7 +2,17 @@
     <div class="card-block">
         <p class="text-center">
             <span class="mytooltip tooltip-effect-1">
-                <a href="{{ url_for('officer.resident_profile', id=package.resident_id) }}"><span class="tooltip-item">{{ package.fullname }}</span></a>
+                {% if session.get("user-is-officer") %}
+                <a href="{{ url_for('officer.resident_profile', id=package.resident_id) }}">
+                  <span class="tooltip-item">
+                    {{ package.fullname }}
+                  </span>
+                </a>
+                {% else %}
+                  <span class="tooltip-item">
+                    {{ package.fullname }}
+                  </span>
+                {% endif %}
                 <span class="tooltip-content clearfix">
                     {% if package.profile_picture %}
                         <img src="{{ package.profile_picture }}"
