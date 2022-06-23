@@ -28,6 +28,7 @@
 
 .package-title-col {
   max-width: 100px;
+  word-wrap: break-word;
 }
 
 .packages-spacer {
