@@ -4,9 +4,9 @@
 python3 -m venv venv
 source venv/bin/activate
 
-apt install tesseract-ocr -y
-apt install imagemagick
-apt install libtesseract-dev
+apt-get install tesseract-ocr
+apt-get install imagemagick
+apt-get install libtesseract-dev
 
 
 # This is temporary
