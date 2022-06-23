@@ -40,7 +40,6 @@ def add_signed_flag(real_dict):
 
 @bp.context_processor
 def utility_processor():
-
     def get_package_list():
         return list(map(add_signed_flag, db.get_all_packages(current_app.db_conn)))
 
@@ -116,7 +115,9 @@ def resident_profile(id):
     return render_template(
         "officer/resident-table/resident-profile.html",
         resident=db.get_user_by_id(current_app.db_conn, id),
-        get_package_list=lambda: list(map(add_signed_flag, db.get_all_packages(current_app.db_conn, id))),
+        get_package_list=lambda: list(
+            map(add_signed_flag, db.get_all_packages(current_app.db_conn, id))
+        ),
         hide_owner_details_in_table=True,
     )
 
@@ -188,17 +189,21 @@ def ocr():
     name = "Resik Odin"
     title = "boxxx pox"
 
-    if 'file' not in request.files:
+    if "file" not in request.files:
         return FAILURE_404
 
-    name, title = get_package_details_from_file(request.files['file'], current_app.db_conn)
+    name, title = get_package_details_from_file(
+        request.files["file"], current_app.db_conn
+    )
 
     return (
-        json.dumps({
-            "success": True,
-            "name": name,
-            "title": title,
-        }),
+        json.dumps(
+            {
+                "success": True,
+                "name": name,
+                "title": title,
+            }
+        ),
         200,
         {"ContentType": "application/json"},
     )

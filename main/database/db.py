@@ -180,7 +180,7 @@ def get_all_packages(conn, id=None):
         - resident_id
         - email (of resident)
         - profile_picture (url)
-        - nominee_id 
+        - nominee_id
         - nominee_email
         - nominee_fullname
         - nominee_profile_picture
@@ -209,10 +209,14 @@ def get_all_packages(conn, id=None):
                 ON nominee_table.id = packages.nominee_id
                 WHERE users.id=%s OR packages.nominee_id=%s;
                 """,
-                (id,id,),
+                (
+                    id,
+                    id,
+                ),
             )
 
         return [clean_package_dict(dict(p)) for p in curs.fetchall()]
+
 
 def revoke_nomination(conn, package_id):
     """Arguments: a database connectoin, package id
@@ -224,7 +228,7 @@ def revoke_nomination(conn, package_id):
             UPDATE packages 
             SET nominee_id = NULL 
             WHERE id = %s
-            """, 
+            """,
             (package_id,),
         )
     return True
@@ -383,9 +387,10 @@ def get_residents(conn):
         return curs.fetchall()
     return []
 
+
 def nominate_parcel(conn, package_id, nominee_id):
     """Arguments: database connection, primary key of package, foreign key of nominee
-       sets the nominee field of package entry in packages table to be the foreign key of the nominee"""
+    sets the nominee field of package entry in packages table to be the foreign key of the nominee"""
     with conn.cursor() as curs:
         curs.execute(
             """
@@ -399,6 +404,7 @@ def nominate_parcel(conn, package_id, nominee_id):
             ),
         )
         conn.commit()
+
 
 def get_template_email():
     with open(os.path.join(os.path.dirname(__file__), "email-template.txt")) as f:

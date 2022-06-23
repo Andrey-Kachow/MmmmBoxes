@@ -32,7 +32,7 @@ Qty 1
 PLEASE LEAVE THIS LABEL UNCOVERED
 """
 
-read_data_jim_clark = '''
+read_data_jim_clark = """
 US POSTAGE & FEES PAID 062S0017063017
 PRIORI >
 eR FROM 90245
@@ -59,9 +59,9 @@ USPS TRACKING #
 9999 9999 9999 9999 9999 99
 
 Thanks for Shopping with Us!
-'''
+"""
 
-read_data_jack_ship = '''
+read_data_jack_ship = """
 US POSTAGE AND FEES PAID
 FIRST-CLASS
 
@@ -87,9 +87,9 @@ AUSTIN TX 78746-5147
 USPS TRACKING #
 
 9400 1102 0079 3961 8936 91
-'''
+"""
 
-read_data_john_amburn = '''
+read_data_john_amburn = """
 From:
 
 JERRY GUZI
@@ -108,7 +108,7 @@ BURRIS COMPUTER FORMS
 751 UNION ST
 
 SALEM, VA 24153
-'''
+"""
 
 
 def test_nice_read_heading():
@@ -120,12 +120,24 @@ def test_nice_read_heading():
 
 def test_titled_as_from_whatever():
     assert titled_as_from_whatever("", None) is None
-    assert titled_as_from_whatever(read_data_from_james_bond, "dnest+sta012") == "From James Bond FBA: dnest+sta012"
-    assert titled_as_from_whatever(read_data_john_amburn, "John Amburn") == "From JERRY GUZI"
+    assert (
+        titled_as_from_whatever(read_data_from_james_bond, "dnest+sta012")
+        == "From James Bond FBA: dnest+sta012"
+    )
+    assert (
+        titled_as_from_whatever(read_data_john_amburn, "John Amburn")
+        == "From JERRY GUZI"
+    )
 
     # Those identify the current wished behaviour in mind, though may not look like ones
-    assert titled_as_from_whatever(read_data_jim_clark, "Jim Clark") == "From COMMERCIAL BASE PRICING"
-    assert titled_as_from_whatever(read_data_jack_ship, "Jack Ship") == "From Son Frat Clase Pag Sve"
+    assert (
+        titled_as_from_whatever(read_data_jim_clark, "Jim Clark")
+        == "From COMMERCIAL BASE PRICING"
+    )
+    assert (
+        titled_as_from_whatever(read_data_jack_ship, "Jack Ship")
+        == "From Son Frat Clase Pag Sve"
+    )
 
 
 @with_temp_psql_conn
@@ -135,10 +147,18 @@ def test_parse_read_data(conn):
     assert name is None
     assert title is None
 
-    register_new_user(conn, "dnest+sta012", "email1", "username1", "password_plain1", False)
-    register_new_user(conn, "John Amburn", "email2", "username2", "password_plain2", False)
-    register_new_user(conn, "Jim Clark", "email3", "username3", "password_plain3", False)
-    register_new_user(conn, "Jack Ship", "email4", "username4", "password_plain4", False)
+    register_new_user(
+        conn, "dnest+sta012", "email1", "username1", "password_plain1", False
+    )
+    register_new_user(
+        conn, "John Amburn", "email2", "username2", "password_plain2", False
+    )
+    register_new_user(
+        conn, "Jim Clark", "email3", "username3", "password_plain3", False
+    )
+    register_new_user(
+        conn, "Jack Ship", "email4", "username4", "password_plain4", False
+    )
 
     name, title = parse_read_data(conn, read_data_from_james_bond)
     assert name == "dnest+sta012"
@@ -159,7 +179,7 @@ def test_parse_read_data(conn):
 
 def test_tesseract_sanity():
     try:
-        temp_img = Image.new('RGB', (60, 30), color = 'red')
+        temp_img = Image.new("RGB", (60, 30), color="red")
         assert type(pytesseract.image_to_string(temp_img)) is str
     except Exception as e:
         assert False

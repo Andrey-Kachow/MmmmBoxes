@@ -4,16 +4,14 @@
        id="packages-table">
     <tr class="packages-row">
         {% if session.get("user-is-officer") %}
-          <th class="packages-col-heading">Package Collector</th>
+            <th class="packages-col-heading">Package Collector</th>
         {% endif %}
         <th class="packages-col-heading package-title-col">Package Title</th>
         <th class="packages-col-heading-date">Delivered</th>
         <th class="packages-col-heading-date">Collected</th>
-        {% if show_signature_button %}
-          <th class="packages-col-heading">Signature</th>
-        {% endif %}
+        {% if show_signature_button %}<th class="packages-col-heading">Signature</th>{% endif %}
         {% if session.get("user-is-officer") %}
-          <th class="packages-col-heading">Email reminder</th>
+            <th class="packages-col-heading">Email reminder</th>
         {% endif %}
     </tr>
     {% set ns = namespace(last_delivered="")%}
@@ -26,7 +24,7 @@
         {% endif %}
         <tr class="packages-row">
             {% if session.get("user-is-officer") %}
-              {% include 'common/package-table/package-owner-column.html' %}
+                {% include 'common/package-table/package-owner-column.html' %}
             {% endif %}
             <td class="packages-col package-title-col">{{ package.title }}</td>
             <td class="packages-col">{{ package.deliverednice }}</td>
@@ -34,9 +32,9 @@
                 {% include 'common/package-table/collection-pending-column.html' %}
                 {% include 'common/package-table/signature-button-column.html' %}
                 {% if session.get("user-is-officer") %}
-                  <td>
-                      <a href="{{ package.mailto }}">Send reminder email</a>
-                  </td>
+                    <td>
+                        <a href="{{ package.mailto }}">Send reminder email</a>
+                    </td>
                 {% endif %}
             {% else %}
                 <td class="packages-col">{{ package.collectednice }}</td>
