@@ -44,16 +44,16 @@ function verifyAndAutoFill(data) {
     notifyCouldNotReadAnything();
     return;
   }
-  if (data.name == null) {
-    notifyCouldNotReadRecipientName();
-    return;
-  }
   if (data.title == null) {
     notifyCouldNotReadPackageTitle();
     return;
   }
   document.getElementById("package-title").value = data.title;
 
+  if (data.name == null) {
+    notifyCouldNotReadRecipientName();
+    return;
+  }
   if (!residentNames.includes(data.name)) {
     notifyResidentNameDoesNotMatchExistingOne();
     return;
