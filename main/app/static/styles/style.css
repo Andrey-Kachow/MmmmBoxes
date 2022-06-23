@@ -62,7 +62,8 @@ h1 {
   top: 10px;
 }
 
-#browse {
+#browse,
+#profile {
   top: 80px;
 }
 
