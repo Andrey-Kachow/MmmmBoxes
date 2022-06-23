@@ -131,10 +131,10 @@ def test_parse_read_data(conn):
     assert name is None
     assert title is None
 
-    register_new_user(conn, "dnest+sta012", "email", "username", "password_plain", False)
-    register_new_user(conn, "John Amburn", "email", "username", "password_plain", False)
-    register_new_user(conn, "Jim Clark", "email", "username", "password_plain", False)
-    register_new_user(conn, "Jack Ship", "email", "username", "password_plain", False)
+    register_new_user(conn, "dnest+sta012", "email1", "username1", "password_plain1", False)
+    register_new_user(conn, "John Amburn", "email2", "username2", "password_plain2", False)
+    register_new_user(conn, "Jim Clark", "email3", "username3", "password_plain3", False)
+    register_new_user(conn, "Jack Ship", "email4", "username4", "password_plain4", False)
 
     name, title = parse_read_data(conn, read_data_from_james_bond)
     assert name == "dnest+sta012"
