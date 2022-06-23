@@ -50,19 +50,27 @@
 <script src="{{ url_for('static', filename='scripts/collection-modals.js') }}" charset="utf-8"></script>
 <script type="text/javascript" charset="utf-8">
   let socket = io();
-  socket.on("new-package", (data) => {
+  socket.on("new_package", (data) => {
     console.log(data);
     let package_table = document.getElementById("packages-table");
     let package_row = package_table.insertRow(1);
     package_row.classList.add("packages-row");
 
+    {% if session.get("user-is-officer") %}
     let fullname_cell = package_row.insertCell();
     fullname_cell.classList.add("packages-col");
-    fullname_cell.appendChild(document.createTextNode(data.fullname));
 
-    let email_cell = package_row.insertCell();
-    email_cell.classList.add("packages-col");
-    email_cell.appendChild(document.createTextNode(data.email));
+    let span = document.createElement("span");
+    span.classList.add("tooltip-item");
+
+    span.appendChild(document.createTextNode(data.fullname));
+
+    let spanOuter = document.createElement("span");
+    spanOuter.classList.add("mytooltip", "tooltip-effect-1");
+    spanOuter.appendChild(span);
+
+    fullname_cell.appendChild(spanOuter);
+    {% endif %}
 
     let title_cell = package_row.insertCell();
     title_cell.classList.add("packages-col");
@@ -75,5 +83,7 @@
     let collected_cell = package_row.insertCell();
     collected_cell.classList.add("packages-col");
     collected_cell.appendChild(document.createTextNode(data.collectednice));
+
+
   });
 </script>
