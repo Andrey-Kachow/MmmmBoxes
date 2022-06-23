@@ -2,16 +2,30 @@
     <div class="card-block">
         <p class="text-center">
             <span class="mytooltip tooltip-effect-1">
-                <a href="{{ url_for('officer.resident_profile', id=package.resident_id) }}"><span class="tooltip-item">{{ package.fullname }}</span></a>
+                {% if package.nominee_id is not none %}
+                    <a href="{{ url_for('officer.resident_profile', id=package.nominee_id) }}">
+                        <span class="tooltip-item">{{ package.nominee_fullname }}</span>
+                    </a>
+                {% else %}
+                    <a href="{{ url_for('officer.resident_profile', id=package.resident_id) }}">
+                        <span class="tooltip-item">{{ package.fullname }}</span>
+                    </a>
+                {% endif %}
                 <span class="tooltip-content clearfix">
-                    {% if package.profile_picture %}
-                        <img src="{{ package.profile_picture }}"
+                    {% if package.nominee_id is not none and package.nominee_profile_picture %}
+                        <img src="{{ package.nominee_profile_picture }}"
                              width="128"
                              height="128"/>
                     {% else %}
-                        <img src="https://media.idownloadblog.com/wp-content/uploads/2017/03/Twitter-new-2017-avatar-001.png"
-                             width="128"
-                             height="128"/>
+                        {% if package.nominee_id is none and package.profile_picture %}
+                            <img src="{{ package.profile_picture }}"
+                                 width="128"
+                                 height="128"/>
+                        {% else %}
+                            <img src="https://media.idownloadblog.com/wp-content/uploads/2017/03/Twitter-new-2017-avatar-001.png"
+                                 width="128"
+                                 height="128"/>
+                        {% endif %}
                     {% endif %}
                 </span>
             </span>

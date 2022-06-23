@@ -15,5 +15,7 @@ CREATE TABLE IF NOT EXISTS packages (
   delivered TIMESTAMP NOT NULL DEFAULT NOW(),
   collected TIMESTAMP,
   title VARCHAR(50) NOT NULL,
+  nominee_id INT,
+  CONSTRAINT nominee_fk FOREIGN KEY(nominee_id) REFERENCES users(id),
   CONSTRAINT fk_resident FOREIGN KEY(resident_id) REFERENCES users(id)
 );

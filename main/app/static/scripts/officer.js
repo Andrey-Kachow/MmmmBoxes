@@ -21,6 +21,11 @@ function selectResidentName(name) {
   hideResidents();
 }
 
+function selectResidentId(id, name) {
+  document.getElementById("resident-id-inp").value = id + ": " + name;
+  hideResidents();
+}
+
 function filteredSearchDisplayAlter(
   inputId,
   containerId,

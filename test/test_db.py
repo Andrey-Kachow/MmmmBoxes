@@ -108,6 +108,7 @@ def test_add_new_package_returns_user_dict_when_correct_id(conn):
         "delivered",
         "collected",
         "resident_id",
+        "nominee_id",
     ]:
         assert key in res.keys()
 
@@ -166,6 +167,7 @@ def test_get_all_packages_items_are_added(conn):
             "delivered",
             "collected",
             "resident_id",
+            "nominee_id",
         ]:
             assert key in package_dict.keys()
 
