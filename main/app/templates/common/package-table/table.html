@@ -6,7 +6,7 @@
         {% if session.get("user-is-officer") %}
           <th class="packages-col-heading">Package Owner</th>
         {% endif %}
-        <th class="packages-col-heading">Package Title</th>
+        <th class="packages-col-heading package-title-col">Package Title</th>
         <th class="packages-col-heading-date">Delivered</th>
         <th class="packages-col-heading-date">Collected</th>
         {% if show_signature_button %}
@@ -28,7 +28,7 @@
             {% if session.get("user-is-officer") %}
               {% include 'common/package-table/package-owner-column.html' %}
             {% endif %}
-            <td class="packages-col">{{ package.title }}</td>
+            <td class="packages-col package-title-col">{{ package.title }}</td>
             <td class="packages-col">{{ package.deliverednice }}</td>
             {% if package.collectednice == "Collection pending" %}
                 {% include 'common/package-table/collection-pending-column.html' %}
