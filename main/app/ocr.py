@@ -94,8 +94,8 @@ def parse_read_data(conn, read_data):
 
 def get_package_details_from_file(ocr_file, conn):
 
-    if "PYTESSERACT_PATH" in os.environ:
-        pytesseract.pytesseract.tesseract_cmd = os.environ["PYTESSERACT_PATH"]
+    if "TESSDATA_PREFIX" in os.environ:
+        pytesseract.pytesseract.tesseract_cmd = os.environ["TESSDATA_PREFIX"]
 
     with tempfile.TemporaryDirectory() as dirname:
 
