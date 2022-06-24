@@ -114,12 +114,12 @@ def get_package_details_from_file(ocr_file, conn):
         im = Image.open(ocr_img_path)
         max_px = max(im.size[0], im.size[1])
         scale_factor = 1000 / max_px
-        im.thumbnail((im.size[0] * max_px, im.size[1] * max_px))
+        im.thumbnail((im.size[0] * scale_factor, im.size[1] * scale_factor))
 
         # Rotate image 3 times to check for orientation problem
         # As soon as we get a successful match, use that
         for _ in range(3):
-            read_data = pytesseract.image_to_string(Image.open(ocr_img_path))
+            read_data = pytesseract.image_to_string(im)
             matched_name, matched_package_title = parse_read_data(conn, read_data)
 
             if matched_name is not None and matched_package_title is not None:
