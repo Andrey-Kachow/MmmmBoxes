@@ -1,5 +1,20 @@
 <link rel="stylesheet"
       href="{{ url_for('static', filename='styles/package-table.css') }}"/>
+<script language="JavaScript">
+
+function toggleVisibility(eventsender, idOfObjectToToggle){
+    var myNewState = "visible";
+    if (eventsender.checked === true){
+        myNewState = "hidden";
+    }
+    const collection = document.getElementsByClassName("collected-entry");
+    for (let i = 0; i < collection.length; i++) {
+        collection[i].style.visibility = myNewState;
+    }
+    }       
+</script>
+<br>
+<label> Hide collected packages </label><input type="checkbox" id="collected-checkbox" name="collected-checkbox" onClick = "JavaScript:toggleVisibility(this,'collected');"/>
 <table class="tablecenter"
        id="packages-table">
     <tr class="packages-row">
@@ -22,7 +37,11 @@
                     style="border-width: 0"></td>
             </tr>
         {% endif %}
-        <tr class="packages-row">
+        {% if package.collectednice == "Collection pending" %}
+            <tr class="packages-row">
+        {% else %}
+            <tr class="packages-row collected-entry">
+        {% endif %}
             {% if session.get("user-is-officer") %}
                 {% include 'common/package-table/package-owner-column.html' %}
             {% endif %}
