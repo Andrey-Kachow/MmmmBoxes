@@ -99,7 +99,7 @@
                 </a>
             {% else %}
                 You were nominated by {{ package.fullname }} for collection
-                <a href="{{ url_for('resident.revoke_nomination', package_id=package.id) }}">
+                <a href="{{ url_for('resident.cancel_nomination', package_id=package.id) }}">
                     <button class="delete">Cancel Nomination</button>
                 </a>
             {% endif %}

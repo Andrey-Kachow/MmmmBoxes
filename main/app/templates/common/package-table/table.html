@@ -33,7 +33,7 @@
                 {% include 'common/package-table/signature-button-column.html' %}
                 {% if session.get("user-is-officer") %}
                     <td>
-                        <a href="{{ package.mailto }}">
+                        <a href="{{ url_for('officer.remind', package_id=package.id) }}">
                             <button class="remind-button">Send Reminder</button>
                         </a>
                     </td>
