@@ -50,11 +50,20 @@ def overview():
 
 @bp.route("/revoke_nomination/<package_id>", methods=["GET", "POST"])
 def revoke_nomination(package_id):
-    success = db.revoke_nomination(current_app.db_conn, package_id)
+    success = db.revoke_nomination(current_app.db_conn, package_id, True)
     if success:
         flash("Nomination revoked.")
     else:
         flash("Oops! Couldn't revoke nomination")
+    return redirect(url_for("resident.overview"))
+
+@bp.route("/cancel_nomination/<package_id>", methods=["GET", "POST"])
+def cancel_nomination(package_id):
+    success = db.revoke_nomination(current_app.db_conn, package_id, False)
+    if success:
+        flash("Nomination cancelled.")
+    else:
+        flash("Oops! Couldn't cancell nomination")
     return redirect(url_for("resident.overview"))
 
 

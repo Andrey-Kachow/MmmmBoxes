@@ -1,5 +1,6 @@
 import functools
 import json
+from re import L
 from main.database import db
 from main.database.signatures import (
     is_valid,
@@ -8,6 +9,7 @@ from main.database.signatures import (
     package_is_signed,
     get_data_url,
 )
+from main.app.notifications import send_reminder
 
 from flask import *
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -75,6 +77,39 @@ def overview():
         "officer/package-table/view-packages.html",
     )
 
+@bp.route("/remind-all/", methods=["GET", "POST"])
+@login_required
+def remind_all():
+    packages = db.get_all_packages(current_app.db_conn)
+    for package in packages:
+        remind_about_package(package)
+    flash("All reminders sent")
+    return render_template(
+        "officer/package-table/view-packages.html",
+    )
+
+def remind_about_package(package):
+    if package["collected"] == "Collection pending":
+        delivered = package["deliverednice"]
+        title = package["title"]
+        if package["nominee_id"] != None:
+            fullname = package["nominee_fullname"]
+            email = package["nominee_email"]
+        else:
+            fullname = package["fullname"]
+            email = package["email"]
+    send_reminder(fullname, email, title, delivered)
+
+@bp.route("/remind/<package_id>", methods=["GET", "POST"])
+@login_required
+def remind(package_id):
+    package = db.get_package_by_id(current_app.db_conn, package_id)
+    remind_about_package(package)
+    flash("Reminder sent")
+    return render_template(
+        "officer/package-table/view-packages.html",
+    )
+
 
 @bp.route("/template")
 def template():
@@ -125,6 +160,7 @@ def resident_profile(id):
 @bp.route("/sent-email")
 def email_all():
     packages = db.get_all_packages(current_app.db_conn)
+
     with open(EMAIL_LOCATION, "r") as f:
         email = f.read()
     for package in packages:
