@@ -2,22 +2,43 @@
       href="{{ url_for('static', filename='styles/package-table.css') }}"/>
 <script language="JavaScript">
 
-function toggleVisibility(eventsender, idOfObjectToToggle){
-    var myNewState = "visible";
-    if (eventsender.checked === true){
-        myNewState = "hidden";
-    }
+function toggleVisibility(eventsender){ 
     const collection = document.getElementsByClassName("collected-entry");
     for (let i = 0; i < collection.length; i++) {
-        collection[i].style.visibility = myNewState;
+        if (eventsender.checked === true){
+            collection[i].classList.add("hide-entry");
+        } else {
+            collection[i].classList.remove("hide-entry");
+        }
     }
-    }       
+}
+function myFunction(){
+  const trs = document.querySelectorAll('#packages-table tr:not(.header)')
+  const filter = document.querySelector('#tableInput').value
+  const regex = new RegExp(filter, 'i')
+  const isFoundInTds = td => regex.test(td.innerHTML)
+  const isFound = childrenArr => childrenArr.some(isFoundInTds)
+  const setTrStyleDisplay = ({ style, children }) => {
+    style.display = isFound([
+      ...children // <-- All columns
+    ]) ? '' : 'none' 
+  }
+  
+  trs.forEach(setTrStyleDisplay)
+}       
 </script>
 <br>
-<label> Hide collected packages </label><input type="checkbox" id="collected-checkbox" name="collected-checkbox" onClick = "JavaScript:toggleVisibility(this,'collected');"/>
+<label> Hide collected packages </label><input type="checkbox" id="collected-checkbox" name="collected-checkbox" onClick = "JavaScript:toggleVisibility(this);"/><br>
+<input 
+  type="text" 
+  id="tableInput" 
+  style="width:400px"
+  onkeyup="myFunction()" 
+  placeholder="Search for collector names, package titles or dates..." 
+  title="Type in collector name, package title or delivery/collection date...">
 <table class="tablecenter"
        id="packages-table">
-    <tr class="packages-row">
+    <tr class="packages-row header">
         {% if session.get("user-is-officer") %}
             <th class="packages-col-heading">Package Collector</th>
         {% endif %}

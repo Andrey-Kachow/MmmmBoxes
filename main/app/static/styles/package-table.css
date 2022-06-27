@@ -3,6 +3,10 @@
   padding-right: 2rem;
 }
 
+.hide-entry {
+  display: none;
+}
+
 .tablecenter {
   margin-left: 0px;
   margin-right: 0px;
