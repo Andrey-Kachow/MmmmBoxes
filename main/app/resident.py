@@ -8,6 +8,8 @@ import os
 import requests
 from flask import current_app
 import base64
+from main.app import socketio
+
 
 bp = Blueprint("resident", __name__, url_prefix="/resident")
 
@@ -39,6 +41,8 @@ def post_nominate(request):
         nominee_id = request.form['nominee-id']
         package_id = request.form["package-id"]
         db.nominate_parcel(current_app.db_conn, package_id, nominee_id)
+        socketio.emit("change", broadcast=True)
+
 
 
 @bp.route("/overview", methods=["GET", "POST"])
@@ -55,6 +59,7 @@ def revoke_nomination(package_id):
         flash("Nomination revoked.")
     else:
         flash("Oops! Couldn't revoke nomination")
+    socketio.emit("change", broadcast=True)
     return redirect(url_for("resident.overview"))
 
 @bp.route("/cancel_nomination/<package_id>", methods=["GET", "POST"])
@@ -64,6 +69,16 @@ def cancel_nomination(package_id):
         flash("Nomination cancelled.")
     else:
         flash("Oops! Couldn't cancell nomination")
+    socketio.emit("change", broadcast=True)
+    return redirect(url_for("resident.overview"))
+
+@bp.route("/collect_package/<package_id>", methods=["GET", "POST"])
+def collect_package(package_id):
+    success = db.collect_package(current_app.db_conn, package_id)
+    if success:
+        flash("Package Collected.")
+    else:
+        flash("Oops! Couldn't collect")
     return redirect(url_for("resident.overview"))
 
 
