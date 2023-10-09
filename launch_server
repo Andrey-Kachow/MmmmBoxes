@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+# Create and activate virtual environment
+python3 -m venv venv
+source venv/bin/activate
+
+# Install reqs
+pip install --upgrade pip && pip install -r requirements.txt
+
+export FLASK_APP=main/app
+export FLASK_ENV=development
+export FLASK_DEBUG=1
+
+# If "$PORT" is undefined, then call runme with no args, running locally.
+# Otherwise, run it with the appropriate args.
+if [ -z "$PORT" ]
+then
+    echo "Running flask locally!"
+    python3 runme.py
+else
+    echo "Running flask in Heroku!"
+    python3 runme.py 0.0.0.0 $PORT
+fi
+
