@@ -1,0 +1,99 @@
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='styles/package-table.css') }}"/>
+<script language="JavaScript">
+
+function toggleVisibility(eventsender){ 
+    const collection = document.getElementsByClassName("collected-entry");
+    for (let i = 0; i < collection.length; i++) {
+        if (eventsender.checked === true){
+            collection[i].classList.add("hide-entry");
+        } else {
+            collection[i].classList.remove("hide-entry");
+        }
+    }
+}
+function myFunction(){
+  const trs = document.querySelectorAll('#packages-table tr:not(.header)')
+  const filter = document.querySelector('#tableInput').value
+  const regex = new RegExp(filter, 'i')
+  const isFoundInTds = td => regex.test(td.innerHTML)
+  const isFound = childrenArr => childrenArr.some(isFoundInTds)
+  const setTrStyleDisplay = ({ style, children }) => {
+    style.display = isFound([
+      ...children // <-- All columns
+    ]) ? '' : 'none' 
+  }
+  
+  trs.forEach(setTrStyleDisplay)
+}       
+</script>
+<br>
+<label> Hide collected packages </label><input type="checkbox" id="collected-checkbox" name="collected-checkbox" onClick = "JavaScript:toggleVisibility(this);"/><br>
+<input 
+  type="text" 
+  id="tableInput" 
+  style="width:400px"
+  onkeyup="myFunction()" 
+  placeholder="Search for collector names, package titles or dates..." 
+  title="Type in collector name, package title or delivery/collection date...">
+<table class="tablecenter"
+       id="packages-table">
+    <tr class="packages-row header">
+        {% if session.get("user-is-officer") %}
+            <th class="packages-col-heading">Package Collector</th>
+        {% endif %}
+        <th class="packages-col-heading package-title-col">Package Title</th>
+        <th class="packages-col-heading-date">Delivered</th>
+        <th class="packages-col-heading-date">Collected</th>
+        {% if show_signature_button %}<th class="packages-col-heading">Signature</th>{% endif %}
+        {% if session.get("user-is-officer") %}
+            <th class="packages-col-heading">Email reminder</th>
+        {% endif %}
+    </tr>
+    {% set ns = namespace(last_delivered="")%}
+    {% for package in get_package_list()|sort(reverse=True, attribute="delivered") %}
+        {% if ns.last_delivered != package.delivered[:10] and ns.last_delivered != "" %}
+            <tr>
+                <td class="packages-spacer"
+                    style="border-width: 0"></td>
+            </tr>
+        {% endif %}
+        {% if package.collectednice == "Collection pending" %}
+            <tr class="packages-row">
+        {% else %}
+            <tr class="packages-row collected-entry">
+        {% endif %}
+            {% if session.get("user-is-officer") %}
+                {% include 'common/package-table/package-owner-column.html' %}
+            {% endif %}
+            <td class="packages-col package-title-col">{{ package.title }}</td>
+            <td class="packages-col">{{ package.deliverednice }}</td>
+            {% if package.collectednice == "Collection pending" %}
+                {% include 'common/package-table/collection-pending-column.html' %}
+                {% include 'common/package-table/signature-button-column.html' %}
+                {% if session.get("user-is-officer") %}
+                    <td>
+                        <a href="{{ url_for('officer.remind', package_id=package.id) }}">
+                            <button class="remind-button">Send Reminder</button>
+                        </a>
+                    </td>
+                {% endif %}
+            {% else %}
+                <td class="packages-col">{{ package.collectednice }}</td>
+                {% include 'common/package-table/signature-button-column.html' %}
+            {% endif %}
+        </tr>
+        {% set ns.last_delivered = package.delivered[:10] %}
+    {% endfor %}
+</table>
+{% include 'common/package-table/signature-canvas.html' %}
+<script src="{{ url_for('static', filename='scripts/collection-modals.js') }}" charset="utf-8"></script>
+<script type="text/javascript" charset="utf-8">
+  let socket = io();
+  socket.on("change", () => {
+        if ( window.history.replaceState ) {
+        window.history.replaceState( null, null, window.location.href );
+    }
+    window.location = window.location.href;
+  });
+</script>

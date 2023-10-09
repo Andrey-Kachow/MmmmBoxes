@@ -1,0 +1,111 @@
+{% block local_style %}
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='styles/drop-down.css') }}"/>
+{% endblock %}
+<td class="packages-col">
+    {% if session.get("user-is-officer") %}
+        Collection Pending
+        <button onclick="showCollectionModal({{ package.id }})">Collect Package</button>
+        <div id="collect-{{ package.id }}"
+             class="modal">
+            <span onclick="closeCollectionModal({{ package.id }})"
+                  class="close"
+                  title="Close Modal">×</span>
+            <form class="modal-content">
+                <div class="container">
+                    <h1>Collect Package</h1>
+                    <p>
+                        Confirm package entitled {{ package.title }} has been collected by
+                        {{ package.fullname }}
+                    </p>
+                    <div class="clearfix">
+                        <button type="button"
+                                onclick="closeCollectionModal({{ package.id }})"
+                                class="cancelbtn">Cancel</button>
+                        <a href="{{ url_for('officer.collect_package', package_id=package.id) }}">
+                            <button type="button"
+                                    class="deletebtn">Confirm</button>
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <button class="delete"
+                onclick="showDeletionModal({{ package.id }})">Delete Package</button>
+        <div id="delete-{{ package.id }}"
+             class="modal">
+            <span onclick="closeDeletionModal({{ package.id }})"
+                  class="close"
+                  title="Close Modal">×</span>
+            <form class="modal-content">
+                <div class="container">
+                    <h1>Delete Package</h1>
+                    <p>
+                        Confirm you wish to delete package entitled {{ package.title }}
+                        meant to be collected by {{ package.fullname }}. Perhaps remind them
+                        instead.
+                    </p>
+                    <div class="clearfix">
+                        <button type="button"
+                                onclick="closeDeletionModal({{ package.id }})"
+                                class="cancelbtn">Cancel</button>
+                        <a href="{{ url_for('officer.delete_package', package_id=package.id) }}">
+                            <button type="button"
+                                    class="deletebtn">Delete</button>
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    {% else %}
+        {% if package.nominee_id is none %}
+            Collection Pending
+            <button id="nominate-button"
+                    onclick="showNominationModal({{ package.id }})">Nominate Collector</button>
+            <div id="nomination-{{ package.id }}"
+                 class="modal">
+                <span onclick="closeNominationModal({{ package.id }})"
+                      class="close"
+                      title="Close Modal">×</span>
+                <form class="modal-content"
+                      method="POST">
+                    <div class="container">
+                        <h1>Nominate Collector</h1>
+                        <p>Nominate someone to collect your package on your behalf</p>
+                        <form method="post"
+                              autocomplete="off">
+                            <label for="resident-name">Select resident to nominate</label>
+                            <div class="dropdown-input-div">
+                                <input style="display:none" name="package-id" value="{{ package.id }}"/>
+                                <select name="nominee-id">
+                                  {% for other in get_residents() %}
+                                    {% if other.id != resident.id %}
+                                      <option value="{{ other.id }}">{{ other.fullname }}</option>
+                                    {% endif %}
+                                  {% endfor %}
+                                </select>
+                            </div>
+                            <input type="submit"
+                                   value="Nominate"/>
+                        </form>
+                    </div>
+                </form>
+            </div>
+        {% else %}
+            {% if package.nominee_id != session.get("user-id") %}
+                You nominated {{ package.nominee_fullname }} for collection
+                <a href="{{ url_for('resident.revoke_nomination', package_id=package.id) }}">
+                    <button class="delete">Revoke Nomination</button>
+                </a>
+            {% else %}
+                You were nominated by {{ package.fullname }} for collection
+                <a href="{{ url_for('resident.cancel_nomination', package_id=package.id) }}">
+                    <button class="delete">Cancel Nomination</button>
+                </a>
+            {% endif %}
+        {% endif %}
+    {% endif %}
+</td>
+{% block scripts %}
+    <script src="{{ url_for('static', filename='scripts/officer.js') }}" charset="utf-8"></script>
+{% endblock %}

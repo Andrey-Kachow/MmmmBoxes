@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block header %}
+    <h1>
+        {% block title %}All packages{% endblock %}
+    </h1>
+{% endblock %}
+{% block local_style %}
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='styles/overview.css') }}"/>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='styles/drop-down.css') }}"/>
+{% endblock %}
+{% block content %}
+    <div class="overview-content">
+        <form method="post"
+              autocomplete="off">
+            <label for="resident-name">Resident name</label>
+            <div class="dropdown-input-div">
+                <input id="resident-name-inp"
+                       name="resident-name"
+                       type="text"
+                       placeholder="Search Residents..."
+                       onfocus="showResidents()"
+                       onblur="nonButtonFocusHide()"
+                       onkeyup="filterResidents()"
+                       required/>
+                <div id="dropdown-residents"
+                     class="dropdown-content">
+                    {% for name in get_all_resident_names() %}
+                        <button class="dropdown-content-button"
+                                type="button"
+                                onclick="selectResidentName('{{ name }}')">{{ name }}</button>
+                    {% endfor %}
+                </div>
+            </div>
+            <label for="package-title">Title</label>
+            <input name="package-title"
+                   id="package-title"
+                   required/>
+            <input type="submit"
+                   value="Add new package"/>
+            <div class="ocr-image-upload-wrapper">
+                <label id="ocr-label"
+                       for="ocr-file">or Upload a Package Label</label>
+                <input id="ocr-image-upload-input"
+                       type="file"
+                       accept="image/*"
+                       name="ocr-file"
+                       class="ocr-image-upload-inp"
+                       autocomplete="off"
+                       value
+                       update
+                       onchange="ocrSend()">
+                <span id="ocr-status-info-text"></span>
+            </div>
+        </form>
+        <a href="{{ url_for('officer.remind_all') }}">
+            <button class="remind-all-button">Push reminder to all</button>
+        </a>
+        {% include 'common/package-table/table.html' %}
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script src="{{ url_for('static', filename='scripts/officer.js') }}" charset="utf-8"></script>
+    <script src="{{ url_for('static', filename='scripts/ocr.js') }}" charset="utf-8"></script>
+    <script type="text/javascript">initializeOcrUrl("{{ url_for('officer.ocr') }}")</script>
+{% endblock %}

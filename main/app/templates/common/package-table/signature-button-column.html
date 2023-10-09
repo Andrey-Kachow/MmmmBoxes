@@ -1,0 +1,15 @@
+{% if show_signature_button %}
+    <td class="packages-col">
+        {% if package.is_signed %}
+            <span>Signed</span>
+            <button type="button"
+                    onclick="requestSignatureFromServer({{ package.id }})">View</button>
+        {% else %}
+            <span>Not signed</span>
+            <button type="button"
+                    onclick="openSignatureCanvas(this, '{{ package.fullname }}', '{{ package.title }}', {{ package.id }})">
+                Sign
+            </button>
+        {% endif %}
+    </td>
+{% endif %}

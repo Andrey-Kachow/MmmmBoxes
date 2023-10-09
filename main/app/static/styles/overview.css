@@ -1,0 +1,23 @@
+#resident-name-inp {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#resident-name-inp:focus {
+  outline: none;
+}
+
+#resident-name-inp:focus {
+  outline: 3px solid #ddd;
+}
+
+#ocr-status-info-text {
+  color: #fff;
+}
+
+.ocr-correct {
+  background-color: #00dd00;
+}
+
+.ocr-error {
+  background-color: #dd0000;
+}

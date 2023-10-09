@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en"
+      dir="ltr">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.1/socket.io.js" integrity="sha512-9mpsATI0KClwt+xVZfbcf2lJ8IFBAwsubJ6mI3rtULwyM3fBmQFzj0It4tGqxLOGQwGfJdk/G+fANnxfq9/cew==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js" integrity="sha512-n/4gHW3atM3QqRcbCn6ewmpxcLAHGaDjpEBu4xZd47N0W2oQ+6q7oc3PXstrJYXcbNU1OHdQ1T7pAP+gi5Yu8g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="{{ url_for('static', filename='scripts/utils.js') }}" charset="utf-8"></script>
+    <head>
+        <meta charset="utf-8"/>
+        <title>
+            {% block title %}{% endblock %}
+        - DRP11</title>
+        <link rel="stylesheet"
+              href="{{ url_for('static', filename='styles/style.css') }}"/>
+        {% block local_style %}{% endblock %}
+    </head>
+    <body>
+        <section class="content">
+            <header>
+                {% block header %}{% endblock %}
+            </header>
+            {% for message in get_flashed_messages() %}
+                <div class="flash">{{ message }}</div>
+            {% endfor %}
+            {% block content %}{% endblock %}
+        </section>
+        {% if not signed_out %}
+            <div id="navigation-list"
+                 class="sidebar-navigation">
+                <aside>
+                    {% if session.get("user-is-officer") %}
+                        <a href="{{ url_for('officer.overview') }}"
+                           id="packages">View all packages</a>
+                        <a href="{{ url_for('officer.residents') }}"
+                           id="browse">Browse residents</a>
+                        <a href="{{ url_for('officer.template') }}"
+                           id="email">Edit reminder email</a>
+                    {% else %}
+                        <a id="packages"
+                           href="{{ url_for('resident.overview') }}">View your packages</a>
+                        <a id="profile"
+                           href="{{ url_for('resident.profile') }}">View your profile</a>
+                    {% endif %}
+                    {% if g.user %}<a href="{{ url_for('auth.logout') }}"
+   id="log-out">Log out</a>{% endif %}
+                </aside>
+            </div>
+        {% endif %}
+    </body>
+    {% block scripts %}{% endblock %}
+</html>

@@ -1,0 +1,253 @@
+.packages-col-heading {
+  text-align: left;
+  padding-right: 2rem;
+}
+
+.hide-entry {
+  display: none;
+}
+
+.tablecenter {
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+#nominate-button,
+.remind-button {
+  background-color: #a7149a;
+}
+
+.remind-all-button {
+  margin-left: 0rem;
+  background-color: #e204a0;
+  height: 34px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.packages-col-heading-date {
+  text-align: left;
+  padding-right: 10rem;
+}
+
+.package-title-col {
+  max-width: 100px;
+  word-wrap: break-word;
+}
+
+.packages-spacer {
+  padding: 0.5rem;
+}
+
+.card-block {
+  margin-top: 10px;
+}
+
+.mytooltip {
+  display: inline;
+  position: relative;
+  width: 100%;
+  display: inline-block;
+}
+
+.mytooltip .tooltip-item {
+  background: rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  display: inline-block;
+  font-weight: 500;
+  padding: 0 10px;
+}
+
+.mytooltip .tooltip-content {
+  position: absolute;
+  z-index: 2;
+  width: 128px;
+  left: 50%;
+  margin: 0 0 20px -50%;
+  bottom: 100%;
+  text-align: left;
+  font-size: 14px;
+  line-height: 30px;
+  -webkit-box-shadow: -5px -5px 15px rgba(48, 54, 61, 0.2);
+  box-shadow: -5px -5px 15px rgba(48, 54, 61, 0.2);
+  background: #2b2b2b;
+  opacity: 0;
+  cursor: default;
+  pointer-events: none;
+}
+
+.mytooltip .tooltip-content::after {
+  content: "";
+  top: 100%;
+  left: 50%;
+  border: solid transparent;
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+  border-color: #2a3035 transparent transparent;
+  border-width: 10px;
+  margin-left: -10px;
+}
+
+.mytooltip .tooltip-content img {
+  position: relative;
+  height: 140px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mytooltip .tooltip-item::after {
+  content: "";
+  position: absolute;
+  width: 360px;
+  height: 20px;
+  bottom: 100%;
+  left: 50%;
+  pointer-events: none;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+}
+
+.mytooltip:hover .tooltip-item::after {
+  pointer-events: auto;
+}
+
+.mytooltip:hover .tooltip-content {
+  pointer-events: auto;
+  opacity: 1;
+  -webkit-transform: translate3d(0, 0, 0) rotate3d(0, 0, 0, 0deg);
+  transform: translate3d(0, 0, 0) rotate3d(0, 0, 0, 0deg);
+}
+
+.mytooltip:hover .tooltip-content2 {
+  opacity: 1;
+  font-size: 18px;
+}
+
+.mytooltip .tooltip-text {
+  font-size: 14px;
+  line-height: 24px;
+  display: block;
+  padding: 1.31em 1.21em 1.21em 0;
+  color: #fff;
+}
+
+/* * {
+  box-sizing: border-box;
+} */
+
+/* Set a style for all buttons */
+button {
+  background-color: #04aa6d;
+  color: white;
+  border: none;
+  cursor: pointer;
+  padding-top: 0.3rem;
+  padding-bottom: 0.3rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  opacity: 0.9;
+}
+
+button:hover {
+  opacity: 1;
+}
+
+.delete {
+  background-color: #f44336;
+}
+
+/* Float cancel and delete buttons and add an equal width */
+.cancelbtn,
+.deletebtn {
+  float: left;
+  width: 50%;
+}
+
+/* Add a color to the cancel button */
+.cancelbtn {
+  background-color: #ccc;
+  color: black;
+}
+
+/* Add a color to the delete button */
+.deletebtn {
+  background-color: #f44336;
+}
+
+/* Add padding and center-align text to the container */
+.container {
+  padding: 16px;
+  text-align: center;
+}
+
+/* The Modal (background) */
+.modal {
+  display: none;
+  /* Hidden by default */
+  position: fixed;
+  /* Stay in place */
+  z-index: 1;
+  /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%;
+  /* Full width */
+  height: 100%;
+  /* Full height */
+  overflow: auto;
+  /* Enable scroll if needed */
+  background-color: #474e5d;
+  padding-top: 50px;
+}
+
+/* Modal Content/Box */
+.modal-content {
+  position: relative;
+  background-color: #fefefe;
+  margin: 5% auto 15% auto;
+  /* 5% from the top, 15% from the bottom and centered */
+  border: 1px solid #888;
+  width: 80%;
+  /* Could be more or less, depending on screen size */
+  z-index: 5;
+}
+
+/* Style the horizontal ruler */
+hr {
+  border: 1px solid #f1f1f1;
+  margin-bottom: 25px;
+}
+
+/* The Modal Close Button (x) */
+.close {
+  position: absolute;
+  right: 35px;
+  top: 15px;
+  font-size: 40px;
+  font-weight: bold;
+  color: #f1f1f1;
+}
+
+.close:hover,
+.close:focus {
+  color: #f44336;
+  cursor: pointer;
+}
+
+/* Clear floats */
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+/* Change styles for cancel button and delete button on extra small screens */
+@media screen and (max-width: 300px) {
+  .cancelbtn,
+  .deletebtn {
+    width: 100%;
+  }
+}
