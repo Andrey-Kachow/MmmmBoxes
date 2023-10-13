@@ -1,5 +1,5 @@
 # MmmmBoxes
-A package management tool which puts efficiency an end to inefficiency and brings together inventory, reminder and label scanning functionality.
+A package management tool which puts an end to inefficiency and brings together inventory, reminder and label scanning functionality.
 
 How can we streamline the package management process at shared accommodation to reduce the workload for residential staff and allow them to focus on other, more important aspects of their role?
 
